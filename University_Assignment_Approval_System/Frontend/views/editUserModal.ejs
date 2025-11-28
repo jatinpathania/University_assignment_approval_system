@@ -1,0 +1,58 @@
+<h2 style="font-size: 1.5rem; font-weight: 700; color: #1f2937; margin-bottom: 1rem;">
+    Edit User: <%= userToEdit.name %>
+</h2>
+
+<% if (error) { %>
+    <div class="error-message-inline" style="background-color: #fee2e2; color: #991b1b; padding: 0.75rem; border-radius: 0.5rem; margin-bottom: 1rem; font-weight: 600;">
+        <%= error %>
+    </div>
+<% } %>
+
+<form id="editUserForm" action="/admin/users/<%= userToEdit._id %>/update" method="POST">
+    
+    <div class="form-control-group">
+        <label for="modal-name">Full Name</label>
+        <input type="text" id="modal-name" name="name" value="<%= userToEdit.name %>" required>
+    </div>
+
+    <div class="form-control-group">
+        <label for="modal-email">Email Address</label>
+        <input type="email" id="modal-email" name="email" value="<%= userToEdit.email %>" required>
+    </div>
+
+    <div class="form-control-group">
+        <label for="modal-phone">Phone Number</label>
+        <input type="tel" id="modal-phone" name="phone" value="<%= userToEdit.phone || '' %>">
+    </div>
+
+    <div class="form-control-group">
+        <label for="modal-role">User Role (Cannot be changed)</label>
+        <input type="text" id="modal-role" value="<%= userToEdit.role.toUpperCase() %>" disabled>
+    </div>
+
+    <div class="form-control-group">
+        <label for="modal-departmentId">Department</label>
+        <select id="modal-departmentId" name="departmentId" required>
+            <% allDepartments.forEach(dept => { %>
+                <option 
+                    value="<%= dept._id %>" 
+                    <%= userToEdit.departmentId && userToEdit.departmentId.equals(dept._id) ? 'selected' : '' %>
+                >
+                    <%= dept.name %>
+                </option>
+            <% }) %>
+        </select>
+    </div>
+    
+    <hr style="border: 0; border-top: 1px solid #e5e7eb; margin: 2rem 0;">
+
+    <div class="form-control-group">
+        <label for="modal-newPassword">New Password (Leave blank to keep current)</label>
+        <input type="password" id="modal-newPassword" name="newPassword" placeholder="Minimum 6 characters">
+    </div>
+
+    <div style="display: flex; justify-content: flex-end; gap: 1rem; margin-top: 2rem;">
+        <button type="button" class="modal-close-btn" id="closeEditModalBtn" style="padding: 0.6rem 1.2rem; background-color: #e5e7eb; color: #374151; border: none; border-radius: 0.5rem; font-weight: 600; cursor: pointer;">Cancel</button>
+        <button type="submit" class="submit-button" style="padding: 0.6rem 1.2rem; background-color: #3b82f6; color: white; border: none; border-radius: 0.5rem; font-weight: 600; cursor: pointer;">Update User</button>
+    </div>
+</form>

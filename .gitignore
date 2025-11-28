@@ -1,0 +1,38 @@
+# Node
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# Env/config
+.env
+.env.*
+!.env.example
+
+# Logs and pids
+logs/
+*.log
+pids/
+*.pid
+*.pid.lock
+
+# Build/cache
+dist/
+build/
+coverage/
+.nyc_output/
+.cache/
+.tmp/
+
+# Runtime uploads/temp
+uploads/
+storage/
+tmp/
+
+# Editor/OS
+.vscode/
+.idea/
+*.swp
+.DS_Store
+Thumbs.db

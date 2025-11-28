@@ -1,0 +1,295 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Create Department</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f4f7f9;
+            margin: 0;
+            padding: 0;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+        .top-header {
+            background-color: #ffffff;
+            padding: 1rem 2rem;
+            border-bottom: 1px solid #e5e7eb;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-shrink: 0;
+        }
+
+        .header-profile {
+            width: 48px;
+            height: 48px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 2px solid #e5e7eb;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+            cursor: pointer;
+        }
+        .top-title {
+            font-size: 1.875rem;
+            font-weight: 700;
+            color: #1f2937;
+        }
+        .page-container {
+            display: flex;
+            flex: 1;
+            overflow: hidden;
+        }
+        .sidebar {
+            width: 256px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            padding: 1.5rem;
+            background-color: #ffffff;
+            border-right: 1px solid #e5e7eb;
+            box-sizing: border-box;
+        }
+        .main-content {
+            flex-grow: 1;
+            overflow-x: hidden;
+            overflow-y: auto;
+            padding: 2rem;
+            background-color: #f9fafb;
+        }
+        .nav-link {
+            display: block;
+            padding: 1rem;
+            margin-bottom: 0.5rem;
+            border-radius: 0.5rem;
+            color: #4b5563;
+            font-weight: 600;
+            transition: all 0.15s ease-in-out;
+            text-decoration: none;
+        }
+        .nav-link:hover {
+            background-color: #f3f4f6;
+            color: #1f2937;
+        }
+        .nav-link.active {
+            background-color: #e5e7eb;
+            color: #1f2937;
+        }
+        .logout-button {
+            width: 100%;
+            text-align: center;
+            padding: 0.75rem 1rem;
+            border-radius: 0.5rem;
+            font-weight: 600;
+            background-color: #ef4444;
+            color: white;
+            border: none;
+            cursor: pointer;
+            transition: background-color 0.2s;
+            margin-top: 2rem;
+        }
+        .logout-button:hover {
+            background-color: #dc2626;
+        }
+        .header {
+            padding-bottom: 1.5rem;
+            margin-bottom: 2rem;
+            border-bottom: 1px solid #e5e7eb;
+        }
+        .content-title { 
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: #1f2937;
+        }
+        .nav-title { font-size: 1.125rem; font-weight: 600; color: #374151; }
+        .welcome-text { color: #4b5563; margin-top: 0.25rem; font-size: 1rem;}
+        .welcome-user { font-weight: 600; color: #1f2937; }
+
+        /* Form Styling */
+        .form-card {
+            background-color: #ffffff;
+            padding: 2rem;
+            border-radius: 0.75rem;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+            max-width: 600px;
+        }
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+        label {
+            display: block;
+            font-weight: 600;
+            color: #374151;
+            margin-bottom: 0.5rem;
+        }
+        input[type="text"], textarea, select {
+            width: 100%;
+            padding: 0.75rem;
+            border: 1px solid #d1d5db;
+            border-radius: 0.5rem;
+            box-sizing: border-box;
+            transition: border-color 0.15s;
+        }
+        input[type="text"]:focus, textarea:focus, select:focus {
+            border-color: #4f46e5;
+            outline: none;
+        }
+        .error-text {
+            color: #dc2626;
+            font-size: 0.875rem;
+            margin-top: 0.25rem;
+        }
+        .submit-button {
+            padding: 0.75rem 1.5rem;
+            background-color: #4f46e5;
+            color: white;
+            border: none;
+            border-radius: 0.5rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background-color 0.2s;
+        }
+        .submit-button:hover {
+            background-color: #4338ca;
+        }
+        .success-message {
+            background-color: #d1fae5;
+            color: #065f46;
+            padding: 1rem;
+            border-radius: 0.5rem;
+            margin-bottom: 1.5rem;
+            font-weight: 600;
+        }
+        .general-error {
+            background-color: #fee2e2;
+            color: #991b1b;
+            padding: 1rem;
+            border-radius: 0.5rem;
+            margin-bottom: 1.5rem;
+            font-weight: 600;
+        }
+        
+        .footer {
+            border-top: 1px solid #e5e7eb;
+            background-color: white;
+            padding: 1rem 0;
+            text-align: center;
+            font-size: 0.875rem;
+            color: #6b7280;
+            flex-shrink: 0;
+        }
+        
+        @media (max-width: 768px) {
+             .page-container {
+                flex-direction: column;
+            }
+            .sidebar {
+                width: 100%;
+                border-right: none;
+                border-bottom: 1px solid #e5e7eb;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <header class="top-header">
+        <h1 class="top-title">Admin Dashboard</h1>
+        <img src="/admin.png" alt="Profile" class="header-profile">
+    </header>
+
+    <div class="page-container">
+        <div class="sidebar">
+            <div>
+                <h2 class="nav-title mb-4">Navigation</h2>
+
+                <nav class="flex flex-col">
+                    <a href="/admin/dashboard" class="nav-link">
+                        Dashboard Overview
+                    </a>
+                    <a href="/admin/departments" class="nav-link active">
+                        Departments
+                    </a>
+                    <a href="/admin/users" class="nav-link">
+                        Users
+                    </a>
+                    <a href="/admin/add-user" class="nav-link">
+                        Add User
+                    </a>
+                </nav>
+            </div>
+            
+            <div class="mt-8">
+                <form action="/logout" method="POST">
+                    <button type="submit" class="logout-button">
+                        Logout
+                    </button>
+                </form>
+            </div>
+        </div>
+
+        <div class="main-content">
+            <header class="header">
+                <h1 class="content-title">Create New Department</h1>
+                <div class="welcome-text">Welcome, <span class="welcome-user"><%= user.name %> (<%= user.role %>)</span></div>
+            </header>
+            
+            <% if (successMessage) { %>
+                <div class="success-message">
+                    <%= successMessage %>
+                </div>
+            <% } %>
+
+            <% if (errors.general) { %>
+                <div class="general-error">
+                    <%= errors.general %>
+                </div>
+            <% } %>
+            
+            <div class="form-card">
+                <form action="/admin/departments/create" method="POST">
+                    
+                    <div class="form-group">
+                        <label for="name">Department Name*</label>
+                        <input type="text" id="name" name="name" value="<%= formData.name || '' %>" required>
+                        <% if (errors.name) { %>
+                            <div class="error-text"><%= errors.name %></div>
+                        <% } %>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="programType">Program Type*</label>
+                        <select id="programType" name="programType" required>
+                            <option value="" disabled <%= !formData.programType ? 'selected' : '' %>>Select Program Type</option>
+                            <option value="UG" <%= formData.programType === 'UG' ? 'selected' : '' %>>Undergraduate (UG)</option>
+                            <option value="PG" <%= formData.programType === 'PG' ? 'selected' : '' %>>Postgraduate (PG)</option>
+                            <option value="Research" <%= formData.programType === 'Research' ? 'selected' : '' %>>Research (PhD/MPhil)</option>
+                        </select>
+                        <% if (errors.programType) { %>
+                            <div class="error-text"><%= errors.programType %></div>
+                        <% } %>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="address">Address*</label>
+                        <textarea id="address" name="address" rows="3" required><%= formData.address || '' %></textarea>
+                        <% if (errors.address) { %>
+                            <div class="error-text"><%= errors.address %></div>
+                        <% } %>
+                    </div>
+                    
+                    <button type="submit" class="submit-button">Create Department</button>
+                </form>
+            </div>
+        </div>
+    </div>
+    
+    <footer class="footer">
+        &copy; 2025 Admin Dashboard. All rights reserved.
+    </footer>
+</body>
+</html>

@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f9;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+        }
+
+        .login-container {
+            background-color: #ffffff;
+            padding: 40px;
+            border-radius: 12px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+            width: 100%;
+            max-width: 380px;
+            border: 3px solid #3f51b5;
+            text-align: center;
+        }
+
+        h1 {
+            color: #333;
+            margin-bottom: 25px;
+            font-size: 1.8em;
+            font-weight: bold;
+        }
+        
+        form {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .input-group {
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+        }
+        .error-message {
+            color: #d32f2f;
+            font-size: 0.9em;
+            text-align: left;
+            margin-top: -5px; 
+            font-weight: bold;
+        }
+
+        input[type="email"],
+        input[type="password"] {
+            width: 100%;
+            padding: 12px 15px;
+            border: 1px solid #ccc;
+            border-radius: 8px;
+            box-sizing: border-box;
+            font-size: 1em;
+            transition: border-color 0.3s;
+        }
+        input.input-error {
+            border-color: #d32f2f !important;
+        }
+
+        input[type="email"]:focus,
+        input[type="password"]:focus {
+            border-color: #3f51b5;
+            outline: none;
+        }
+
+        input[type="submit"] {
+            display: block;
+            width: 100%;
+            padding: 12px;
+            margin-top: 15px;
+            background-color: #3f51b5;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 1em;
+            font-weight: bold;
+            transition: background-color 0.3s;
+        }
+
+        input[type="submit"]:hover {
+            background-color: #303f9f;
+        }
+    </style>
+</head>
+<body>
+    <div class="login-container">
+        <h1>User Login</h1>
+        
+        <form action="/login" method="POST">
+            
+            <div class="input-group">
+                <input 
+                    type="email" 
+                    name="email" 
+                    placeholder="Enter your email.." 
+                    required 
+                    value="<%= typeof oldEmail !== 'undefined' ? oldEmail : '' %>"
+                    class="<%= typeof emailError !== 'undefined' && emailError ? 'input-error' : '' %>"
+                >
+                <% if(typeof emailError !== 'undefined' && emailError){ %>
+                    <div class="error-message">
+                        <%= emailError %>
+                    </div>
+                <% } %>
+            </div>
+
+            <div class="input-group">
+                <input 
+                    type="password" 
+                    name="password" 
+                    placeholder="Enter your password..." 
+                    required
+                    class="<%= typeof passwordError !== 'undefined' && passwordError ? 'input-error' : '' %>"
+                >
+                <% if(typeof passwordError !== 'undefined' && passwordError){ %>
+                    <div class="error-message">
+                        <%= passwordError %>
+                    </div>
+                <% } %>
+            </div>
+            
+            <input type="submit" value="Log In">
+        </form>
+    </div>
+</body>
+</html>
