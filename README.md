@@ -1,34 +1,38 @@
-University Assignment Approval System 🎓
+TaskNet 🎓
 
-A robust, role-based web application designed to streamline the assignment submission and approval process within a university. Built with Node.js and MongoDB, it features secure authentication, role-specific dashboards, and cloud-based file management.
+TaskNet is a robust, role-based web application designed to streamline the assignment submission and approval process within a university. Built with Node.js and MongoDB, it features secure authentication, role-specific dashboards, and cloud-based file management.
 
 🚀 Key Features
 
 🔐 Authentication & Security
 
-Role-Based Access Control (RBAC): Distinct workflows for Admins, HODs, Professors, and Students.
+Role-Based Access Control (RBAC): Distinct workflows and permissions for Admins, HODs, Professors, and Students.
 
 Secure Login: JWT-based session management using HTTP-only cookies.
 
-Data Protection: Password hashing using bcryptjs.
+Data Protection: Password hashing using bcryptjs for enhanced security.
 
 👨‍💼 Admin Module
 
-Dashboard Overview: Real-time statistics on users and departments.
+Dashboard Overview: Real-time statistics on total users, departments, and active roles.
 
-User Management: Create, Edit, Delete, and Search users with Role assignment.
+User Management: Full CRUD capabilities (Create, Edit, Delete) for users, with role assignment and search functionality.
 
-Department Management: Manage academic departments with validation.
+Department Management: Tools to manage academic departments and structural organization.
 
-Automated Emails: Welcome emails sent to new users with credentials via Nodemailer.
+Automated Onboarding: Welcome emails sent automatically to new users with their generated credentials via Nodemailer.
 
 👨‍🎓 Student Module
 
-Submission Dashboard: Track status of assignments (Draft, Submitted, Approved, Rejected).
+Submission Dashboard: A personalized dashboard tracking the lifecycle of assignments (Draft, Submitted, Approved, Rejected).
 
-Cloud Uploads: Single and Bulk (up to 5) file uploads integrated with Cloudinary.
+Smart Uploads:
 
-Status Tracking: Visual badges indicating the review status of assignments.
+Single Upload: Submit individual assignments with metadata.
+
+Bulk Upload: Upload up to 5 files simultaneously to save time, integrated seamlessly with Cloudinary.
+
+Status Tracking: Visual status badges (Draft, Pending, Approved, Rejected) to track progress at a glance.
 
 🛠️ Tech Stack
 
@@ -36,8 +40,8 @@ Backend: Node.js, Express.js
 
 Database: MongoDB, Mongoose ODM
 
-Frontend: EJS (Templating Engine), Custom CSS
+Frontend: EJS (Templating Engine), Custom CSS (Responsive Design)
 
-Storage: Cloudinary (File storage for PDFs)
+Storage: Cloudinary (Secure cloud storage for PDF assignments)
 
-Utilities: Nodemailer (Email service), Multer (File handling)
+Utilities: Nodemailer (Email notifications), Multer (File handling/Memory Storage)
