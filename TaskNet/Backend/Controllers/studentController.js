@@ -122,13 +122,6 @@ module.exports.uploadAssignment = async (req, res) => {
     }
 };
 
-module.exports.getAssignmentsList= (req,res)=>{
-    res.render('assignmentsList', {
-        user: req.user,
-        activePage: 'dashboard'
-    })
-}
-
 module.exports.getBulkUploadForm =(req, res)=> {
     res.render('bulkUpload', {
         user: req.user,
@@ -226,3 +219,10 @@ module.exports.bulkUploadAssignments = async (req, res) => {
         });
     }
 };
+
+module.exports.getAssignmentsList= (req,res)=>{
+    res.render('assignmentsList', {
+        user: req.user,
+        activePage: 'dashboard'
+    })
+}
