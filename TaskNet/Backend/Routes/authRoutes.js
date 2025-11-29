@@ -4,7 +4,7 @@ const { login }= require('../Controllers/authController')
 const { protectRoute, isLoggedIn, restrictTo } = require('../middleware/auth')
 
 router.get('/', isLoggedIn, (req,res)=>{
-    res.redirect('/login');
+    res.render('landingPage');
 })
 
 router.get('/login', isLoggedIn, (req,res)=>{
@@ -13,9 +13,13 @@ router.get('/login', isLoggedIn, (req,res)=>{
 
 router.post('/login', login);
 
+router.get('/footer-links', (req,res)=>{
+    res.render('footerLinks');
+})
+
 router.post('/logout', (req,res)=>{
     res.clearCookie('token');
-    res.redirect('/login');
+    res.redirect('/');
 })
 
 
