@@ -3,134 +3,707 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Login</title>
+    <title>Login - TaskNet</title>
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg viewBox='0 0 24 24' xmlns='http://www.w3.org/2000/svg'%3E%3Crect width='24' height='24' fill='%23667eea' rx='4'/%3E%3Cpath d='M9 11H7v2h2v-2zm4 0h-2v2h2v-2zm4 0h-2v2h2v-2zm2-7h-1V2h-2v2H8V2H6v2H5c-1.11 0-1.99.9-1.99 2L3 20c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 16H5V9h14v11z' fill='white'/%3E%3C/svg%3E" />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
         body {
-            font-family: Arial, sans-serif;
-            background-color: #f4f4f9;
+            font-family: 'Inter', sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             display: flex;
             justify-content: center;
             align-items: center;
             min-height: 100vh;
-            margin: 0;
+            position: relative;
+            overflow: hidden;
+            padding: 20px;
+        }
+
+        body::before {
+            content: '';
+            position: absolute;
+            width: 400px;
+            height: 400px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 50%;
+            top: -200px;
+            right: -200px;
+            animation: float 6s ease-in-out infinite;
+        }
+
+        body::after {
+            content: '';
+            position: absolute;
+            width: 300px;
+            height: 300px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 50%;
+            bottom: -150px;
+            left: -150px;
+            animation: float 8s ease-in-out infinite reverse;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-20px); }
+        }
+
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateY(-30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            25% { transform: translateX(-10px); }
+            75% { transform: translateX(10px); }
         }
 
         .login-container {
-            background-color: #ffffff;
-            padding: 40px;
-            border-radius: 12px;
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border-radius: 25px;
+            box-shadow: 0 25px 80px rgba(0, 0, 0, 0.3);
             width: 100%;
-            max-width: 380px;
-            border: 3px solid #3f51b5;
+            max-width: 1100px;
+            position: relative;
+            z-index: 1;
+            animation: slideIn 0.6s ease-out;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            overflow: hidden;
+        }
+
+        .login-left {
+            background: linear-gradient(135deg, rgba(102, 126, 234, 0.92) 0%, rgba(118, 75, 162, 0.92) 100%), 
+                        url('https://images.pexels.com/photos/8850706/pexels-photo-8850706.jpeg') center/cover;
+            background-blend-mode: multiply;
+            padding: 50px 40px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            color: white;
+            position: relative;
+        }
+
+        .login-left::before {
+            content: '';
+            position: absolute;
+            width: 300px;
+            height: 300px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 50%;
+            top: -150px;
+            right: -100px;
+        }
+
+        .login-left::after {
+            content: '';
+            position: absolute;
+            width: 200px;
+            height: 200px;
+            background: rgba(255, 255, 255, 0.08);
+            border-radius: 50%;
+            bottom: -100px;
+            left: -80px;
+        }
+
+        .login-left-content {
+            position: relative;
+            z-index: 2;
+        }
+
+        .login-left h2 {
+            font-size: 2.2em;
+            font-weight: 900;
+            margin-bottom: 15px;
+            text-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+        }
+
+        .login-left p {
+            font-size: 1.1em;
+            opacity: 0.95;
+            margin-bottom: 35px;
+            line-height: 1.6;
+            font-weight: 500;
+        }
+
+        .login-right {
+            padding: 50px 45px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
             text-align: center;
         }
 
+        .logo {
+            width: 80px;
+            height: 80px;
+            margin: 0 auto 20px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border-radius: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 10px 30px rgba(102, 126, 234, 0.4);
+            animation: fadeIn 0.8s ease-out;
+        }
+
+        .logo svg {
+            width: 45px;
+            height: 45px;
+            fill: white;
+        }
+
         h1 {
-            color: #333;
-            margin-bottom: 25px;
-            font-size: 1.8em;
-            font-weight: bold;
+            color: #2d3748;
+            margin-bottom: 10px;
+            font-size: 2em;
+            font-weight: 800;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            animation: fadeIn 1s ease-out;
+        }
+
+        .subtitle {
+            color: #718096;
+            margin-bottom: 35px;
+            font-size: 0.95em;
+            font-weight: 500;
+            animation: fadeIn 1.2s ease-out;
         }
         
         form {
             display: flex;
             flex-direction: column;
-            gap: 15px;
+            gap: 20px;
         }
 
         .input-group {
             display: flex;
             flex-direction: column;
-            gap: 5px;
-        }
-        .error-message {
-            color: #d32f2f;
-            font-size: 0.9em;
+            gap: 8px;
             text-align: left;
-            margin-top: -5px; 
-            font-weight: bold;
+            animation: fadeIn 1.4s ease-out;
+        }
+
+        .input-wrapper {
+            position: relative;
+        }
+
+        .input-icon {
+            position: absolute;
+            left: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #a0aec0;
+            transition: color 0.3s;
         }
 
         input[type="email"],
         input[type="password"] {
             width: 100%;
-            padding: 12px 15px;
-            border: 1px solid #ccc;
-            border-radius: 8px;
-            box-sizing: border-box;
-            font-size: 1em;
-            transition: border-color 0.3s;
-        }
-        input.input-error {
-            border-color: #d32f2f !important;
+            padding: 14px 15px 14px 45px;
+            border: 2px solid #e2e8f0;
+            border-radius: 12px;
+            font-size: 0.95em;
+            transition: all 0.3s ease;
+            background: #f7fafc;
+            font-family: 'Inter', sans-serif;
         }
 
         input[type="email"]:focus,
         input[type="password"]:focus {
-            border-color: #3f51b5;
+            border-color: #667eea;
             outline: none;
+            background: white;
+            box-shadow: 0 0 0 4px rgba(102, 126, 234, 0.1);
+        }
+
+        input[type="email"]:focus + .input-icon,
+        input[type="password"]:focus + .input-icon {
+            color: #667eea;
+        }
+
+        input.input-error {
+            border-color: #fc8181 !important;
+            background: #fff5f5;
+            animation: shake 0.5s;
+        }
+
+        .error-message {
+            color: #e53e3e;
+            font-size: 0.85em;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            animation: fadeIn 0.3s ease-out;
+        }
+
+        .error-message::before {
+            content: '⚠';
+            font-size: 1.1em;
         }
 
         input[type="submit"] {
-            display: block;
             width: 100%;
-            padding: 12px;
-            margin-top: 15px;
-            background-color: #3f51b5;
+            padding: 15px;
+            margin-top: 10px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             color: white;
             border: none;
-            border-radius: 8px;
+            border-radius: 12px;
             cursor: pointer;
             font-size: 1em;
-            font-weight: bold;
-            transition: background-color 0.3s;
+            font-weight: 700;
+            transition: all 0.3s ease;
+            box-shadow: 0 10px 25px rgba(102, 126, 234, 0.3);
+            position: relative;
+            overflow: hidden;
+            animation: fadeIn 1.6s ease-out;
+        }
+
+        input[type="submit"]::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+            transition: left 0.5s;
+        }
+
+        input[type="submit"]:hover::before {
+            left: 100%;
         }
 
         input[type="submit"]:hover {
-            background-color: #303f9f;
+            transform: translateY(-2px);
+            box-shadow: 0 15px 35px rgba(102, 126, 234, 0.4);
+        }
+
+        input[type="submit"]:active {
+            transform: translateY(0);
+        }
+
+        .footer-text {
+            margin-top: 25px;
+            color: #718096;
+            font-size: 0.85em;
+            animation: fadeIn 1.8s ease-out;
+        }
+
+        .dev-section {
+            margin-top: 30px;
+            padding-top: 25px;
+            border-top: 2px solid #e2e8f0;
+            animation: fadeIn 2s ease-out;
+        }
+
+        .dev-message {
+            color: #667eea;
+            font-size: 0.8em;
+            font-weight: 600;
+            margin-bottom: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 5px;
+        }
+
+        .dev-message::before {
+            content: '💡';
+            font-size: 1.1em;
+        }
+
+        .github-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 10px 18px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 0.85em;
+            font-weight: 700;
+            cursor: pointer;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.3);
+        }
+
+        .github-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(102, 126, 234, 0.4);
+        }
+
+        .github-btn svg {
+            width: 16px;
+            height: 16px;
+            fill: white;
+        }
+
+        .demo-section {
+            margin-top: 30px;
+            padding: 20px;
+            background: linear-gradient(135deg, rgba(102, 126, 234, 0.08) 0%, rgba(118, 75, 162, 0.08) 100%);
+            border: 2px solid #e2e8f0;
+            border-radius: 15px;
+            animation: fadeIn 2.2s ease-out;
+        }
+
+        .demo-title {
+            color: #2d3748;
+            font-size: 0.95em;
+            font-weight: 800;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+
+        .demo-title::before {
+            content: '🔑';
+            font-size: 1.2em;
+        }
+
+        .demo-credentials {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .credential-card {
+            background: white;
+            padding: 12px 15px;
+            border-radius: 10px;
+            border-left: 4px solid #667eea;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+            text-align: left;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .credential-card:hover {
+            box-shadow: 0 4px 12px rgba(102, 126, 234, 0.2);
+            transform: translateX(5px);
+        }
+
+        .credential-card.student {
+            border-left-color: #48bb78;
+        }
+
+        .credential-card.professor {
+            border-left-color: #ed8936;
+        }
+
+        .credential-card.hod {
+            border-left-color: #9f7aea;
+        }
+
+        .credential-role {
+            font-size: 0.75em;
+            font-weight: 700;
+            color: #667eea;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 4px;
+        }
+
+        .credential-card.student .credential-role {
+            color: #48bb78;
+        }
+
+        .credential-card.professor .credential-role {
+            color: #ed8936;
+        }
+
+        .credential-card.hod .credential-role {
+            color: #9f7aea;
+        }
+
+        .credential-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 10px;
+            font-size: 0.85em;
+            margin: 4px 0;
+            color: #4a5568;
+        }
+
+        .credential-label {
+            font-weight: 600;
+            color: #2d3748;
+            min-width: 50px;
+        }
+
+        .credential-value {
+            font-family: 'Courier New', monospace;
+            background: #f7fafc;
+            padding: 4px 8px;
+            border-radius: 5px;
+            flex: 1;
+            word-break: break-all;
+        }
+
+        .copy-btn {
+            background: #667eea;
+            color: white;
+            border: none;
+            padding: 4px 10px;
+            border-radius: 5px;
+            font-size: 0.75em;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.2s;
+            white-space: nowrap;
+        }
+
+        .copy-btn:hover {
+            background: #764ba2;
+            transform: scale(1.05);
+        }
+
+        .copy-btn.copied {
+            background: #48bb78;
+        }
+
+        .demo-info {
+            margin-top: 12px;
+            padding-top: 12px;
+            border-top: 1px solid #e2e8f0;
+            font-size: 0.75em;
+            color: #718096;
+            line-height: 1.5;
+        }
+
+        .demo-info strong {
+            color: #2d3748;
+        }
+
+        @media (max-width: 1000px) {
+            .login-container {
+                grid-template-columns: 1fr;
+            }
+
+            .login-left {
+                padding: 40px;
+                min-height: 300px;
+            }
+
+            .login-left h2 {
+                font-size: 1.8em;
+            }
+
+            .login-right {
+                padding: 40px;
+            }
+
+            h1 {
+                font-size: 1.5em;
+            }
+
+            .demo-section {
+                margin-top: 20px;
+                padding: 15px;
+            }
+
+            .credential-item {
+                font-size: 0.8em;
+            }
+        }
+
+        @media (max-width: 600px) {
+            .login-left {
+                padding: 30px 20px;
+            }
+
+            .login-right {
+                padding: 30px 20px;
+            }
+
+            .login-left h2 {
+                font-size: 1.5em;
+            }
+
+            .login-left p {
+                font-size: 0.95em;
+            }
+
+            .copy-btn {
+                padding: 3px 8px;
+                font-size: 0.7em;
+            }
         }
     </style>
 </head>
 <body>
     <div class="login-container">
-        <h1>User Login</h1>
-        
-        <form action="/login" method="POST">
-            
-            <div class="input-group">
-                <input 
-                    type="email" 
-                    name="email" 
-                    placeholder="Enter your email.." 
-                    required 
-                    value="<%= typeof oldEmail !== 'undefined' ? oldEmail : '' %>"
-                    class="<%= typeof emailError !== 'undefined' && emailError ? 'input-error' : '' %>"
-                >
-                <% if(typeof emailError !== 'undefined' && emailError){ %>
-                    <div class="error-message">
-                        <%= emailError %>
-                    </div>
-                <% } %>
-            </div>
+        <!-- LEFT SIDE: Image + Demo Info -->
+        <div class="login-left">
+            <div class="login-left-content">
+                <h2>Welcome to TaskNet</h2>
+                <p>Streamlined assignment management for universities. Sign in to manage your academic journey efficiently.</p>
+                
+                <div class="demo-section" style="background: rgba(255, 255, 255, 0.15); border: 2px solid rgba(255, 255, 255, 0.3); margin-top: 30px;">
+                    <div class="demo-title" style="color: white;">Try Demo Accounts</div>
+                    <div class="demo-credentials">
+                        <div class="credential-card" style="background: rgba(255, 255, 255, 0.15); border-left-color: #48bb78; color: white;">
+                            <div class="credential-role" style="color: #c6f6d5;">Student Account</div>
+                            <div class="credential-item" style="color: rgba(255, 255, 255, 0.9); display: flex; justify-content: space-between; align-items: center;">
+                                <div>
+                                    <span class="credential-label" style="color: white; display: block; font-size: 0.8em; margin-bottom: 3px;">Email</span>
+                                    <span class="credential-value" style="background: rgba(0, 0, 0, 0.2); color: white; display: block; padding: 6px;">student@demo.com</span>
+                                </div>
+                                <button class="copy-btn" onclick="copyToClipboard('student@demo.com', this)" style="background: rgba(255, 255, 255, 0.3); margin-left: 10px; height: fit-content;">📋</button>
+                            </div>
+                            <div class="credential-item" style="color: rgba(255, 255, 255, 0.9); display: flex; justify-content: space-between; align-items: center; margin-top: 8px;">
+                                <div>
+                                    <span class="credential-label" style="color: white; display: block; font-size: 0.8em; margin-bottom: 3px;">Password</span>
+                                    <span class="credential-value" style="background: rgba(0, 0, 0, 0.2); color: white; display: block; padding: 6px;">student123</span>
+                                </div>
+                                <button class="copy-btn" onclick="copyToClipboard('student123', this)" style="background: rgba(255, 255, 255, 0.3); margin-left: 10px; height: fit-content;">📋</button>
+                            </div>
+                        </div>
 
-            <div class="input-group">
-                <input 
-                    type="password" 
-                    name="password" 
-                    placeholder="Enter your password..." 
-                    required
-                    class="<%= typeof passwordError !== 'undefined' && passwordError ? 'input-error' : '' %>"
-                >
-                <% if(typeof passwordError !== 'undefined' && passwordError){ %>
-                    <div class="error-message">
-                        <%= passwordError %>
+                        <div class="credential-card" style="background: rgba(255, 255, 255, 0.15); border-left-color: #9f7aea; color: white;">
+                            <div class="credential-role" style="color: #e9d8fd;">Admin Account</div>
+                            <div class="credential-item" style="color: rgba(255, 255, 255, 0.9); display: flex; justify-content: space-between; align-items: center;">
+                                <div>
+                                    <span class="credential-label" style="color: white; display: block; font-size: 0.8em; margin-bottom: 3px;">Email</span>
+                                    <span class="credential-value" style="background: rgba(0, 0, 0, 0.2); color: white; display: block; padding: 6px;">admin@demo.com</span>
+                                </div>
+                                <button class="copy-btn" onclick="copyToClipboard('admin@demo.com', this)" style="background: rgba(255, 255, 255, 0.3); margin-left: 10px; height: fit-content;">📋</button>
+                            </div>
+                            <div class="credential-item" style="color: rgba(255, 255, 255, 0.9); display: flex; justify-content: space-between; align-items: center; margin-top: 8px;">
+                                <div>
+                                    <span class="credential-label" style="color: white; display: block; font-size: 0.8em; margin-bottom: 3px;">Password</span>
+                                    <span class="credential-value" style="background: rgba(0, 0, 0, 0.2); color: white; display: block; padding: 6px;">admin123</span>
+                                </div>
+                                <button class="copy-btn" onclick="copyToClipboard('admin123', this)" style="background: rgba(255, 255, 255, 0.3); margin-left: 10px; height: fit-content;">📋</button>
+                            </div>
+                        </div>
                     </div>
-                <% } %>
+                    <div class="demo-info" style="border-top: 1px solid rgba(255, 255, 255, 0.2); color: rgba(255, 255, 255, 0.9);">
+                        <strong style="color: white;">💡 Quick Demo Guide:</strong><br>
+                        👉 Copy any credential<br>
+                        👉 Paste in login form →<br>
+                        👉 Explore instantly!
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- RIGHT SIDE: Login Form -->
+        <div class="login-right">
+            <div class="logo">
+                <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M9 11H7v2h2v-2zm4 0h-2v2h2v-2zm4 0h-2v2h2v-2zm2-7h-1V2h-2v2H8V2H6v2H5c-1.11 0-1.99.9-1.99 2L3 20c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 16H5V9h14v11z"/>
+                </svg>
+            </div>
+            <h1>Sign In</h1>
+            <p class="subtitle">Access your TaskNet account</p>
+            
+            <form action="/login" method="POST">
+                
+                <div class="input-group">
+                    <div class="input-wrapper">
+                        <input 
+                            type="email" 
+                            name="email" 
+                            placeholder="Email address" 
+                            required 
+                            value="<%= typeof oldEmail !== 'undefined' ? oldEmail : '' %>"
+                            class="<%= typeof emailError !== 'undefined' && emailError ? 'input-error' : '' %>"
+                        >
+                        <span class="input-icon">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+                                <path d="M20 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"/>
+                            </svg>
+                        </span>
+                    </div>
+                    <% if(typeof emailError !== 'undefined' && emailError){ %>
+                        <div class="error-message">
+                            <%= emailError %>
+                        </div>
+                    <% } %>
+                </div>
+
+                <div class="input-group">
+                    <div class="input-wrapper">
+                        <input 
+                            type="password" 
+                            name="password" 
+                            placeholder="Password" 
+                            required
+                            class="<%= typeof passwordError !== 'undefined' && passwordError ? 'input-error' : '' %>"
+                        >
+                        <span class="input-icon">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+                                <path d="M18 8h-1V6c0-2.76-2.24-5-5-5S7 3.24 7 6v2H6c-1.1 0-2 .9-2 2v10c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V10c0-1.1-.9-2-2-2zm-6 9c-1.1 0-2-.9-2-2s.9-2 2-2 2 .9 2 2-.9 2-2 2zm3.1-9H8.9V6c0-1.71 1.39-3.1 3.1-3.1 1.71 0 3.1 1.39 3.1 3.1v2z"/>
+                            </svg>
+                        </span>
+                    </div>
+                    <% if(typeof passwordError !== 'undefined' && passwordError){ %>
+                        <div class="error-message">
+                            <%= passwordError %>
+                        </div>
+                    <% } %>
+                </div>
+                
+                <input type="submit" value="Sign In">
+            </form>
+            
+            <div class="dev-section">
+                <p class="dev-message">Interested in the source code?</p>
+                <a href="https://github.com/jatinpathania/University_assignment_approval_system" target="_blank" class="github-btn">
+                    <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v 3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/>
+                    </svg>
+                    Get Source Code
+                </a>
+                <p class="footer-text" style="margin-top: 15px; font-size: 0.75em; opacity: 0.9;">You're using the hosted version. Build your own by cloning from GitHub!</p>
             </div>
             
-            <input type="submit" value="Log In">
-        </form>
+            <p class="footer-text">&copy; 2025 TaskNet. All rights reserved.</p>
+        </div>
     </div>
-</body>
-</html>
+
+    <script>
+        function copyToClipboard(text, button) {
+            navigator.clipboard.writeText(text).then(() => {
+                const originalText = button.textContent;
+                button.textContent = '✓ Copied!';
+                button.classList.add('copied');
+                
+                setTimeout(() => {
+                    button.textContent = originalText;
+                    button.classList.remove('copied');
+                }, 2000);
+            });
+        }
+    </script>

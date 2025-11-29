@@ -1,0 +1,716 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TaskNet - Information Hub</title>
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg viewBox='0 0 24 24' xmlns='http://www.w3.org/2000/svg'%3E%3Crect width='24' height='24' fill='%23667eea' rx='4'/%3E%3Cpath d='M9 11H7v2h2v-2zm4 0h-2v2h2v-2zm4 0h-2v2h2v-2zm2-7h-1V2h-2v2H8V2H6v2H5c-1.11 0-1.99.9-1.99 2L3 20c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 16H5V9h14v11z' fill='white'/%3E%3C/svg%3E" />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: #f8fafc;
+            color: #2d3748;
+            line-height: 1.6;
+        }
+
+        .navbar {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            padding: 15px 50px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            z-index: 1000;
+            box-shadow: 0 2px 20px rgba(0, 0, 0, 0.1);
+            border-bottom: 1px solid #e2e8f0;
+        }
+
+        .logo-nav {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .logo-icon {
+            width: 40px;
+            height: 40px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3);
+        }
+
+        .logo-icon svg {
+            width: 22px;
+            height: 22px;
+            fill: white;
+        }
+
+        .logo-text {
+            font-size: 1.3em;
+            font-weight: 800;
+            color: #2d3748;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .nav-buttons {
+            display: flex;
+            gap: 15px;
+        }
+
+        .nav-btn {
+            padding: 10px 20px;
+            border: 2px solid #667eea;
+            border-radius: 8px;
+            font-weight: 600;
+            font-size: 0.9em;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: inline-block;
+        }
+
+        .nav-btn.home {
+            background: #667eea;
+            color: white;
+        }
+
+        .nav-btn.home:hover {
+            background: #764ba2;
+            border-color: #764ba2;
+            transform: translateY(-2px);
+        }
+
+        .nav-btn.login {
+            background: transparent;
+            color: #667eea;
+        }
+
+        .nav-btn.login:hover {
+            background: #667eea;
+            color: white;
+            transform: translateY(-2px);
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 100px 50px 50px;
+        }
+
+        .page-header {
+            text-align: center;
+            margin-bottom: 60px;
+            padding: 40px 0;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(102, 126, 234, 0.3);
+        }
+
+        .page-title {
+            font-size: 3em;
+            font-weight: 900;
+            margin-bottom: 15px;
+            text-shadow: 0 5px 20px rgba(0, 0, 0, 0.2);
+        }
+
+        .page-subtitle {
+            font-size: 1.2em;
+            opacity: 0.95;
+            font-weight: 500;
+        }
+
+        .section {
+            margin-bottom: 80px;
+            padding: 50px 40px;
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.08);
+            border: 1px solid #e2e8f0;
+        }
+
+        .section-title {
+            font-size: 2.5em;
+            font-weight: 800;
+            margin-bottom: 25px;
+            color: #2d3748;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .section-content {
+            font-size: 1.1em;
+            color: #4a5568;
+            line-height: 1.8;
+        }
+
+        .section-content p {
+            margin-bottom: 20px;
+        }
+
+        .section-content ul {
+            margin: 20px 0;
+            padding-left: 0;
+            list-style: none;
+        }
+
+        .section-content li {
+            margin-bottom: 12px;
+            padding: 15px 20px;
+            background: linear-gradient(135deg, rgba(102, 126, 234, 0.05) 0%, rgba(118, 75, 162, 0.05) 100%);
+            border-left: 4px solid #667eea;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+        }
+
+        .section-content li:hover {
+            background: linear-gradient(135deg, rgba(102, 126, 234, 0.1) 0%, rgba(118, 75, 162, 0.1) 100%);
+            transform: translateX(10px);
+            box-shadow: 0 5px 20px rgba(102, 126, 234, 0.15);
+        }
+
+        .section-content li strong {
+            color: #667eea;
+            font-weight: 700;
+        }
+
+        .grid-layout {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+            margin: 30px 0;
+        }
+
+        .info-card {
+            background: #ffffff;
+            padding: 25px;
+            border-radius: 12px;
+            border: 1px solid #e2e8f0;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+        }
+
+        .info-card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.07);
+            border-color: #cbd5e0;
+        }
+
+        .info-card h4 {
+            font-size: 1.3em;
+            font-weight: 700;
+            color: #2d3748;
+            margin-bottom: 10px;
+        }
+
+        .info-card p {
+            color: #4a5568;
+            font-size: 0.95em;
+        }
+
+        .contact-info {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 25px;
+            margin: 30px 0;
+        }
+
+        .contact-card {
+            background: #ffffff;
+            padding: 25px;
+            border-radius: 12px;
+            text-align: center;
+            border: 1px solid #e2e8f0;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+        }
+
+        .contact-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(102, 126, 234, 0.15);
+            border-color: #667eea;
+        }
+
+        .contact-card .icon {
+            width: 60px;
+            height: 60px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 15px;
+            color: white;
+            font-size: 1.5em;
+        }
+
+        .contact-card h4 {
+            font-size: 1.2em;
+            font-weight: 700;
+            color: #2d3748;
+            margin-bottom: 10px;
+        }
+
+        .contact-card p {
+            color: #667eea;
+            font-weight: 600;
+        }
+
+        .highlight-box {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 30px;
+            border-radius: 15px;
+            margin: 30px 0;
+            text-align: center;
+        }
+
+        .highlight-box h3 {
+            font-size: 1.5em;
+            font-weight: 700;
+            margin-bottom: 15px;
+        }
+
+        .highlight-box p {
+            font-size: 1.1em;
+            opacity: 0.95;
+        }
+
+        .back-to-top {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            width: 50px;
+            height: 50px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            border-radius: 50%;
+            cursor: pointer;
+            font-size: 1.2em;
+            box-shadow: 0 5px 20px rgba(102, 126, 234, 0.4);
+            transition: all 0.3s ease;
+            opacity: 0;
+            visibility: hidden;
+        }
+
+        .back-to-top.visible {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .back-to-top:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 25px rgba(102, 126, 234, 0.5);
+        }
+
+        footer {
+            background: #1a202c;
+            color: white;
+            padding: 30px 0;
+            text-align: center;
+            margin-top: 60px;
+        }
+
+        footer p {
+            color: #a0aec0;
+            font-size: 0.9em;
+        }
+
+        @media (max-width: 768px) {
+            .navbar {
+                padding: 15px 20px;
+            }
+
+            .nav-buttons {
+                gap: 10px;
+            }
+
+            .nav-btn {
+                padding: 8px 15px;
+                font-size: 0.85em;
+            }
+
+            .container {
+                padding: 100px 20px 50px;
+            }
+
+            .page-title {
+                font-size: 2em;
+            }
+
+            .section-title {
+                font-size: 2em;
+            }
+
+            .section {
+                padding: 30px 25px;
+            }
+
+            .grid-layout {
+                grid-template-columns: 1fr;
+                gap: 20px;
+            }
+
+            .contact-info {
+                grid-template-columns: 1fr;
+                gap: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar">
+        <div class="logo-nav">
+            <div class="logo-icon">
+                <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M9 11H7v2h2v-2zm4 0h-2v2h2v-2zm4 0h-2v2h2v-2zm2-7h-1V2h-2v2H8V2H6v2H5c-1.11 0-1.99.9-1.99 2L3 20c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 16H5V9h14v11z"/>
+                </svg>
+            </div>
+            <span class="logo-text">TaskNet</span>
+        </div>
+        <div class="nav-buttons">
+            <a href="/" class="nav-btn home">🏠 Home</a>
+            <a href="/login" class="nav-btn login">🔐 Login</a>
+        </div>
+    </nav>
+
+    <div class="container">
+        <div class="page-header">
+            <h1 class="page-title">TaskNet Information Hub</h1>
+            <p class="page-subtitle">Everything you need to know about our assignment management system</p>
+        </div>
+
+        <section id="features" class="section">
+            <h2 class="section-title">🚀 Features</h2>
+            <div class="section-content">
+                <p>TaskNet offers a comprehensive suite of features designed to streamline assignment management across educational institutions.</p>
+                
+                <div class="grid-layout">
+                    <div class="info-card">
+                        <h4>📝 Easy Submission</h4>
+                        <p>Submit assignments with just a few clicks. Upload single or multiple files effortlessly with our intuitive drag-and-drop interface.</p>
+                    </div>
+                    <div class="info-card">
+                        <h4>⏱️ Real-time Tracking</h4>
+                        <p>Monitor assignment status in real-time. Get instant updates on submissions, approvals, and feedback through notifications.</p>
+                    </div>
+                    <div class="info-card">
+                        <h4>👥 Role-Based Access</h4>
+                        <p>Secure dashboards for students, professors, HODs, and admins. Each role has tailored features and permissions.</p>
+                    </div>
+                    <div class="info-card">
+                        <h4>📁 Document Management</h4>
+                        <p>Securely store and manage all assignment documents in the cloud with easy access and organization features.</p>
+                    </div>
+                    <div class="info-card">
+                        <h4>✅ Approval Workflow</h4>
+                        <p>Streamlined approval process from professor to HOD. Track every step of the approval chain efficiently.</p>
+                    </div>
+                    <div class="info-card">
+                        <h4>📊 Bulk Operations</h4>
+                        <p>Upload multiple assignments at once. Create users in bulk with CSV import for efficient administration.</p>
+                    </div>
+                </div>
+
+                <div class="highlight-box">
+                    <h3>🎯 Why Choose TaskNet?</h3>
+                    <p>100% Cloud-Based • 24/7 Access • Enterprise-Grade Security • Lightning Fast Processing</p>
+                </div>
+            </div>
+        </section>
+
+        <section id="documentation" class="section">
+            <h2 class="section-title">📚 Documentation</h2>
+            <div class="section-content">
+                <p>Comprehensive guides and resources to help you get the most out of TaskNet. From initial setup to advanced configuration, we've got you covered.</p>
+                
+                <ul>
+                    <li><strong>🚀 Getting Started Guide:</strong> Step-by-step instructions for setting up TaskNet in your institution</li>
+                    <li><strong>⚙️ System Requirements:</strong> Minimum hardware and software requirements for optimal performance</li>
+                    <li><strong>🔧 Installation Manual:</strong> Detailed installation procedures for different environments</li>
+                    <li><strong>🔗 API Documentation:</strong> Complete reference for integrating TaskNet with existing systems</li>
+                    <li><strong>🎨 Customization Guide:</strong> How to customize TaskNet to match your institution's branding</li>
+                    <li><strong>🔒 Security Configuration:</strong> Best practices for securing your TaskNet deployment</li>
+                    <li><strong>📈 Performance Optimization:</strong> Tips and tricks for maximizing system performance</li>
+                    <li><strong>🔄 Backup and Recovery:</strong> Procedures for data backup and disaster recovery</li>
+                </ul>
+
+                <div class="highlight-box">
+                    <h3>📖 Quick Reference</h3>
+                    <p>Access our interactive documentation portal with searchable content, video tutorials, and downloadable PDFs for offline reading.</p>
+                </div>
+            </div>
+        </section>
+
+        <section id="support" class="section">
+            <h2 class="section-title">🆘 Support</h2>
+            <div class="section-content">
+                <p>We're here to help! Our dedicated support team is available to assist you with any questions or issues you may encounter.</p>
+                
+                <div class="highlight-box">
+                    <h3>📞 Need Help?</h3>
+                    <p>For any support inquiries, questions, or assistance, please visit our Contact Us section below or reach out directly through our available channels.</p>
+                </div>
+            </div>
+        </section>
+
+        <section id="contact" class="section">
+            <h2 class="section-title">📞 Contact Us</h2>
+            <div class="section-content">
+                <p>Ready to transform your assignment management process? Get in touch with our team to learn more about TaskNet and how it can benefit your institution.</p>
+                
+                <div class="contact-info">
+                    <div class="contact-card">
+                        <div class="icon">📧</div>
+                        <h4>Email</h4>
+                        <p>contact@tasknet.edu</p>
+                        <small>Get in touch with us</small>
+                    </div>
+                    <div class="contact-card">
+                        <div class="icon">🐦</div>
+                        <h4>Twitter</h4>
+                        <p>@TaskNetEdu</p>
+                        <small>Follow for updates</small>
+                    </div>
+                    <div class="contact-card">
+                        <div class="icon">💼</div>
+                        <h4>LinkedIn</h4>
+                        <p>TaskNet Official</p>
+                        <small>Professional network</small>
+                    </div>
+                </div>
+
+                <div class="highlight-box">
+                    <h3>🚀 Ready to Get Started?</h3>
+                    <p>Schedule a demo or request a trial to see TaskNet in action. Our team will work with you to customize a solution that fits your needs.</p>
+                </div>
+            </div>
+        </section>
+
+        <section id="student-guide" class="section">
+            <h2 class="section-title">🎓 Student Guide</h2>
+            <div class="section-content">
+                <p>Everything students need to know about using TaskNet for assignment submission and tracking.</p>
+                
+                <ul>
+                    <li><strong>📝 Creating Your First Submission:</strong> Step-by-step guide to submit your first assignment</li>
+                    <li><strong>📋 Assignment Dashboard:</strong> Navigate your personalized dashboard and track progress</li>
+                    <li><strong>📁 File Upload Guidelines:</strong> Supported formats, file size limits, and best practices</li>
+                    <li><strong>🔔 Notifications Setup:</strong> Configure alerts for deadlines and feedback</li>
+                    <li><strong>📊 Progress Tracking:</strong> Monitor submission status and approval progress</li>
+                    <li><strong>💬 Feedback System:</strong> How to receive and respond to instructor feedback</li>
+                    <li><strong>🔒 Privacy Settings:</strong> Manage your profile and data privacy preferences</li>
+                    <li><strong>❓ Common Issues:</strong> Troubleshooting guide for frequent student problems</li>
+                </ul>
+            </div>
+        </section>
+
+        <section id="professor-guide" class="section">
+            <h2 class="section-title">👨‍🏫 Professor Guide</h2>
+            <div class="section-content">
+                <p>Comprehensive guide for professors to manage assignments, provide feedback, and track student progress.</p>
+                
+                <ul>
+                    <li><strong>📋 Assignment Management:</strong> Create, modify, and organize assignments efficiently</li>
+                    <li><strong>✅ Review Process:</strong> Streamlined workflow for reviewing and grading submissions</li>
+                    <li><strong>💬 Feedback Tools:</strong> Rich text editor, annotations, and commenting features</li>
+                    <li><strong>📊 Analytics Dashboard:</strong> Monitor class performance and submission trends</li>
+                    <li><strong>⏰ Deadline Management:</strong> Set deadlines, extensions, and late submission policies</li>
+                    <li><strong>🔄 Approval Workflow:</strong> Forward assignments to HODs for final approval</li>
+                    <li><strong>📈 Grade Management:</strong> Record grades and generate reports</li>
+                    <li><strong>👥 Student Communication:</strong> Direct messaging and announcement features</li>
+                </ul>
+            </div>
+        </section>
+
+        <section id="hod-guide" class="section">
+            <h2 class="section-title">🎯 HOD Guide</h2>
+            <div class="section-content">
+                <p>Administrative tools and workflows designed specifically for Heads of Department.</p>
+                
+                <ul>
+                    <li><strong>📊 Department Overview:</strong> Comprehensive dashboard for department-wide insights</li>
+                    <li><strong>✅ Approval Queue:</strong> Efficient system for reviewing professor submissions</li>
+                    <li><strong>📈 Performance Analytics:</strong> Track department performance and identify trends</li>
+                    <li><strong>👥 Faculty Management:</strong> Monitor professor activities and workload distribution</li>
+                    <li><strong>📋 Policy Enforcement:</strong> Set and enforce department-specific guidelines</li>
+                    <li><strong>🔄 Escalation Handling:</strong> Manage complex cases requiring HOD intervention</li>
+                    <li><strong>📊 Reporting Tools:</strong> Generate detailed reports for administration</li>
+                    <li><strong>⚙️ Department Settings:</strong> Customize workflows and permissions</li>
+                </ul>
+            </div>
+        </section>
+
+        <section id="admin-guide" class="section">
+            <h2 class="section-title">⚙️ Admin Guide</h2>
+            <div class="section-content">
+                <p>Complete administrative control and system management capabilities for IT administrators.</p>
+                
+                <ul>
+                    <li><strong>👥 User Management:</strong> Create, modify, and deactivate user accounts across all roles</li>
+                    <li><strong>🏢 Department Setup:</strong> Configure departments, hierarchies, and organizational structure</li>
+                    <li><strong>🔒 Security Management:</strong> Set permissions, access controls, and security policies</li>
+                    <li><strong>📊 System Analytics:</strong> Monitor system usage, performance, and capacity planning</li>
+                    <li><strong>🔧 System Configuration:</strong> Global settings, integrations, and customizations</li>
+                    <li><strong>💾 Backup Management:</strong> Automated backups, data retention, and recovery procedures</li>
+                    <li><strong>🔄 Update Management:</strong> System updates, patches, and maintenance schedules</li>
+                    <li><strong>📋 Audit Logs:</strong> Comprehensive logging and compliance reporting</li>
+                </ul>
+            </div>
+        </section>
+
+        <section id="faq" class="section">
+            <h2 class="section-title">❓ Frequently Asked Questions</h2>
+            <div class="section-content">
+                <p>Quick answers to the most common questions about TaskNet.</p>
+                
+                <div class="grid-layout">
+                    <div class="info-card">
+                        <h4>🔐 How secure is my data?</h4>
+                        <p>TaskNet uses enterprise-grade encryption, secure cloud storage, and follows industry best practices for data protection.</p>
+                    </div>
+                    <div class="info-card">
+                        <h4>📱 Is TaskNet mobile-friendly?</h4>
+                        <p>Yes! TaskNet is fully responsive and works seamlessly on desktop, tablet, and mobile devices.</p>
+                    </div>
+                    <div class="info-card">
+                        <h4>🔄 Can I integrate with existing systems?</h4>
+                        <p>TaskNet offers RESTful APIs and webhooks for easy integration with existing LMS and ERP systems.</p>
+                    </div>
+                    <div class="info-card">
+                        <h4>💾 What file formats are supported?</h4>
+                        <p>TaskNet supports all common document formats including PDF, Word, Excel, PowerPoint, and various image formats.</p>
+                    </div>
+                    <div class="info-card">
+                        <h4>👥 How many users can the system handle?</h4>
+                        <p>TaskNet is built to scale and can handle thousands of concurrent users with minimal performance impact.</p>
+                    </div>
+                    <div class="info-card">
+                        <h4>🎓 Is training provided?</h4>
+                        <p>Yes! We provide comprehensive training sessions, documentation, and ongoing support for all users.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="terms" class="section">
+            <h2 class="section-title">📜 Terms of Service</h2>
+            <div class="section-content">
+                <p>These terms govern your use of TaskNet and our services. Please read carefully.</p>
+                
+                <ul>
+                    <li><strong>✅ Acceptable Use:</strong> Guidelines for appropriate use of the TaskNet platform</li>
+                    <li><strong>👤 Account Responsibility:</strong> User obligations for account security and proper usage</li>
+                    <li><strong>📁 Data Ownership:</strong> Clarification of data ownership and intellectual property rights</li>
+                    <li><strong>🔒 Privacy Protection:</strong> How we collect, use, and protect your personal information</li>
+                    <li><strong>⏰ Service Availability:</strong> Uptime guarantees and maintenance schedules</li>
+                    <li><strong>💰 Payment Terms:</strong> Billing cycles, payment methods, and refund policies</li>
+                    <li><strong>🚫 Prohibited Activities:</strong> Activities that are not allowed on the platform</li>
+                    <li><strong>⚖️ Legal Compliance:</strong> Compliance with applicable laws and regulations</li>
+                </ul>
+
+                <div class="highlight-box">
+                    <h3>📋 Service Level Agreement</h3>
+                    <p>We guarantee 99.9% uptime with 24/7 monitoring and rapid issue resolution. Our terms are designed to protect both users and the platform.</p>
+                </div>
+            </div>
+        </section>
+
+        <section id="privacy" class="section">
+            <h2 class="section-title">🔒 Privacy Policy</h2>
+            <div class="section-content">
+                <p>We take your privacy seriously. This policy explains how we collect, use, and protect your personal information.</p>
+                
+                <ul>
+                    <li><strong>🔍 Information Collection:</strong> What data we collect and why we need it</li>
+                    <li><strong>🎯 Data Usage:</strong> How we use your information to provide and improve our services</li>
+                    <li><strong>🔐 Data Protection:</strong> Security measures we employ to protect your information</li>
+                    <li><strong>🤝 Data Sharing:</strong> When and with whom we may share your information</li>
+                    <li><strong>🍪 Cookies Policy:</strong> How we use cookies and similar technologies</li>
+                    <li><strong>👤 User Rights:</strong> Your rights regarding your personal data</li>
+                    <li><strong>📧 Communication:</strong> How we communicate with you and your preferences</li>
+                    <li><strong>🌍 International Transfers:</strong> How we handle data across different jurisdictions</li>
+                </ul>
+
+                <div class="highlight-box">
+                    <h3>🛡️ GDPR & FERPA Compliance</h3>
+                    <p>TaskNet is fully compliant with GDPR, FERPA, and other international privacy regulations to ensure your data is protected.</p>
+                </div>
+            </div>
+        </section>
+
+        <section id="help-center" class="section">
+            <h2 class="section-title">🆘 Help Center</h2>
+            <div class="section-content">
+                <p>Self-service resources and community support to help you succeed with TaskNet.</p>
+                
+                <div class="highlight-box">
+                    <h3>📞 Need Help?</h3>
+                    <p>For help center resources, tutorials, documentation, or any assistance, please visit our Contact Us section or reach out through our available channels.</p>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <button class="back-to-top" onclick="scrollToTop()">↑</button>
+
+    <footer>
+        <p>&copy; 2025 TaskNet. All rights reserved. | Assignment Management System</p>
+    </footer>
+
+    <script>
+        window.onscroll = function() {
+            const backToTopBtn = document.querySelector('.back-to-top');
+            if (document.body.scrollTop > 300 || document.documentElement.scrollTop > 300) {
+                backToTopBtn.classList.add('visible');
+            } else {
+                backToTopBtn.classList.remove('visible');
+            }
+        };
+
+        function scrollToTop() {
+            window.scrollTo({
+                top: 0,
+                behavior: 'smooth'
+            });
+        }
+
+        window.addEventListener('load', function() {
+            if (window.location.hash) {
+                const targetElement = document.querySelector(window.location.hash);
+                if (targetElement) {
+                    setTimeout(() => {
+                        targetElement.scrollIntoView({
+                            behavior: 'smooth',
+                            block: 'start'
+                        });
+                    }, 100);
+                }
+            }
+        });
+    </script>
+</body>
+</html>
