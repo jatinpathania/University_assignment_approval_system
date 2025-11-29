@@ -17,7 +17,7 @@ const uploadToCloudinary = async (file) => {
             const stream = cloudinary.uploader.upload_stream(
                 {
                     folder: "university_assignments",
-                    resource_type: "raw",
+                    resource_type: "auto",
                     format: "pdf"
                 },
                 (error, result) => {
@@ -27,7 +27,9 @@ const uploadToCloudinary = async (file) => {
                     } else {
                         resolve({
                             url: result.secure_url,
-                            public_id: result.public_id
+                            public_id: result.public_id,
+                            format: result.format,
+                            resource_type: result.resource_type
                         });
                     }
                 }
@@ -50,7 +52,7 @@ const deleteFromCloudinary = async (publicId) => {
         if (!publicId) {
             throw new Error('No public ID provided');
         }
-        const result = await cloudinary.uploader.destroy(publicId, { resource_type: 'raw' });
+        const result = await cloudinary.uploader.destroy(publicId);
         return result;
     }
     catch(error) {
