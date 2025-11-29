@@ -7,12 +7,14 @@ const transporter = nodemailer.createTransport({
         user: process.env.EMAIL_USER,
         pass: process.env.EMAIL_PASS,
     },
+    pool: true,
+    maxConnections: 1
 });
 
-exports.sendWelcomeEmail = async ({ email, name, password, role }) => {
-    try {
+exports.sendWelcomeEmail = async({ email, name, password, role })=> {
+    try{
         const mailOptions = {
-            from: process.env.EMAIL_USER,
+            from: `"TaskNet System" <${process.env.EMAIL_USER}>`,
             to: email,
             subject: `Welcome to the University Assignment Approval System, ${name}!`,
             html: `
@@ -42,6 +44,36 @@ exports.sendWelcomeEmail = async ({ email, name, password, role }) => {
 
     } catch (error) {
         console.error("Error sending welcome email to %s:", email, error);
+        return false;
+    }
+};
+
+exports.sendSubmissionNotification = async({ professorEmail, professorName, studentName, assignmentTitle })=> {
+    try{
+        const mailOptions ={
+            from: `"TaskNet System" <${process.env.EMAIL_USER}>`,
+            to: professorEmail,
+            subject: `New Submission: ${assignmentTitle}`,
+            html: `
+                <div style="font-family: Arial, sans-serif; line-height: 1.6;">
+                    <h3>New Assignment Submission</h3>
+                    <p>Hello Professor <strong>${professorName}</strong>,</p>
+                    <p>Student <strong>${studentName}</strong> has submitted a new assignment for your review.</p>
+                    <ul>
+                        <li><strong>Title:</strong> ${assignmentTitle}</li>
+                        <li><strong>Date:</strong> ${new Date().toLocaleDateString()}</li>
+                    </ul>
+                    <p>Please log in to your dashboard to review and approve/reject this submission.</p>
+                    <a href="http://localhost:3000/login" style="display:inline-block; padding:10px 20px; background-color:#4338ca; color:white; text-decoration:none; border-radius:5px;">Go to Dashboard</a>
+                </div>
+            `,
+        };
+
+        const info = await transporter.sendMail(mailOptions);
+        console.log("Submission notification sent: %s", info.messageId);
+        return true;
+    }catch (error) {
+        console.error("Error sending submission notification:", error);
         return false;
     }
 };
