@@ -45,3 +45,85 @@ Frontend: EJS (Templating Engine), Custom CSS (Responsive Design)
 Storage: Cloudinary (Secure cloud storage for PDF assignments)
 
 Utilities: Nodemailer (Email notifications), Multer (File handling/Memory Storage)
+
+⚙️ Installation & Setup
+
+Follow these steps to get TaskNet running locally:
+
+Clone the repository
+
+git clone [https://github.com/yourusername/TaskNet.git](https://github.com/yourusername/TaskNet.git)
+cd TaskNet
+
+
+Install Dependencies
+
+npm install
+
+
+Environment Configuration
+Create a .env file in the root directory and add the following variables:
+
+# Server Configuration
+PORT=3000
+
+# Database Connection
+MONGODB_URI=mongodb://localhost:27017/tasknet_db
+
+# Authentication Secret
+SECRET_KEY=your_super_secret_jwt_key
+
+# Cloudinary (File Storage)
+CLOUDINARY_CLOUD_NAME=your_cloud_name
+CLOUDINARY_API_KEY=your_api_key
+CLOUDINARY_API_SECRET=your_api_secret
+
+# Nodemailer (Email Service - e.g., Gmail App Password)
+EMAIL_HOST=smtp.gmail.com
+EMAIL_USER=your_email@gmail.com
+EMAIL_PASS=your_app_password
+
+
+Initialize Admin User (Crucial Step)
+Before starting the application, you must run the admin initialization script. This creates the first "Super Admin" account in your database, which is required to log in and create other users.
+
+node public/admin.js
+
+
+Note: The script will print the Admin email and password to the console. Save these credentials to log in.
+
+Run the Application
+
+# Run in development mode (using nodemon)
+npm run dev
+
+# Run in standard mode
+node Server.js
+
+
+Access the App
+Open your browser and navigate to http://localhost:3000.
+
+📂 Project Structure
+
+TaskNet/
+├── controllers/      # Logic for Admin, Student, and Auth operations
+├── models/           # Mongoose schemas (User, Department, Assignment)
+├── routes/           # Express routes (adminRoutes, studentRoutes, authRoutes)
+├── utils/            # Helpers (Cloudinary, EmailSender, FileUpload)
+├── middleware/       # Auth and Role verification middleware
+├── Frontend/
+│   └── views/        # EJS Templates (Dashboards, Forms, Lists)
+├── public/           # Static assets (Images, CSS) and Admin Seed Script
+│   └── admin.js      # Script to create the initial Super Admin
+├── .env              # Environment variables (Not committed)
+└── Server.js         # Application entry point
+
+
+🤝 Contributing
+
+Contributions are welcome! Please feel free to submit a Pull Request.
+
+📄 License
+
+This project is open-source and available under the MIT License.
