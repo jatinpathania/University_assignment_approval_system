@@ -1,0 +1,298 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Assignments</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        body { font-family: 'Inter', sans-serif; background-color: #f4f7f9; margin: 0; padding: 0; height: 100vh; display: flex; flex-direction: column; }
+        
+        .top-header {
+            background-color: #ffffff;
+            padding: 1rem 2rem;
+            border-bottom: 1px solid #e5e7eb;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-shrink: 0;
+        }
+        
+        .header-profile {
+            width: 48px;
+            height: 48px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 2px solid #e5e7eb;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+            cursor: pointer;
+        }
+
+        .top-title {
+            font-size: 1.875rem;
+            font-weight: 700;
+            color: #1f2937;
+        }
+        
+        .page-container { display: flex; flex: 1; overflow: hidden; }
+        .sidebar {
+            width: 256px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            padding: 1.5rem;
+            background-color: #ffffff;
+            border-right: 1px solid #e5e7eb;
+            box-sizing: border-box;
+        }
+        .main-content { flex-grow: 1; padding: 2rem 3rem; background-color: #ffffff; overflow-y: auto; }
+
+        /* Navigation */
+        .nav-title { font-size: 1.125rem; font-weight: 600; color: #374151; margin-bottom: 15px; }
+        .nav-link {
+            display: block;
+            padding: 1rem;
+            margin-bottom: 0.5rem;
+            border-radius: 0.5rem;
+            color: #4b5563;
+            font-weight: 600;
+            transition: all 0.15s ease-in-out;
+            text-decoration: none;
+        }
+        .nav-link:hover {
+            background-color: #f3f4f6;
+            color: #1f2937;
+        }
+        .nav-link.active {
+            background-color: #e5e7eb;
+            color: #1f2937;
+        }
+        .logout-button {
+            width: 100%;
+            text-align: center;
+            padding: 0.75rem 1rem;
+            border-radius: 0.5rem;
+            font-weight: 600;
+            background-color: #ef4444;
+            color: white;
+            border: none;
+            cursor: pointer;
+            transition: background-color 0.2s;
+            margin-top: 2rem;
+        }
+        .logout-button:hover {
+            background-color: #dc2626;
+        }
+        
+        .footer {
+            border-top: 1px solid #e5e7eb;
+            background-color: white;
+            padding: 0.75rem 0;
+            text-align: center;
+            font-size: 0.875rem;
+            color: #6b7280;
+            flex-shrink: 0;
+        }
+        
+        .header-section { display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem; }
+        .header-title { font-size: 2rem; font-weight: 700; color: #0f172a; margin: 0; }
+        
+        .controls-bar { display: flex; gap: 1rem; align-items: center; }
+        .filter-select { padding: 0.6rem 1rem; border: 1px solid #d1d5db; border-radius: 0.5rem; font-family: inherit; font-size: 0.9rem; color: #374151; cursor: pointer; }
+        .sort-btn { padding: 0.6rem 1rem; border: 1px solid #d1d5db; border-radius: 0.5rem; background-color: white; font-weight: 600; color: #374151; cursor: pointer; display: flex; align-items: center; gap: 0.5rem; }
+        .sort-btn:hover { background-color: #f3f4f6; }
+        
+        .upload-link-btn { background-color: #0f393b; color: white; padding: 0.6rem 1.2rem; border-radius: 0.5rem; font-weight: 600; text-decoration: none; font-size: 0.9rem; transition: background-color 0.2s; }
+        .upload-link-btn:hover { background-color: #0a2829; }
+
+        .assignments-table { width: 100%; border-collapse: collapse; margin-bottom: 2rem; }
+        .assignments-table th { text-align: left; padding: 1rem; border-bottom: 2px solid #e5e7eb; color: #64748b; font-weight: 600; font-size: 0.875rem; text-transform: uppercase; letter-spacing: 0.05em; }
+        .assignments-table td { padding: 1rem; border-bottom: 1px solid #e5e7eb; color: #334155; vertical-align: middle; }
+        .assignments-table tr:hover { background-color: #f8fafc; }
+
+        .assignment-title { font-weight: 600; color: #0f172a; display: block; }
+        .assignment-meta { font-size: 0.8rem; color: #94a3b8; }
+
+        .status-badge { display: inline-block; padding: 0.35rem 0.85rem; border-radius: 2rem; font-size: 0.75rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em; white-space: nowrap; }
+        .status-badge.badge-Draft { background-color: #f3f4f6 !important; color: #4b5563 !important; }
+        .status-badge.badge-Submitted { background-color: #fef9c3 !important; color: #854d0e !important; }
+        .status-badge.badge-Approved { background-color: #dcfce7 !important; color: #166534 !important; }
+        .status-badge.badge-Rejected { background-color: #fee2e2 !important; color: #991b1b !important; }
+
+        .action-link { color: #3b82f6; font-weight: 600; text-decoration: none; font-size: 0.9rem; }
+        .action-link:hover { text-decoration: underline; }
+
+        .no-data { text-align: center; padding: 3rem; color: #64748b; font-style: italic; border: 1px dashed #e2e8f0; border-radius: 0.75rem; }
+
+        .pagination { display: flex; justify-content: center; gap: 0.5rem; margin-top: 2rem; }
+        .page-link { padding: 0.5rem 1rem; border: 1px solid #e5e7eb; border-radius: 0.5rem; text-decoration: none; color: #4b5563; font-weight: 500; }
+        .page-link.active { background-color: #0f393b; color: white; border-color: #0f393b; }
+        .page-link:hover:not(.active) { background-color: #f8fafc; }
+    </style>
+</head>
+<body>
+
+    <header class="top-header">
+        <h1 class="top-title">Student Portal</h1>
+        <img src="/student.png" alt="Profile" class="header-profile">
+    </header>
+
+    <div class="page-container">
+        <div class="sidebar">
+            <div>
+                <div class="nav-title">Navigation</div>
+                <nav>
+                    <a href="/student/dashboard" class="nav-link">Dashboard</a>
+                    <a href="/student/assignments" class="nav-link active">My Assignments</a>
+                    <a href="/student/assignments/upload" class="nav-link">Submit New</a>
+                    <a href="#" class="nav-link">Profile</a>
+                </nav>
+            </div>
+            <form action="/logout" method="POST">
+                <button type="submit" class="logout-button">Logout</button>
+            </form>
+        </div>
+
+        <div class="main-content">
+            <div class="header-section">
+                <h1 class="header-title">My Assignments</h1>
+                <div class="controls-bar">
+                    <form action="/student/assignments" method="GET" id="filterForm">
+                        <select name="status" class="filter-select" onchange="this.form.submit()">
+                            <option value="All" <%= filterStatus === 'All' ? 'selected' : '' %>>All Status</option>
+                            <option value="Draft" <%= filterStatus === 'Draft' ? 'selected' : '' %>>Draft</option>
+                            <option value="Submitted" <%= filterStatus === 'Submitted' ? 'selected' : '' %>>Submitted</option>
+                            <option value="Approved" <%= filterStatus === 'Approved' ? 'selected' : '' %>>Approved</option>
+                            <option value="Rejected" <%= filterStatus === 'Rejected' ? 'selected' : '' %>>Rejected</option>
+                        </select>
+                    </form>
+                    
+                    <button class="sort-btn" id="sortDateBtn">
+                        Sort by Date <span>▼</span>
+                    </button>
+
+                    <a href="/student/assignments/upload" class="upload-link-btn">+ New</a>
+                </div>
+            </div>
+
+            <% if (assignments.length > 0) { %>
+                <table class="assignments-table" id="assignmentsTable">
+                    <thead>
+                        <tr>
+                            <th>Assignment Details</th>
+                            <th>Category</th>
+                            <th>Reviewer (Dept)</th>
+                            <th data-sort="date">Submitted Date</th>
+                            <th>Status</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <% assignments.forEach(assignment => { %>
+                            <tr>
+                                <td>
+                                    <span class="assignment-title"><%= assignment.title %></span>
+                                    <span class="assignment-meta">ID: <%= assignment._id.toString().substring(0, 8) %>...</span>
+                                </td>
+                                <td><%= assignment.category %></td>
+                                <td><%= assignment.departmentId ? assignment.departmentId.name : 'Unassigned' %></td>
+                                
+                                <td data-timestamp="<%= new Date(assignment.createdAt).getTime() %>">
+                                    <%= new Date(assignment.createdAt).toLocaleDateString() %>
+                                    <br>
+                                    <small style="color: #94a3b8;"><%= new Date(assignment.createdAt).toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'}) %></small>
+                                </td>
+                                
+                                <td>
+                                    <span class="status-badge badge-<%= assignment.status %>">
+                                        <%= assignment.status %>
+                                    </span>
+                                </td>
+                                <td>
+                                    <% if (assignment.fileUrl) { %>
+                                        <a href="<%= assignment.fileUrl %>" target="_blank" rel="noopener noreferrer" class="action-link">View File</a>
+                                    <% } else { %>
+                                        <span style="color: #9ca3af;">No file</span>
+                                    <% } %>
+                                </td>
+                            </tr>
+                        <% }) %>
+                    </tbody>
+                </table>
+
+                <% if (totalPages > 1) { %>
+                    <div class="pagination">
+                        <% for(let i = 1; i <= totalPages; i++) { %>
+                            <a href="/student/assignments?page=<%= i %>&status=<%= filterStatus %>" class="page-link <%= currentPage === i ? 'active' : '' %>">
+                                <%= i %>
+                            </a>
+                        <% } %>
+                    </div>
+                <% } %>
+
+            <% } else { %>
+                <div class="no-data">
+                    No assignments found with status "<%= filterStatus %>". <br>
+                    <a href="/student/assignments/upload" style="color: #0f393b; font-weight: 600; margin-top: 1rem; display: inline-block;">Upload your first one!</a>
+                </div>
+            <% } %>
+        </div>
+    </div>
+
+    <footer class="footer">
+        &copy; 2025 TaskNet - Student Portal. All rights reserved.
+    </footer>
+
+    <script>
+        function openPdfModal(fileUrl) {
+            const modal = document.createElement('div');
+            modal.className = 'pdf-modal-overlay';
+            modal.innerHTML = `
+                <div class="pdf-modal-content">
+                    <div class="pdf-modal-header">
+                        <span class="pdf-modal-title">PDF Viewer</span>
+                        <button class="pdf-modal-close" onclick="this.closest('.pdf-modal-overlay').remove()">Close</button>
+                    </div>
+                    <div class="pdf-modal-body">
+                        <iframe src="${fileUrl}"></iframe>
+                    </div>
+                </div>
+            `;
+            document.body.appendChild(modal);
+            modal.addEventListener('click', (e) => {
+                if (e.target === modal) {
+                    modal.remove();
+                }
+            });
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            const sortBtn = document.getElementById('sortDateBtn');
+            const table = document.getElementById('assignmentsTable');
+            let isAscending = false;
+
+            if(sortBtn && table) {
+                sortBtn.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    const tbody = table.querySelector('tbody');
+                    const rows = Array.from(tbody.querySelectorAll('tr'));
+
+                    isAscending = !isAscending;
+                    
+                    const arrow = sortBtn.querySelector('span');
+                    arrow.textContent = isAscending ? '▲' : '▼';
+
+                    rows.sort((rowA, rowB) => {
+                        const timestampA = parseInt(rowA.querySelector('[data-timestamp]').dataset.timestamp);
+                        const timestampB = parseInt(rowB.querySelector('[data-timestamp]').dataset.timestamp);
+                        return isAscending ? timestampA - timestampB : timestampB - timestampA;
+                    });
+
+                    tbody.innerHTML = '';
+                    rows.forEach(row => tbody.appendChild(row));
+                });
+            }
+        });
+    </script>
+</body>
+</html>
