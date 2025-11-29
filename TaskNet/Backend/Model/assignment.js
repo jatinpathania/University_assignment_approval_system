@@ -31,6 +31,11 @@ const assignmentSchema = new mongoose.Schema({
         ref: 'Department',
         required: true 
     },
+    reviewerId: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'User',
+        default: null
+    },
     submissionDate: {
         type: Date,
         default: Date.now
