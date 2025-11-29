@@ -220,9 +220,41 @@ module.exports.bulkUploadAssignments = async (req, res) => {
     }
 };
 
-module.exports.getAssignmentsList= (req,res)=>{
-    res.render('assignmentsList', {
-        user: req.user,
-        activePage: 'dashboard'
-    })
-}
+
+module.exports.getAllAssignments = async (req, res) => {
+    try {
+        const studentId = req.user._id;
+        const statusFilter = req.query.status || 'All';
+        const page = parseInt(req.query.page) || 1;
+        const limit = 10;
+        const skip = (page - 1) * limit;
+
+        let query = { studentId: studentId };
+        if (statusFilter !== 'All') {
+            query.status = statusFilter;
+        }
+
+        const assignments = await Assignment.find(query)
+            .populate('departmentId', 'name')
+            .sort({ updatedAt: -1 })
+            .skip(skip)
+            .limit(limit);
+
+        const totalCount = await Assignment.countDocuments(query);
+        const totalPages = Math.ceil(totalCount / limit);
+
+        res.render('myAssignments', {
+            user: req.user,
+            assignments: assignments,
+            activePage: 'assignments',
+            filterStatus: statusFilter,
+            currentPage: page,
+            totalPages: totalPages,
+            successMessage: null
+        });
+
+    } catch (error) {
+        console.error("Error fetching assignments:", error);
+        res.status(500).send("Internal Server Error");
+    }
+};

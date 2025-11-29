@@ -1,7 +1,9 @@
 const mongoose= require('mongoose')
-const User = require('../Model/user')
 const bcrypt= require('bcryptjs')
+const User = require('../Model/user')
+const getPaginatedList= require('../Model/userQueries')
 const Department = require('../Model/department')
+const getPaginatedDepartmentsWithCounts= require('../Model/departmentQueries')
 const Assignment= require('../Model/assignment');
 const { sendWelcomeEmail }= require('../util/emailSender')
 
@@ -142,7 +144,7 @@ module.exports.getDepartmentList = async (req, res) => {
 
     try {
 
-        const aggregationResult = await Department.getPaginatedDepartmentsWithCounts(matchCriteria, skip, ITEMS_PER_PAGE)
+        const aggregationResult = await getPaginatedDepartmentsWithCounts(matchCriteria, skip, ITEMS_PER_PAGE)
         //this will give me liek this
         // [
         //     {
@@ -437,7 +439,7 @@ module.exports.getUserList = async (req, res) => {
     try {
         const params = { page, search, roleFilter, departmentFilter };
 
-        const result = await User.getPaginatedList(params);
+        const result = await getPaginatedList(params);
         users = result.users;
         totalPages = result.totalPages;
 
