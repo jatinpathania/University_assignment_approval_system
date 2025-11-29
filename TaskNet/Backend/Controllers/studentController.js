@@ -1,6 +1,7 @@
 const User= require('../Model/user')
 const Assignment= require('../Model/assignment')
 const { uploadToCloudinary } = require('../config/cloudinary')
+const { sendSubmissionNotification }= require('../util/emailSender')
 
 module.exports.getStudentDashboard = async (req, res) => {
     try{
@@ -236,6 +237,7 @@ module.exports.getAllAssignments = async (req, res) => {
 
         const assignments = await Assignment.find(query)
             .populate('departmentId', 'name')
+            .populate('reviewerId', 'name')
             .sort({ updatedAt: -1 })
             .skip(skip)
             .limit(limit);
@@ -243,9 +245,16 @@ module.exports.getAllAssignments = async (req, res) => {
         const totalCount = await Assignment.countDocuments(query);
         const totalPages = Math.ceil(totalCount / limit);
 
+        const student = await User.findById(studentId);
+        const professors = await User.find({ 
+            departmentId: student.departmentId,
+            role: { $in: ['professor', 'HOD'] } 
+        }).select('name email');
+
         res.render('myAssignments', {
             user: req.user,
             assignments: assignments,
+            professors: professors,
             activePage: 'assignments',
             filterStatus: statusFilter,
             currentPage: page,
@@ -256,5 +265,51 @@ module.exports.getAllAssignments = async (req, res) => {
     } catch (error) {
         console.error("Error fetching assignments:", error);
         res.status(500).send("Internal Server Error");
+    }
+};
+
+module.exports.submitAssignment =async(req,res)=> {
+    try{
+        const assignmentId = req.params.id;
+        const { reviewerId } = req.body;
+
+        if(!reviewerId){
+            return res.status(400).json({ success: false, message: 'Please select a professor.' });
+        }
+
+        const assignment = await Assignment.findOne({ _id: assignmentId, studentId: req.user._id });
+
+        if (!assignment) {
+            return res.status(404).json({ success: false, message: 'Assignment not found.' });
+        }
+
+        if (assignment.status !== 'Draft') {
+            return res.status(400).json({ success: false, message: 'Only drafts can be submitted.' });
+        }
+
+        assignment.status = 'Submitted';
+        assignment.reviewerId = reviewerId;
+        assignment.submissionDate = new Date();
+        await assignment.save();
+
+        //Email notification
+        const professor = await User.findById(reviewerId);
+        if (professor) {
+            await sendSubmissionNotification({
+                professorEmail: professor.email,
+                professorName: professor.name,
+                studentName: req.user.name,
+                assignmentTitle: assignment.title
+            });
+        }
+
+        return res.status(200).json({ 
+            success: true, 
+            message: 'Assignment submitted successfully for review!' 
+        });
+
+    } catch (error) {
+        console.error("Submission error:", error);
+        return res.status(500).json({ success: false, message: 'Server error during submission.' });
     }
 };
