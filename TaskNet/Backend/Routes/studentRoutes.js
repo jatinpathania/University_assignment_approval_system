@@ -7,7 +7,7 @@ const {
     uploadAssignment,
     getBulkUploadForm,
     bulkUploadAssignments,
-    getAssignmentsList,
+    getAllAssignments,
     } = require('../Controllers/studentController');
 const upload= require('../config/multer')
 
@@ -17,6 +17,6 @@ router.get('/assignments/upload', getUploadAssignmentForm)
 router.post('/assignments/upload', upload.single('assignmentFile') ,uploadAssignment);
 router.get('/assignments/bulk-upload', getBulkUploadForm);
 router.post('/assignments/bulk-upload', upload.array('assignmentFiles', 5), bulkUploadAssignments) 
-router.get('/assignments', getAssignmentsList )
+router.get('/assignments', getAllAssignments )
 
 module.exports = router;
