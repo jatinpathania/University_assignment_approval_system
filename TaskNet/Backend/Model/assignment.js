@@ -36,6 +36,20 @@ const assignmentSchema = new mongoose.Schema({
         ref: 'User',
         default: null
     },
+    history: [{
+        action:{
+            type: String,
+            enum: ['Submitted', 'Approved', 'Rejected', 'Re-submitted'],
+            required: true
+        },
+        by: {
+            type: String,
+            required: true
+        },
+        remark: {type: String, default: ''},
+        timestamp: {type:Date, default: Date.now},
+        fileUrl: {type: String}
+    }],
     submissionDate: {
         type: Date,
         default: Date.now
