@@ -1,85 +1,79 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8" />
-    <title>Professor Dashboard</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard - TaskNet</title>
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg viewBox='0 0 24 24' xmlns='http://www.w3.org/2000/svg'%3E%3Crect width='24' height='24' fill='%23667eea' rx='4'/%3E%3Cpath d='M9 11H7v2h2v-2zm4 0h-2v2h2v-2zm4 0h-2v2h2v-2zm2-7h-1V2h-2v2H8V2H6v2H5c-1.11 0-1.99.9-1.99 2L3 20c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 16H5V9h14v11z' fill='white'/%3E%3C/svg%3E" />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
     <style>
-        body {
-            font-family: Arial, sans-serif;
-            background-color: #f4f4f9;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            min-height: 100vh;
-            margin: 0;
-        }
-
-        .dashboard-container {
+        body { font-family: 'Inter', sans-serif; background-color: #f4f7f9; margin: 0; padding: 0; height: 100vh; display: flex; flex-direction: column; }
+        .top-header {
             background-color: #ffffff;
-            /* Increased size */
-            padding: 50px 70px;
-            border-radius: 12px;
-            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
-            width: 90%;
-            max-width: 800px;
-            border: 5px solid #ff9800; /* Orange border */
+            padding: 1rem 2rem;
+            border-bottom: 1px solid #e5e7eb;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-shrink: 0;
+        }
+        .footer {
+            border-top: 1px solid #e5e7eb;
+            background-color: white;
+            padding: 0.75rem 0;
             text-align: center;
+            font-size: 0.875rem;
+            color: #6b7280;
+            flex-shrink: 0;
         }
 
-        .role-icon {
-            display: block;
-            margin: 0 auto 20px auto;
-            width: 80px;
-            height: 80px;
-            background-color: #ff9800;
+        .header-profile {
+            width: 48px;
+            height: 48px;
             border-radius: 50%;
+            object-fit: cover;
+            border: 2px solid #e5e7eb;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+            cursor: pointer;
         }
 
-        h1 {
-            color: #333;
-            text-align: center;
-            margin-bottom: 15px;
-            font-size: 2.5em;
+        .top-title {
+            font-size: 1.875rem;
+            font-weight: 700;
+            color: #1f2937;
         }
-
-        p {
-            text-align: center;
-            color: #666;
-            margin-top: 0;
-            margin-bottom: 40px;
-            font-size: 1.2em;
+        .page-container { display: flex; flex: 1; overflow: hidden; }
+        .sidebar {
+            width: 256px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            padding: 1.5rem;
+            background-color: #ffffff;
+            border-right: 1px solid #e5e7eb;
+            box-sizing: border-box;
         }
-
-        strong {
-            color: #ff9800;
+        .main-content { flex-grow: 1; padding: 1.5rem 2rem; background-color: #ffffff; overflow-y: auto; }
+        .nav-title { font-size: 1.125rem; font-weight: 600; color: #374151; margin-bottom: 15px; }
+        .nav-link {
+            display: block;
+            padding: 1rem;
+            margin-bottom: 0.5rem;
+            border-radius: 0.5rem;
+            color: #4b5563;
+            font-weight: 600;
+            transition: all 0.15s ease-in-out;
+            text-decoration: none;
         }
-
-        ul {
-            list-style-type: none;
-            padding: 0;
-            margin-top: 30px;
+        .nav-link:hover {
+            background-color: #f3f4f6;
+            color: #1f2937;
         }
-
-        li {
-            background-color: #fff3e0; /* Light orange background */
-            margin-bottom: 15px;
-            padding: 20px;
-            border-radius: 10px;
-            text-align: center;
-            transition: background-color 0.3s;
+        .nav-link.active {
+            background-color: #e5e7eb;
+            color: #1f2937;
         }
-
-        li:hover {
-            background-color: #ffcc80;
-        }
-
-        h2 {
-            color: #ff9800;
-            font-size: 1.8em;
-            margin: 0;
-        }
-
-        .logoutBtn {
+        .logout-button {
             display: flex;
             align-items: center;
             justify-content: flex-start;
@@ -93,10 +87,10 @@
             transition-duration: 0.3s;
             box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.199);
             background-color: white;
-            margin-top: 40px;
+            margin-top: 2rem;
         }
 
-        .logoutBtn .sign {
+        .logout-button .sign {
             width: 100%;
             transition-duration: 0.3s;
             display: flex;
@@ -104,15 +98,15 @@
             justify-content: center;
         }
 
-        .logoutBtn .sign svg {
+        .logout-button .sign svg {
             width: 17px;
         }
 
-        .logoutBtn .sign svg path {
+        .logout-button .sign svg path {
             fill: black;
         }
 
-        .logoutBtn .text {
+        .logout-button .text {
             position: absolute;
             right: 0%;
             width: 0%;
@@ -124,24 +118,24 @@
             letter-spacing: 0.05em;
         }
 
-        .logoutBtn:hover {
+        .logout-button:hover {
             background-color: black;
             width: 155px;
             border-radius: 40px;
             transition-duration: 0.3s;
         }
 
-        .logoutBtn:hover .sign {
+        .logout-button:hover .sign {
             width: 25%;
             transition-duration: 0.3s;
             padding-left: 15px;
         }
 
-        .logoutBtn:hover .sign svg path {
+        .logout-button:hover .sign svg path {
             fill: white;
         }
 
-        .logoutBtn:hover .text {
+        .logout-button:hover .text {
             opacity: 1;
             width: 75%;
             transition-duration: 0.3s;
@@ -149,35 +143,132 @@
             text-align: center;
         }
 
-        .logoutBtn:active {
+        .logout-button:active {
             transform: translate(2px, 2px);
         }
+
+        .header-title { font-size: 1.5rem; font-weight: 700; color: #0f172a; margin-bottom: 0.75rem; }
+        .stats-row { display: grid; grid-template-columns: repeat(4, 1fr); gap: 0.75rem; margin-bottom: 1.25rem }
+        .stat-card { padding: 1rem; border-radius: 0.75rem; display: flex; flex-direction: column; justify-content: space-between; height: 120px; }
+        .stat-title { font-size: 0.75rem; color: #64748b; font-weight: 500; margin-bottom: 0.4rem; }
+        .stat-value { font-size: 2.25rem; font-weight: 600; color: #0f172a; }
+        .bg-pending { background-color: #eff6ff; }
+        .bg-approved { background-color: #fefce8; }
+        .bg-rejected { background-color: #fef2f2; }
+        .bg-total { background-color: #f0fdf4; }
+        .section-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem; }
+        .section-title { font-size: 1.1rem; font-weight: 600; color: #1e293b; }
+        .review-list { display: flex; flex-direction: column; gap: 0.75rem; }
+        .review-card { display: flex; justify-content: space-between; align-items: center; padding: 1rem; border: 1px solid #e2e8f0; border-radius: 0.5rem; background-color: white; }
+        .review-card:hover { box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05); }
+        .info-group { flex: 1; }
+        .info-main { font-weight: 600; color: #334155; font-size: 0.9rem; }
+        .info-sub { font-size: 0.85rem; color: #64748b; margin-top: 0.25rem; }
+        .actions { display: flex; gap: 0.5rem; }
+        .btn-review { 
+            background-color: #064e3b; 
+            color: white; padding: 0.5rem 1rem; border-radius: 0.375rem; 
+            font-weight: 600; text-decoration: none; font-size: 0.85rem;
+            border: none; cursor: pointer; transition: background-color 0.2s;
+        }
+        .btn-review:hover { background-color: #065f46; }
+        .btn-details { 
+            background-color: #f8fafc; color: #334155; padding: 0.5rem 1rem; 
+            border-radius: 0.375rem; font-weight: 600; text-decoration: none; font-size: 0.85rem;
+            border: 1px solid #e2e8f0; cursor: pointer; transition: background-color 0.2s;
+        }
+        .btn-details:hover { background-color: #f1f5f9; }
+        .view-all-link { display: block; margin-top: 0.75rem; color: #064e3b; font-weight: 600; text-decoration: none; font-size: 0.85rem; }
+        .view-all-link:hover { text-decoration: underline; }
+        .no-data { text-align: center; padding: 2rem; color: #64748b; font-style: italic; }
     </style>
 </head>
 <body>
-    <div class="dashboard-container">
-        <img src="/professor.png" alt="Professor Icon" class="role-icon" />
-        <h1>Welcome, <%= user.name %> </h1>
-        <p>You are logged in as <strong><%= user.role %></strong></p>
+    <header class="top-header">
+        <h1 class="top-title">Professor Portal</h1>
+        <img src="/professor.png" alt="Profile" class="header-profile">
+    </header>
 
-        <div>
-            <ul>
-                <li><h2>Review Assignments</h2></li>
-                <li><h2>Approve/Reject</h2></li>
-                <li><h2>Forward to HOD</h2></li>
-            </ul>
+    <div class="page-container">
+        <div class="sidebar">
+            <div>
+                <div class="nav-title">Navigation</div>
+                <nav>
+                    <a href="/professor/dashboard" class="nav-link <%= activePage === 'dashboard' ? 'active' : '' %>">
+                        Dashboard
+                    </a>
+                    <a href="/professor/reviews" class="nav-link <%= activePage === 'reviews' ? 'active' : '' %>">
+                        My Reviews
+                    </a>
+                    <a href="#" class="nav-link">
+                        Profile
+                    </a>
+                </nav>
+            </div>
+            <form action="/logout" method="POST" style="margin-top: 2rem;">
+                <button type="submit" class="logout-button">
+                    <div class="sign">
+                        <svg viewBox="0 0 512 512">
+                            <path d="M377.9 105.9L500.7 228.7c7.2 7.2 11.3 17.1 11.3 27.3s-4.1 20.1-11.3 27.3L377.9 406.1c-6.4 6.4-15 9.9-24 9.9c-18.7 0-33.9-15.2-33.9-33.9l0-62.1-128 0c-17.7 0-32-14.3-32-32l0-64c0-17.7 14.3-32 32-32l128 0 0-62.1c0-18.7 15.2-33.9 33.9-33.9c9 0 17.6 3.6 24 9.9zM160 96L96 96c-17.7 0-32 14.3-32 32l0 256c0 17.7 14.3 32 32 32l64 0c17.7 0 32 14.3 32 32s-14.3 32-32 32l-64 0c-53 0-96-43-96-96L0 128C0 75 43 32 96 32l64 0c17.7 0 32 14.3 32 32s-14.3 32-32 32z"></path>
+                        </svg>
+                    </div>
+                    <div class="text">Logout</div>
+                </button>
+            </form>
         </div>
-
-        <form action="/logout" method="POST">
-            <button type="submit" class="logoutBtn">
-                <div class="sign">
-                    <svg viewBox="0 0 512 512">
-                        <path d="M377.9 105.9L500.7 228.7c7.2 7.2 11.3 17.1 11.3 27.3s-4.1 20.1-11.3 27.3L377.9 406.1c-6.4 6.4-15 9.9-24 9.9c-18.7 0-33.9-15.2-33.9-33.9l0-62.1-128 0c-17.7 0-32-14.3-32-32l0-64c0-17.7 14.3-32 32-32l128 0 0-62.1c0-18.7 15.2-33.9 33.9-33.9c9 0 17.6 3.6 24 9.9zM160 96L96 96c-17.7 0-32 14.3-32 32l0 256c0 17.7 14.3 32 32 32l64 0c17.7 0 32 14.3 32 32s-14.3 32-32 32l-64 0c-53 0-96-43-96-96L0 128C0 75 43 32 96 32l64 0c17.7 0 32 14.3 32 32s-14.3 32-32 32z"></path>
-                    </svg>
+        <div class="main-content">
+            <h1 class="header-title">Review Dashboard</h1>
+            <div class="stats-row">
+                <div class="stat-card bg-pending">
+                    <div class="stat-title">Pending Reviews</div>
+                    <div class="stat-value"><%= stats.Pending %></div>
                 </div>
-                <div class="text">Logout</div>
-            </button>
-        </form>
+                <div class="stat-card bg-approved">
+                    <div class="stat-title">Approved</div>
+                    <div class="stat-value"><%= stats.Approved %></div>
+                </div>
+                <div class="stat-card bg-rejected">
+                    <div class="stat-title">Rejected</div>
+                    <div class="stat-value"><%= stats.Rejected %></div>
+                </div>
+                <div class="stat-card bg-total">
+                    <div class="stat-title">Total Reviewed</div>
+                    <div class="stat-value"><%= stats.Total %></div>
+                </div>
+            </div>
+            <div class="section-header">
+                <div class="section-title">Assignments Awaiting Review</div>
+            </div>
+            <div class="review-list">
+                <% if (assignments && assignments.length > 0) { %>
+                    <% assignments.forEach(assignment => { %>
+                        <% const daysPending = calculateDaysPending(assignment.submissionDate); %>
+                        <div class="review-card">
+                            <div class="info-group">
+                                <div class="info-main">
+                                    <%= assignment.studentId.name %> - <%= assignment.title %>
+                                </div>
+                                <div class="info-sub">
+                                    Submitted: <%= new Date(assignment.submissionDate).toLocaleDateString() %> • <%= daysPending %> days pending
+                                </div>
+                            </div>
+                            <div class="actions">
+                                <a href="/professor/assignments/<%= assignment._id %>/review" class="btn-review">Review</a>
+                                <a href="/professor/assignments/<%= assignment._id %>/details" class="btn-details">Details</a>
+                            </div>
+                        </div>
+                    <% }) %>
+                <% } else { %>
+                    <div class="no-data">
+                        No pending reviews found. You are all caught up!
+                    </div>
+                <% } %>
+            </div>
+            <a href="/professor/reviews" class="view-all-link">View All Assignments →</a>
+        </div>
     </div>
+    <footer class="footer">
+        &copy; 2025 TaskNet - Professor Portal. All rights reserved.
+    </footer>
 </body>
 </html>
