@@ -5,6 +5,7 @@ const connectMongodb= require('./db/db')
 const authRouter= require('./Routes/authRoutes')
 const adminRouter= require('./Routes/adminRoutes')
 const studentRouter= require('./Routes/studentRoutes')
+const professorRouter= require('./Routes/professorRoutes')
 
 const app= express();
 app.use(express.json())
@@ -21,6 +22,7 @@ connectMongodb();
 app.use('/', authRouter);
 app.use('/admin', adminRouter);
 app.use('/student', studentRouter);
+app.use('/professor', professorRouter)
 
 
 app.listen(process.env.PORT, err=>{
