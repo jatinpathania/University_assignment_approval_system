@@ -2,6 +2,8 @@ const User= require('../Model/user')
 const Assignment= require('../Model/assignment')
 const { uploadToCloudinary } = require('../config/cloudinary')
 const { sendSubmissionNotification }= require('../util/emailSender')
+const https = require('https')
+const http = require('http')
 
 module.exports.getStudentDashboard = async (req, res) => {
     try{
@@ -290,6 +292,15 @@ module.exports.submitAssignment =async(req,res)=> {
         assignment.status = 'Submitted';
         assignment.reviewerId = reviewerId;
         assignment.submissionDate = new Date();
+
+        assignment.history.push({
+            action: 'Submitted',
+            by: req.user.name,
+            remark: 'Submitted for review',
+            timestamp: new Date(),
+            fileUrl: assignment.fileUrl
+        })
+
         await assignment.save();
 
         //Email notification
@@ -308,8 +319,120 @@ module.exports.submitAssignment =async(req,res)=> {
             message: 'Assignment submitted successfully for review!' 
         });
 
-    } catch (error) {
+    } catch(error){
         console.error("Submission error:", error);
         return res.status(500).json({ success: false, message: 'Server error during submission.' });
+    }
+};
+
+
+module.exports.getAssignmentDetails = async(req, res)=>{
+    try{
+        const assignmentId = req.params.id;
+        const assignment = await Assignment.findOne({ _id: assignmentId,studentId: req.user._id })
+            .populate('departmentId', 'name')
+            .populate('reviewerId', 'name role email');
+
+        if(!assignment){
+            return res.status(404).send("Assignment not found");
+        }
+        res.render('assignmentDetails', {
+            user: req.user,
+            assignment: assignment,
+            activePage: 'assignments'
+        });
+
+    } catch (error) {
+        console.error("Error fetching assignment details:", error);
+        res.status(500).send("Internal Server Error");
+    }
+};
+
+module.exports.downloadAssignment = async(req,res) =>{
+    try{
+        const assignment = await Assignment.findOne({ _id: req.params.id, studentId: req.user._id });
+        if(!assignment) return res.status(404).send("File not found");
+
+        const fileUrl = assignment.fileUrl;
+        const filename = assignment.originalFileName;
+
+        res.setHeader('Content-Disposition', `attachment; filename="${filename}"`);
+        res.setHeader('Content-Type', 'application/octet-stream');
+
+        const protocol = fileUrl.startsWith('https') ? https : http;
+        protocol.get(fileUrl, (remoteRes) => {
+            remoteRes.pipe(res);
+        }).on('error', (err) => {
+            console.error('Error downloading file from Cloudinary:', err);
+            res.status(500).send("Error downloading file");
+        });
+    } catch(error){
+        console.error('Download error:', error);
+        res.status(500).send("Error downloading file");
+    }
+};
+
+module.exports.resubmitAssignment =async(req, res)=> {
+    try{
+        const assignmentId = req.params.id;
+        const { description } = req.body;
+        
+        const assignment = await Assignment.findOne({ _id: assignmentId, studentId: req.user._id });
+        if (!assignment) return res.status(404).json({ success: false, message: 'Assignment not found.' });
+        
+        if (assignment.status !== 'Rejected') {
+            return res.status(400).json({ success: false, message: 'Only rejected assignments can be resubmitted.' });
+        }
+        let currentFileUrl = assignment.fileUrl;
+        let currentOriginalName = assignment.originalFileName;
+
+        if(req.file) {
+            try {
+                const cloudinaryResult = await uploadToCloudinary(req.file);
+                currentFileUrl = cloudinaryResult.url;
+                currentOriginalName = req.file.originalname;
+            } catch (uploadError) {
+                console.error("Cloudinary upload error:", uploadError);
+                return res.status(400).json({ success: false, message: 'Error uploading file to cloud storage.' });
+            }
+        }
+
+        assignment.status = 'Submitted';
+        assignment.submissionDate = new Date();
+        assignment.fileUrl = currentFileUrl;
+        assignment.originalFileName = currentOriginalName;
+        if (description) assignment.description = description;
+
+        assignment.history.push({
+            action: 'Re-submitted',
+            by: req.user.name,
+            remark: 'Addressing feedback',
+            timestamp: new Date(),
+            fileUrl: currentFileUrl
+        });
+
+        await assignment.save();
+
+        // Send email notification
+        if (assignment.reviewerId) {
+            try {
+                const professor = await User.findById(assignment.reviewerId);
+                if (professor) {
+                    await sendSubmissionNotification({
+                        professorEmail: professor.email,
+                        professorName: professor.name,
+                        studentName: req.user.name,
+                        assignmentTitle: `${assignment.title} (Resubmission)`
+                    });
+                }
+            } catch (emailError) {
+                console.error("Email notification error:", emailError);
+            }
+        }
+
+        return res.status(200).json({ success: true, message: 'Assignment resubmitted successfully! Your professor will review it shortly.' });
+    } catch (error) {
+        console.error("Resubmission error:", error);
+        return res.status(500).json({ success: false, message: 'Server error during resubmission. Please try again.' });
     }
 };
