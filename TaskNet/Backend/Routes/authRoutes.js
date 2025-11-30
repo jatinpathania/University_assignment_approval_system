@@ -22,13 +22,4 @@ router.post('/logout', (req,res)=>{
     res.redirect('/');
 })
 
-
-router.get('/dashboard/hod',protectRoute, restrictTo(['HOD']) , (req,res) =>{
-    res.render('hodDashboard' ,{user: req.user});
-});
-
-router.get('/dashboard/professor',protectRoute, restrictTo(['professor']) , (req,res) =>{
-    res.render('professorDashboard' ,{user: req.user});
-});
-
 module.exports= router
