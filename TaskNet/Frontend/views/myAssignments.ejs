@@ -276,7 +276,11 @@
                         <% assignments.forEach(assignment => { %>
                             <tr>
                                 <td>
-                                    <span class="assignment-title"><%= assignment.title %></span>
+                                    <a href="/student/assignments/<%= assignment._id %>" style="text-decoration: none; color: inherit;">
+                                        <span class="assignment-title" style="color: #4f46e5; cursor: pointer;">
+                                            <%= assignment.title %>
+                                        </span>
+                                    </a>
                                     <span class="assignment-meta">ID: <%= assignment._id.toString().substring(0, 8) %>...</span>
                                 </td>
                                 <td><%= assignment.category %></td>
