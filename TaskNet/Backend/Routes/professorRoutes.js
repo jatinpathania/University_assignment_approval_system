@@ -8,7 +8,8 @@ const {
     processAssignmentReview,
     verifyAndApprove,
     getProfessorProfile,
-    updateProfessorProfile
+    updateProfessorProfile,
+    rejectAssignment
     } = require('../Controllers/professorController');
 const upload= require('../config/multer');
 
@@ -20,6 +21,7 @@ router.get('/reviews', getProfessorReviews);
 router.get('/assignments/:id/review', getReviewPage);
 router.post('/assignments/:id/process', upload.single('signatureFile'), processAssignmentReview)
 router.post('/assignments/:id/verify-approval', verifyAndApprove);
+router.post('/assignments/:id/reject', rejectAssignment)
 
 router.get('/profile', getProfessorProfile);
 router.post('/profile/update', updateProfessorProfile);
