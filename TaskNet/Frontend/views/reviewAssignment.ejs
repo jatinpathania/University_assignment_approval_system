@@ -295,6 +295,76 @@
             margin-top: 2rem;
         }
 
+        .notification {
+            position: fixed;
+            top: 2rem;
+            right: 2rem;
+            max-width: 400px;
+            padding: 1rem 1.5rem;
+            border-radius: 0.75rem;
+            font-weight: 600;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            z-index: 2000;
+            animation: slideIn 0.3s ease-out;
+        }
+
+        @keyframes slideIn {
+            from {
+                transform: translateX(400px);
+                opacity: 0;
+            }
+            to {
+                transform: translateX(0);
+                opacity: 1;
+            }
+        }
+
+        @keyframes slideOut {
+            from {
+                transform: translateX(0);
+                opacity: 1;
+            }
+            to {
+                transform: translateX(400px);
+                opacity: 0;
+            }
+        }
+
+        .notification.success {
+            background-color: #dcfce7;
+            color: #14532d;
+            border: 1px solid #86efac;
+        }
+
+        .notification.error {
+            background-color: #fee2e2;
+            color: #991b1b;
+            border: 1px solid #fca5a5;
+        }
+
+        .notification.info {
+            background-color: #dbeafe;
+            color: #1e3a8a;
+            border: 1px solid #93c5fd;
+        }
+
+        .notification.close-btn {
+            background: none;
+            border: none;
+            cursor: pointer;
+            font-size: 1.25rem;
+            padding: 0;
+            color: inherit;
+            margin-left: auto;
+        }
+
+        .notification.removing {
+            animation: slideOut 0.3s ease-out forwards;
+        }
+
         @media (max-width: 1024px) {
             .content-grid {
                 grid-template-columns: 1fr;
@@ -415,21 +485,74 @@
         </div>
     </div>
 
+    <div id="rejectModal" class="modal">
+        <div class="modal-box">
+            <div class="modal-title" style="color: #dc2626;">Confirm Rejection</div>
+            <p style="color: #64748b; margin-bottom: 1.5rem;">Are you sure you want to reject this assignment? This will return it to the student for revision.</p>
+            
+            <div style="display: flex; gap: 1rem;">
+                <button class="btn btn-cancel" onclick="closeRejectModal()" style="flex: 1;">Cancel</button>
+                <button class="btn btn-reject" onclick="confirmReject()" style="flex: 1;">Confirm Rejection</button>
+            </div>
+        </div>
+    </div>
+
     <script>
         const assignmentId = "<%= assignment._id %>";
         const otpModal = document.getElementById('otpModal');
+        const rejectModal = document.getElementById('rejectModal');
         let tempSignatureUrl = null;
+        let pendingRejectRemarks = null;
+
+        function showNotification(message, type = 'info') {
+            const notification = document.createElement('div');
+            notification.className = `notification ${type}`;
+            
+            const messageSpan = document.createElement('span');
+            messageSpan.textContent = message;
+            notification.appendChild(messageSpan);
+
+            if (type !== 'success') {
+                const closeBtn = document.createElement('button');
+                closeBtn.className = 'notification close-btn';
+                closeBtn.innerHTML = '×';
+                closeBtn.onclick = () => removeNotification(notification);
+                notification.appendChild(closeBtn);
+            }
+
+            document.body.appendChild(notification);
+
+            if (type === 'success') {
+                setTimeout(() => removeNotification(notification), 3000);
+            }
+        }
+
+        function removeNotification(notification) {
+            notification.classList.add('removing');
+            setTimeout(() => notification.remove(), 300);
+        }
 
         function closeModal() {
             otpModal.style.display = 'none';
+        }
+
+        function closeRejectModal() {
+            rejectModal.style.display = 'none';
+            pendingRejectRemarks = null;
         }
 
         async function handleAction(action) {
             const remarks = document.getElementById('remarks').value;
             const signatureFile = document.getElementById('signatureFile').files[0];
 
-            if (action === 'Reject' && !remarks) {
-                alert("Please provide remarks for rejection.");
+            if (action === 'Reject') {
+                if (!remarks || remarks.trim().length < 10) {
+                    showNotification('Please provide detailed remarks for rejection (at least 10 characters).', 'error');
+                    return;
+                }
+
+                pendingRejectRemarks = remarks;
+                rejectModal.style.display = 'flex';
                 return;
             }
 
@@ -447,20 +570,45 @@
                 });
                 const data = await response.json();
 
-                if (data.success) {
-                    if (data.requireOtp) {
-                        tempSignatureUrl = data.tempData.signatureUrl;
-                        otpModal.style.display = 'flex';
-                    } else {
-                        alert(data.message);
-                        window.location.href = '/professor/dashboard';
-                    }
+                if (data.success && data.requireOtp) {
+                    tempSignatureUrl = data.tempData.signatureUrl;
+                    otpModal.style.display = 'flex';
                 } else {
-                    alert('Error: ' + data.message);
+                    showNotification('Error: ' + data.message, 'error');
                 }
             } catch (err) {
                 console.error(err);
-                alert('An error occurred during processing.');
+                showNotification('An error occurred during processing.', 'error');
+            }
+        }
+
+        async function confirmReject() {
+            if (!pendingRejectRemarks) {
+                showNotification('Error: No remarks found.', 'error');
+                return;
+            }
+
+            try {
+                const response = await fetch(`/professor/assignments/${assignmentId}/reject`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ remarks: pendingRejectRemarks })
+                });
+                const data = await response.json();
+
+                closeRejectModal();
+
+                if (data.success) {
+                    showNotification(data.message, 'success');
+                    setTimeout(() => {
+                        window.location.href = '/professor/dashboard';
+                    }, 2000);
+                } else {
+                    showNotification('Error: ' + data.message, 'error');
+                }
+            } catch (err) {
+                console.error(err);
+                showNotification('An error occurred during rejection.', 'error');
             }
         }
 
@@ -468,7 +616,10 @@
             const otp = document.getElementById('otpInput').value;
             const remarks = document.getElementById('remarks').value;
 
-            if (!otp) return alert("Please enter OTP");
+            if (!otp) {
+                showNotification('Please enter OTP', 'error');
+                return;
+            }
 
             try {
                 const response = await fetch(`/professor/assignments/${assignmentId}/verify-approval`, {
@@ -483,17 +634,18 @@
                 const data = await response.json();
 
                 if (data.success) {
-                    alert(data.message);
-                    window.location.href = '/professor/dashboard';
+                    showNotification(data.message, 'success');
+                    setTimeout(() => {
+                        window.location.href = '/professor/dashboard';
+                    }, 2000);
                 } else {
-                    alert('Verification Failed: ' + data.message);
+                    showNotification('Verification Failed: ' + data.message, 'error');
                 }
             } catch (err) {
                 console.error(err);
-                alert('Error verifying OTP.');
+                showNotification('Error verifying OTP.', 'error');
             }
         }
     </script>
-
 </body>
 </html>
