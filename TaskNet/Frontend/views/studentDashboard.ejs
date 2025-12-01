@@ -191,7 +191,7 @@
                     <a href="/student/assignments/upload" class="nav-link <%= activePage === 'submit' ? 'active' : '' %>">
                         Submit New
                     </a>
-                    <a href="#" class="nav-link">
+                    <a href="/student/profile" class="nav-link <%= activePage === 'profile' ? 'active' : '' %>">
                         Profile
                     </a>
                 </nav>
@@ -208,7 +208,10 @@
             </form>
         </div>
         <div class="main-content">
-            <h1 class="header-title">Assignment Dashboard</h1>
+            <div>
+                <h1 class="header-title">Assignment Dashboard</h1>
+                <p style="color: #64748b; font-size: 0.95rem; margin: 0.5rem 0 1rem 0;">Welcome back, <%= user.name %>! Keep track of your assignments and submissions.</p>
+            </div>
             <div class="stats-row">
                 <div class="stat-card bg-draft">
                     <div class="stat-title">Draft</div>

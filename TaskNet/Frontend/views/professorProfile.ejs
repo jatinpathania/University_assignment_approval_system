@@ -1,0 +1,426 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Profile - TaskNet</title>
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg viewBox='0 0 24 24' xmlns='http://www.w3.org/2000/svg'%3E%3Crect width='24' height='24' fill='%23667eea' rx='4'/%3E%3Cpath d='M9 11H7v2h2v-2zm4 0h-2v2h2v-2zm4 0h-2v2h2v-2zm2-7h-1V2h-2v2H8V2H6v2H5c-1.11 0-1.99.9-1.99 2L3 20c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 16H5V9h14v11z' fill='white'/%3E%3C/svg%3E" />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        body { font-family: 'Inter', sans-serif; background-color: #f4f7f9; margin: 0; padding: 0; height: 100vh; display: flex; flex-direction: column; }
+        .top-header {
+            background-color: #ffffff;
+            padding: 1rem 2rem;
+            border-bottom: 1px solid #e5e7eb;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-shrink: 0;
+        }
+        .footer {
+            border-top: 1px solid #e5e7eb;
+            background-color: white;
+            padding: 0.75rem 0;
+            text-align: center;
+            font-size: 0.875rem;
+            color: #6b7280;
+            flex-shrink: 0;
+        }
+
+        .header-profile {
+            width: 48px;
+            height: 48px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 2px solid #e5e7eb;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+            cursor: pointer;
+        }
+
+        .top-title {
+            font-size: 1.875rem;
+            font-weight: 700;
+            color: #1f2937;
+        }
+        .page-container { display: flex; flex: 1; overflow: hidden; }
+        .sidebar {
+            width: 256px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            padding: 1.5rem;
+            background-color: #ffffff;
+            border-right: 1px solid #e5e7eb;
+            box-sizing: border-box;
+        }
+        .main-content { flex-grow: 1; padding: 1.5rem 2rem; background-color: #ffffff; overflow-y: auto; }
+        .nav-title { font-size: 1.125rem; font-weight: 600; color: #374151; margin-bottom: 15px; }
+        .nav-link {
+            display: block;
+            padding: 1rem;
+            margin-bottom: 0.5rem;
+            border-radius: 0.5rem;
+            color: #4b5563;
+            font-weight: 600;
+            transition: all 0.15s ease-in-out;
+            text-decoration: none;
+        }
+        .nav-link:hover {
+            background-color: #f3f4f6;
+            color: #1f2937;
+        }
+        .nav-link.active {
+            background-color: #e5e7eb;
+            color: #1f2937;
+        }
+        .logout-button {
+            display: flex;
+            align-items: center;
+            justify-content: flex-start;
+            width: 45px;
+            height: 45px;
+            border: none;
+            border-radius: 50%;
+            cursor: pointer;
+            position: relative;
+            overflow: hidden;
+            transition-duration: 0.3s;
+            box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.199);
+            background-color: white;
+            margin-top: 2rem;
+        }
+
+        .logout-button .sign {
+            width: 100%;
+            transition-duration: 0.3s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .logout-button .sign svg {
+            width: 17px;
+        }
+
+        .logout-button .sign svg path {
+            fill: black;
+        }
+
+        .logout-button .text {
+            position: absolute;
+            right: 0%;
+            width: 0%;
+            opacity: 0;
+            color: white;
+            font-size: 1.2em;
+            font-weight: 600;
+            transition-duration: 0.3s;
+            letter-spacing: 0.05em;
+        }
+
+        .logout-button:hover {
+            background-color: black;
+            width: 155px;
+            border-radius: 40px;
+            transition-duration: 0.3s;
+        }
+
+        .logout-button:hover .sign {
+            width: 25%;
+            transition-duration: 0.3s;
+            padding-left: 15px;
+        }
+
+        .logout-button:hover .sign svg path {
+            fill: white;
+        }
+
+        .logout-button:hover .text {
+            opacity: 1;
+            width: 75%;
+            transition-duration: 0.3s;
+            padding-right: 15px;
+            text-align: center;
+        }
+
+        .logout-button:active {
+            transform: translate(2px, 2px);
+        }
+
+        .header-title { font-size: 1.5rem; font-weight: 700; color: #0f172a; margin-bottom: 0.75rem; }
+        .profile-container { max-width: 800px; }
+        .profile-header { display: flex; align-items: center; gap: 2rem; margin-bottom: 2rem; padding: 1.5rem; background-color: #f8fafc; border-radius: 0.75rem; border: 1px solid #e2e8f0; }
+        .profile-avatar { width: 120px; height: 120px; border-radius: 50%; object-fit: cover; border: 3px solid #064e3b; box-shadow: 0 4px 12px rgba(0,0,0,0.1); }
+        .profile-info { flex: 1; }
+        .profile-name { font-size: 1.75rem; font-weight: 700; color: #0f172a; margin-bottom: 0.25rem; }
+        .profile-role { font-size: 1rem; color: #064e3b; font-weight: 600; margin-bottom: 0.5rem; }
+        .profile-email { color: #64748b; font-size: 0.95rem; }
+
+        .form-section { margin-bottom: 2rem; }
+        .section-title { font-size: 1.1rem; font-weight: 600; color: #1e293b; margin-bottom: 1rem; padding-bottom: 0.5rem; border-bottom: 2px solid #e2e8f0; }
+        
+        .form-row { display: grid; grid-template-columns: repeat(2, 1fr); gap: 1.5rem; margin-bottom: 1.5rem; }
+        .form-row.full { grid-template-columns: 1fr; }
+
+        .form-group { display: flex; flex-direction: column; }
+        .form-label { font-weight: 600; color: #374151; margin-bottom: 0.5rem; font-size: 0.9rem; }
+        .form-value { color: #475569; font-size: 0.95rem; padding: 0.75rem; background-color: #f8fafc; border-radius: 0.5rem; border: 1px solid #e2e8f0; }
+        
+        .form-input {
+            padding: 0.75rem;
+            border: 1px solid #d1d5db;
+            border-radius: 0.5rem;
+            font-family: inherit;
+            font-size: 0.95rem;
+            transition: border-color 0.2s;
+        }
+        .form-input:focus {
+            outline: none;
+            border-color: #064e3b;
+            box-shadow: 0 0 0 3px rgba(6, 78, 59, 0.1);
+        }
+
+        .button-group { display: flex; gap: 1rem; margin-top: 2rem; }
+        .btn { padding: 0.75rem 1.5rem; border-radius: 0.5rem; font-weight: 600; border: none; cursor: pointer; font-size: 0.95rem; transition: all 0.2s; }
+        .btn-primary { background-color: #064e3b; color: white; }
+        .btn-primary:hover { background-color: #065f46; }
+        .btn-secondary { background-color: #e5e7eb; color: #374151; }
+        .btn-secondary:hover { background-color: #d1d5db; }
+
+        .info-card { background-color: #f8fafc; border: 1px solid #e2e8f0; border-radius: 0.75rem; padding: 1rem; margin-bottom: 1rem; }
+        .info-label { font-weight: 600; color: #374151; margin-bottom: 0.25rem; font-size: 0.85rem; text-transform: uppercase; letter-spacing: 0.5px; }
+        .info-value { color: #475569; font-size: 0.95rem; }
+
+        .success-message { background-color: #dcfce7; color: #14532d; padding: 1rem; border-radius: 0.5rem; margin-bottom: 1.5rem; border: 1px solid #86efac; display: none; }
+        .success-message.show { display: block; }
+
+        .edit-mode { display: none; }
+        .edit-mode.active { display: block; }
+        .view-mode.hidden { display: none; }
+
+        @media (max-width: 768px) {
+            .form-row { grid-template-columns: 1fr; }
+            .profile-header { flex-direction: column; text-align: center; }
+        }
+    </style>
+</head>
+<body>
+    <header class="top-header">
+        <h1 class="top-title">Professor Portal</h1>
+        <img src="/professor.png" alt="Profile" class="header-profile">
+    </header>
+
+    <div class="page-container">
+        <div class="sidebar">
+            <div>
+                <div class="nav-title">Navigation</div>
+                <nav>
+                    <a href="/professor/dashboard" class="nav-link <%= activePage === 'dashboard' ? 'active' : '' %>">
+                        Dashboard
+                    </a>
+                    <a href="/professor/reviews" class="nav-link <%= activePage === 'reviews' ? 'active' : '' %>">
+                        My Reviews
+                    </a>
+                    <a href="/professor/profile" class="nav-link <%= activePage === 'profile' ? 'active' : '' %>">
+                        Profile
+                    </a>
+                </nav>
+            </div>
+            <form action="/logout" method="POST" style="margin-top: 2rem;">
+                <button type="submit" class="logout-button">
+                    <div class="sign">
+                        <svg viewBox="0 0 512 512">
+                            <path d="M377.9 105.9L500.7 228.7c7.2 7.2 11.3 17.1 11.3 27.3s-4.1 20.1-11.3 27.3L377.9 406.1c-6.4 6.4-15 9.9-24 9.9c-18.7 0-33.9-15.2-33.9-33.9l0-62.1-128 0c-17.7 0-32-14.3-32-32l0-64c0-17.7 14.3-32 32-32l128 0 0-62.1c0-18.7 15.2-33.9 33.9-33.9c9 0 17.6 3.6 24 9.9zM160 96L96 96c-17.7 0-32 14.3-32 32l0 256c0 17.7 14.3 32 32 32l64 0c17.7 0 32 14.3 32 32s-14.3 32-32 32l-64 0c-53 0-96-43-96-96L0 128C0 75 43 32 96 32l64 0c17.7 0 32 14.3 32 32s-14.3 32-32 32z"></path>
+                        </svg>
+                    </div>
+                    <div class="text">Logout</div>
+                </button>
+            </form>
+        </div>
+
+        <div class="main-content">
+            <h1 class="header-title">Professor Profile</h1>
+            <p style="color: #64748b; font-size: 0.95rem; margin: 0.5rem 0 1.5rem 0;">Manage your professional information and account settings.</p>
+
+            <div id="successMessage" class="success-message">Profile updated successfully!</div>
+
+            <div class="profile-container">
+                <div class="profile-header">
+                    <img src="/professor.png" alt="Professor Avatar" class="profile-avatar">
+                    <div class="profile-info">
+                        <div class="profile-name"><%= user.name %></div>
+                        <div class="profile-role">Professor</div>
+                        <div class="profile-email"><%= user.email %></div>
+                    </div>
+                </div>
+
+                <div class="view-mode" id="viewMode">
+                    <div class="form-section">
+                        <div class="section-title">Personal Information</div>
+                        <div class="form-row full">
+                            <div class="form-group">
+                                <div class="info-label">Full Name</div>
+                                <div class="form-value"><%= user.name %></div>
+                            </div>
+                        </div>
+                        <div class="form-row full">
+                            <div class="form-group">
+                                <div class="info-label">Email Address</div>
+                                <div class="form-value"><%= user.email %></div>
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <div class="info-label">Phone Number</div>
+                                <div class="form-value"><%= user.phone || 'Not provided' %></div>
+                            </div>
+                            <div class="form-group">
+                                <div class="info-label">Specialization</div>
+                                <div class="form-value"><%= user.specialization || 'Not provided' %></div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-section">
+                        <div class="section-title">Professional Information</div>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <div class="info-label">Office Number</div>
+                                <div class="form-value"><%= user.office || 'Not assigned' %></div>
+                            </div>
+                            <div class="form-group">
+                                <div class="info-label">Department</div>
+                                <div class="form-value"><%= user.department || 'Not assigned' %></div>
+                            </div>
+                        </div>
+                        <div class="form-row full">
+                            <div class="form-group">
+                                <div class="info-label">Date of Joining</div>
+                                <div class="form-value"><%= new Date(user.createdAt).toLocaleDateString() %></div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-section">
+                        <div class="section-title">Review Statistics</div>
+                        <div class="form-row">
+                            <div class="info-card">
+                                <div class="info-label">Total Reviews</div>
+                                <div class="info-value" style="font-size: 1.5rem; font-weight: 700; color: #064e3b;"><%= stats.total || 0 %></div>
+                            </div>
+                            <div class="info-card">
+                                <div class="info-label">Approved</div>
+                                <div class="info-value" style="font-size: 1.5rem; font-weight: 700; color: #14532d;"><%= stats.approved || 0 %></div>
+                            </div>
+                            <div class="info-card">
+                                <div class="info-label">Pending Review</div>
+                                <div class="info-value" style="font-size: 1.5rem; font-weight: 700; color: #c2410c;"><%= stats.pending || 0 %></div>
+                            </div>
+                            <div class="info-card">
+                                <div class="info-label">Rejected</div>
+                                <div class="info-value" style="font-size: 1.5rem; font-weight: 700; color: #7f1d1d;"><%= stats.rejected || 0 %></div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="button-group">
+                        <button class="btn btn-primary" onclick="toggleEditMode()">Edit Profile</button>
+                    </div>
+                </div>
+
+                <form action="/professor/profile/update" method="POST" class="edit-mode" id="editMode">
+                    <div class="form-section">
+                        <div class="section-title">Personal Information</div>
+                        <div class="form-row full">
+                            <div class="form-group">
+                                <label for="name" class="form-label">Full Name</label>
+                                <input type="text" id="name" name="name" class="form-input" value="<%= user.name %>" required>
+                            </div>
+                        </div>
+                        <div class="form-row full">
+                            <div class="form-group">
+                                <label for="email" class="form-label">Email Address</label>
+                                <input type="email" id="email" name="email" class="form-input" value="<%= user.email %>" required>
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="phone" class="form-label">Phone Number</label>
+                                <input type="tel" id="phone" name="phone" class="form-input" value="<%= user.phone || '' %>" placeholder="e.g., +91 98765 43210">
+                            </div>
+                            <div class="form-group">
+                                <label for="specialization" class="form-label">Specialization</label>
+                                <input type="text" id="specialization" name="specialization" class="form-input" value="<%= user.specialization || '' %>" placeholder="e.g., Data Science">
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-section">
+                        <div class="section-title">Professional Information</div>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="office" class="form-label">Office Number</label>
+                                <input type="text" id="office" name="office" class="form-input" value="<%= user.office || '' %>" placeholder="e.g., A-101">
+                            </div>
+                            <div class="form-group">
+                                <label for="department" class="form-label">Department</label>
+                                <input type="text" id="department" name="department" class="form-input" value="<%= user.department || '' %>">
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-section">
+                        <div class="section-title">Contact Information</div>
+                        <div class="form-row full">
+                            <div class="form-group">
+                                <label for="address" class="form-label">Address</label>
+                                <input type="text" id="address" name="address" class="form-input" value="<%= user.address || '' %>" placeholder="Street address">
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="city" class="form-label">City</label>
+                                <input type="text" id="city" name="city" class="form-input" value="<%= user.city || '' %>">
+                            </div>
+                            <div class="form-group">
+                                <label for="state" class="form-label">State</label>
+                                <input type="text" id="state" name="state" class="form-input" value="<%= user.state || '' %>">
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="postalCode" class="form-label">Postal Code</label>
+                                <input type="text" id="postalCode" name="postalCode" class="form-input" value="<%= user.postalCode || '' %>">
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="button-group">
+                        <button type="submit" class="btn btn-primary">Save Changes</button>
+                        <button type="button" class="btn btn-secondary" onclick="toggleEditMode()">Cancel</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <footer class="footer">
+        &copy; 2025 TaskNet - Professor Portal. All rights reserved.
+    </footer>
+
+    <script>
+        function toggleEditMode() {
+            document.getElementById('viewMode').classList.toggle('hidden');
+            document.getElementById('editMode').classList.toggle('active');
+        }
+        const urlParams = new URLSearchParams(window.location.search);
+        if (urlParams.has('success')) {
+            const successMsg = document.getElementById('successMessage');
+            successMsg.classList.add('show');
+            setTimeout(() => {
+                successMsg.classList.remove('show');
+            }, 3000);
+        }
+    </script>
+</body>
+</html>
