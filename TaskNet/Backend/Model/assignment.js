@@ -16,6 +16,11 @@ const assignmentSchema = new mongoose.Schema({
         required: true,
         default: 'Assignment'
     },
+    courseCode: {
+        type: String,
+        required: false,
+        trim: true
+    },
     status: {
         type: String,
         enum: ['Draft', 'Submitted', 'Approved', 'Rejected'],
