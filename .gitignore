@@ -36,5 +36,3 @@ tmp/
 *.swp
 .DS_Store
 Thumbs.db
-
-TaskNet/Frontend/public
