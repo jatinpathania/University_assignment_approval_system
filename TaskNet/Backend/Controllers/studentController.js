@@ -53,7 +53,7 @@ module.exports.getUploadAssignmentForm= (req,res)=>{
 
 
 module.exports.uploadAssignment = async (req, res) => {
-    const { title, description, category } = req.body;
+    const { title, description, category, courseCode } = req.body;
     if (!req.file) {
         return res.status(400).render('uploadAssignment', {
             user: req.user,
@@ -67,6 +67,7 @@ module.exports.uploadAssignment = async (req, res) => {
     let errors = {};
     if (!title) errors.title = 'Title is required.';
     if (!category) errors.category = 'Category is required.';
+    if (!courseCode) errors.courseCode = 'Course Code is required.';
 
     if (Object.keys(errors).length > 0) {
         return res.status(400).render('uploadAssignment', {
@@ -96,6 +97,7 @@ module.exports.uploadAssignment = async (req, res) => {
             title,
             description,
             category,
+            courseCode,
             studentId: req.user._id,
             departmentId: student.departmentId,
             fileUrl: cloudinaryResult.url,
@@ -138,7 +140,7 @@ module.exports.getBulkUploadForm =(req, res)=> {
 
 
 module.exports.bulkUploadAssignments = async (req, res) => {
-    const { title, description, category } = req.body;
+    const { title, description, category, courseCode } = req.body;
 
     if (!req.files || req.files.length === 0) {
         return res.status(400).render('bulkUpload', {
@@ -154,6 +156,7 @@ module.exports.bulkUploadAssignments = async (req, res) => {
     let errors = {};
     if (!title) errors.title = 'Common Title is required.';
     if (!category) errors.category = 'Category is required.';
+    if (!courseCode) errors.courseCode = 'Course Code is required.';
 
     if (Object.keys(errors).length > 0) {
         return res.status(400).render('bulkUpload', {
@@ -189,6 +192,7 @@ module.exports.bulkUploadAssignments = async (req, res) => {
                 title: distinctTitle,
                 description: description,
                 category: category,
+                courseCode: courseCode,
                 studentId: req.user._id,
                 departmentId: student.departmentId,
                 fileUrl: cloudinaryResult.url,
@@ -434,5 +438,69 @@ module.exports.resubmitAssignment =async(req, res)=> {
     } catch (error) {
         console.error("Resubmission error:", error);
         return res.status(500).json({ success: false, message: 'Server error during resubmission. Please try again.' });
+    }
+};
+
+module.exports.getStudentProfile = async (req, res) => {
+    try {
+        const studentId = req.user._id;
+        const assignments = await Assignment.find({ studentId: studentId });
+        
+        const stats = {
+            total: assignments.length,
+            approved: assignments.filter(a => a.status === 'Approved').length,
+            pending: assignments.filter(a => a.status === 'Submitted').length,
+            rejected: assignments.filter(a => a.status === 'Rejected').length
+        };
+
+        res.render('studentProfile', {
+            user: req.user,
+            stats: stats,
+            activePage: 'profile'
+        });
+    } catch (error) {
+        console.error('Error loading student profile:', error);
+        res.status(500).render('error', {
+            message: 'Failed to load profile',
+            error: process.env.NODE_ENV === 'development' ? error : {}
+        });
+    }
+};
+
+module.exports.updateStudentProfile = async (req, res) => {
+    try {
+        const { name, email, rollNumber, phone, address, city, state, postalCode } = req.body;
+        const studentId = req.user._id;
+
+        const updatedUser = await User.findByIdAndUpdate(
+            studentId,
+            {
+                name,
+                email,
+                rollNumber,
+                phone,
+                address,
+                city,
+                state,
+                postalCode
+            },
+            { new: true, runValidators: true }
+        );
+
+        if (!updatedUser) {
+            return res.status(404).render('error', {
+                message: 'User not found'
+            });
+        }
+
+        res.redirect('/student/profile?success=true');
+    } catch (error) {
+        console.error('Error updating student profile:', error);
+        res.status(500).render('studentProfile', {
+            user: req.user,
+            stats: {},
+            error: 'Failed to update profile. Please try again.',
+            activePage: 'profile'
+        });
     }
 };
