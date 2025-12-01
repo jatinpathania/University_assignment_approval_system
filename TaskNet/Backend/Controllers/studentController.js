@@ -340,9 +340,17 @@ module.exports.getAssignmentDetails = async(req, res)=>{
         if(!assignment){
             return res.status(404).send("Assignment not found");
         }
+
+        const student = await User.findById(req.user._id);
+        const professors = await User.find({ 
+            departmentId: student.departmentId,
+            role: { $in: ['professor', 'HOD'] } 
+        }).select('name email _id');
+
         res.render('assignmentDetails', {
             user: req.user,
             assignment: assignment,
+            professors: professors,
             activePage: 'assignments'
         });
 
@@ -379,7 +387,7 @@ module.exports.downloadAssignment = async(req,res) =>{
 module.exports.resubmitAssignment =async(req, res)=> {
     try{
         const assignmentId = req.params.id;
-        const { description } = req.body;
+        const { description, reviewerId } = req.body;
         
         const assignment = await Assignment.findOne({ _id: assignmentId, studentId: req.user._id });
         if (!assignment) return res.status(404).json({ success: false, message: 'Assignment not found.' });
@@ -407,10 +415,17 @@ module.exports.resubmitAssignment =async(req, res)=> {
         assignment.originalFileName = currentOriginalName;
         if (description) assignment.description = description;
 
+        let historyRemark = 'Addressing feedback';
+        if (reviewerId && reviewerId !== assignment.reviewerId.toString()) {
+            const newProfessor = await User.findById(reviewerId);
+            historyRemark = `Resubmitted to Dr. ${newProfessor.name} for review`;
+            assignment.reviewerId = reviewerId;
+        }
+
         assignment.history.push({
             action: 'Re-submitted',
             by: req.user.name,
-            remark: 'Addressing feedback',
+            remark: historyRemark,
             timestamp: new Date(),
             fileUrl: currentFileUrl
         });

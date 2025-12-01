@@ -327,3 +327,47 @@ module.exports.updateProfessorProfile = async(req, res) => {
         });
     }
 };
+
+module.exports.rejectAssignment= async(req,res)=>{
+    try{
+        const { remarks }= req.body;
+        const assignmentId= req.params.id;
+        if(!remarks || remarks.trim().length <10){
+            return res.status(400).json({
+                success: false,
+                message: 'Rejection feedback is mandatory and must be atleast 10 characters long'
+            })
+        }
+
+        const assignment= await Assignment.findById(assignmentId).populate('studentId');
+        if(!assignment){
+            return res.status(400).json({success: false, message: 'Assignment not found!'});
+        }
+        assignment.status= 'Rejected';
+        assignment.history.push({
+            action: 'Rejected',
+            by: req.user.name,
+            remark: remarks,
+            timestamp: new Date()
+        })
+        await assignment.save();
+        if(assignment.studentId){
+            await sendStudentNotification({
+                studentEmail: assignment.studentId.email,
+                studentName: assignment.studentId.name,
+                assignmentTitle: assignment.title,
+                status: 'Rejected',
+                professorName: req.user.name,
+                remarks: remarks
+            })
+        }
+        return res.status(200).json({
+            success: true,
+            message: 'Assignment rejected and returned to student.'
+        })
+    }
+    catch(error){
+        console.error("Rejection Error:", error);
+        return res.status(500).json({ success: false, message: 'Server error during rejection.' });
+    }
+}
