@@ -277,6 +277,12 @@
                     </div>
 
                     <div class="form-group">
+                        <label for="courseCode">Course Code*</label>
+                        <input type="text" id="courseCode" name="courseCode" value="<%= formData.courseCode || '' %>" placeholder="e.g., 25CS022" required>
+                        <% if (errors.courseCode) { %><div class="error-msg"><%= errors.courseCode %></div><% } %>
+                    </div>
+
+                    <div class="form-group">
                         <label for="description">Common Description (Optional)</label>
                         <textarea id="description" name="description" rows="3" placeholder="Description applied to all files..."><%= formData.description || '' %></textarea>
                     </div>
