@@ -28,6 +28,14 @@ const userSchema= new mongoose.Schema({
         type: mongoose.Schema.Types.ObjectId,
         ref: 'Department',     //linkk creatd
         required: false
+    },
+    otp:{
+        type: String,
+        select: false
+    },
+    otpExpires: {
+        type: Date,
+        select: false
     }
 },{ timestamps: true })
 
