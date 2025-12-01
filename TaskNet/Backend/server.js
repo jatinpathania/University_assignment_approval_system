@@ -16,6 +16,8 @@ app.set("view engine","ejs")
 app.set("views", path.join(__dirname,'..','Frontend', 'views'))
 app.use(express.static(path.join(__dirname,'..', 'Frontend', 'public')))
 
+const PORT = process.env.PORT || 3000;
+
 connectMongodb();
 
 
@@ -25,7 +27,7 @@ app.use('/student', studentRouter);
 app.use('/professor', professorRouter)
 
 
-app.listen(process.env.PORT, err=>{
+app.listen(PORT, err=>{
     if(err) console.log(err);
-    else console.log(`Server started at Port`);
+    else console.log(`Server started at port`);
 })
