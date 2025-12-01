@@ -11,7 +11,9 @@ const {
     submitAssignment,
     getAssignmentDetails,
     downloadAssignment,
-    resubmitAssignment
+    resubmitAssignment,
+    getStudentProfile,
+    updateStudentProfile
     } = require('../Controllers/studentController');
 const upload= require('../config/multer')
 
@@ -26,5 +28,8 @@ router.get('/assignments/:id', getAssignmentDetails);
 router.get('/assignments/:id/download', downloadAssignment);
 router.post('/assignments/:id/submit', submitAssignment);
 router.post('/assignments/:id/resubmit', upload.single('assignmentFile'), resubmitAssignment);
+
+router.get('/profile', getStudentProfile);
+router.post('/profile/update', updateStudentProfile);
 
 module.exports = router;
