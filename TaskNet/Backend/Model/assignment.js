@@ -23,7 +23,7 @@ const assignmentSchema = new mongoose.Schema({
     },
     status: {
         type: String,
-        enum: ['Draft', 'Submitted', 'Approved', 'Rejected'],
+        enum: ['Draft', 'Submitted', 'Approved', 'Rejected', 'Forwarded'],
         default: 'Draft'
     },
     studentId: {
@@ -44,7 +44,7 @@ const assignmentSchema = new mongoose.Schema({
     history: [{
         action:{
             type: String,
-            enum: ['Submitted', 'Approved', 'Rejected', 'Re-submitted'],
+            enum: ['Submitted', 'Approved', 'Rejected', 'Re-submitted', 'Forwarded'],
             required: true
         },
         by: {
