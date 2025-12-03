@@ -57,9 +57,9 @@
         .user-table { width: 100%; border-collapse: collapse; background-color: white; border-radius: 0.75rem; overflow: hidden; box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05); margin-bottom: 1.5rem; }
         .user-table th, .user-table td { padding: 1rem; text-align: left; border-bottom: 1px solid #f3f4f6; }
         .user-table th { background-color: #f9fafb; font-weight: 700; color: #4b5563; text-transform: uppercase; font-size: 0.875rem; }
-        .user-table td:last-child { white-space: nowrap; }
+        .user-table td:last-child { white-space: nowrap; overflow: visible; }
         .user-table tbody tr:hover { background-color: #f3f4f6; }
-        .action-button { padding: 0.4rem 0.8rem; border-radius: 0.3rem; font-weight: 600; cursor: pointer; text-decoration: none; display: inline-block; margin-right: 0.5rem; transition: background-color 0.2s; border: 1px solid; }
+        .action-button { padding: 0.4rem 0.8rem; border-radius: 0.3rem; font-weight: 600; cursor: pointer; text-decoration: none; display: inline-block; margin-right: 0.5rem; transition: background-color 0.2s; border: 1px solid; white-space: nowrap; }
         .edit-button { background-color: #3b82f6; color: white; border-color: #3b82f6; }
         .delete-button { background-color: transparent; color: #ef4444; border-color: #ef4444; }
         .status-active { color: #059669; font-weight: 600; }
@@ -122,14 +122,109 @@
             font-weight: 600;
         }
 
+        @media (max-width: 1024px) {
+            .top-header { padding: 1rem; }
+            .top-title { font-size: 1.5rem; }
+            .sidebar { padding: 1rem; }
+            .main-content { padding: 1.5rem; }
+            .nav-link { padding: 0.8rem; font-size: 0.9rem; }
+        }
         @media (max-width: 900px) {
             .controls-container { flex-wrap: wrap; }
             .form-control-group { min-width: 150px; }
         }
         @media (max-width: 768px) {
-            .page-container { flex-direction: column; }
-            .sidebar { width: 100%; border-right: none; border-bottom: 1px solid #e5e7eb; }
+            .page-container { flex-direction: column; min-height: auto; }
+            .sidebar {
+                width: 100%;
+                border-right: none;
+                border-bottom: 1px solid #e5e7eb;
+                padding: 0.75rem;
+                flex-direction: row;
+                justify-content: space-between;
+                align-items: center;
+            }
+            .sidebar > div:first-child {
+                display: flex;
+                align-items: center;
+                gap: 1.5rem;
+                flex: 1;
+            }
+            nav { display: flex; gap: 0.5rem; }
+            .nav-link {
+                padding: 0.6rem 0.8rem;
+                margin-bottom: 0;
+                white-space: nowrap;
+                font-size: 0.75rem;
+            }
+            .top-title { font-size: 1.25rem; }
+            .content-title { font-size: 1.25rem; }
+            .main-content { padding: 1rem; }
+            .header-profile { width: 36px; height: 36px; }
             .user-table th, .user-table td { padding: 0.75rem 0.5rem; font-size: 0.75rem; }
+            .action-button { padding: 0.3rem 0.6rem; font-size: 0.7rem; margin-right: 0.3rem; }
+            .controls-container { flex-direction: column; gap: 0.75rem; }
+            .form-control-group { width: 100% !important; }
+            .modal-content { padding: 1.5rem; max-width: 90%; }
+        }
+        @media (max-width: 480px) {
+            body { height: auto; }
+            .page-container { flex-direction: column; }
+            .sidebar {
+                flex-direction: column;
+                align-items: stretch;
+                width: 100%;
+                gap: 0.5rem;
+            }
+            .sidebar > div:first-child {
+                flex-direction: column;
+                gap: 0.5rem;
+                align-items: stretch;
+            }
+            nav { flex-direction: column; gap: 0.25rem; }
+            .nav-link { padding: 0.5rem 0.75rem; font-size: 0.7rem; }
+            .top-header { padding: 0.75rem; flex-direction: column; gap: 0.75rem; }
+            .top-title { font-size: 1rem; margin: 0; }
+            .header-profile { width: 32px; height: 32px; }
+            .main-content { padding: 0.75rem; }
+            .content-title { font-size: 1rem; }
+            .header { padding-bottom: 1rem; margin-bottom: 1rem; }
+            .controls-container { gap: 0.5rem; }
+            .form-control-group { width: 100% !important; }
+            .form-control-group label { font-size: 0.8rem; margin-bottom: 0.2rem; }
+            input[type="text"], input[type="email"], input[type="password"], input[type="tel"], select { 
+                padding: 0.6rem;
+                font-size: 0.9rem;
+                border-radius: 0.4rem;
+            }
+            .user-table th, .user-table td { 
+                padding: 0.4rem 0.2rem; 
+                font-size: 0.65rem;
+                max-width: 60px;
+                overflow: hidden;
+                text-overflow: ellipsis;
+            }
+            .user-table th:last-child, .user-table td:last-child { 
+                max-width: 100px;
+                padding: 0.4rem 0.15rem;
+                white-space: normal;
+                overflow: visible;
+            }
+            .action-button { 
+                padding: 0.2rem 0.35rem;
+                font-size: 0.6rem;
+                margin-right: 0.1rem;
+                display: inline-block;
+                white-space: nowrap;
+            }
+            .welcome-text { font-size: 0.9rem; }
+            .nav-title { font-size: 1rem; }
+            .modal-content {
+                padding: 1rem;
+                max-width: 95%;
+                margin: 0.5rem;
+            }
+            .pagination-button { padding: 0.4rem 0.8rem; font-size: 0.75rem; }
         }
         
     </style>
