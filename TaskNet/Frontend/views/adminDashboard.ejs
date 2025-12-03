@@ -173,11 +173,32 @@
             grid-template-columns: repeat(2, 1fr);
             gap: 1.5rem;
         }
+        @media (max-width: 1024px) {
+            .top-header {
+                padding: 1rem;
+            }
+            .top-title {
+                font-size: 1.5rem;
+            }
+            .main-content {
+                padding: 1.5rem;
+            }
+            .sidebar {
+                padding: 1rem;
+            }
+            .nav-title {
+                font-size: 1rem;
+            }
+            .nav-link {
+                padding: 0.8rem;
+                font-size: 0.9rem;
+            }
+        }
         @media (max-width: 768px) {
-             .stats-grid {
+            .stats-grid {
                 grid-template-columns: 1fr;
             }
-             .page-container {
+            .page-container {
                 flex-direction: column;
                 min-height: auto;
             }
@@ -185,6 +206,117 @@
                 width: 100%;
                 border-right: none;
                 border-bottom: 1px solid #e5e7eb;
+                padding: 0.75rem;
+                flex-direction: row;
+                justify-content: space-between;
+                align-items: center;
+            }
+            .sidebar > div:first-child {
+                display: flex;
+                align-items: center;
+                gap: 2rem;
+                flex: 1;
+            }
+            .nav-title {
+                margin-bottom: 0;
+            }
+            nav {
+                display: flex;
+                gap: 0.5rem;
+            }
+            .nav-link {
+                padding: 0.6rem 1rem;
+                margin-bottom: 0;
+                white-space: nowrap;
+                font-size: 0.8rem;
+            }
+            .logout-button {
+                margin-top: 0;
+            }
+            .top-title {
+                font-size: 1.25rem;
+            }
+            .content-title {
+                font-size: 1.25rem;
+            }
+            .main-content {
+                padding: 1rem;
+            }
+            .card {
+                padding: 1rem;
+                min-height: 100px;
+            }
+            .card-title {
+                font-size: 0.85rem;
+            }
+            .card-value {
+                font-size: 2rem;
+            }
+            .header-profile {
+                width: 40px;
+                height: 40px;
+            }
+        }
+        @media (max-width: 480px) {
+            body {
+                height: auto;
+            }
+            .page-container {
+                flex-direction: column;
+            }
+            .sidebar {
+                flex-direction: column;
+                align-items: stretch;
+            }
+            .sidebar > div:first-child {
+                flex-direction: column;
+                align-items: stretch;
+                gap: 0.5rem;
+            }
+            nav {
+                flex-direction: column;
+                gap: 0.25rem;
+            }
+            .nav-link {
+                padding: 0.5rem 0.75rem;
+                font-size: 0.75rem;
+            }
+            .top-header {
+                flex-direction: column;
+                gap: 0.75rem;
+                align-items: flex-start;
+                padding: 0.75rem;
+            }
+            .top-title {
+                font-size: 1rem;
+                margin: 0;
+            }
+            .header-profile {
+                width: 36px;
+                height: 36px;
+            }
+            .main-content {
+                padding: 0.75rem;
+            }
+            .header {
+                padding-bottom: 1rem;
+                margin-bottom: 1rem;
+            }
+            .content-title {
+                font-size: 1rem;
+            }
+            .card {
+                padding: 0.75rem;
+                min-height: 90px;
+            }
+            .card-title {
+                font-size: 0.75rem;
+            }
+            .card-value {
+                font-size: 1.5rem;
+            }
+            .stats-grid {
+                gap: 1rem;
             }
         }
         .card {
