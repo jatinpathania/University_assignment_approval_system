@@ -1,7 +1,7 @@
 const Assignment = require('../Model/assignment');
 const User = require('../Model/user');
 const { uploadToCloudinary } = require('../config/cloudinary')
-const { sendOTP, sendStudentNotification }= require('../util/emailSender')
+const { sendOTP, sendStudentNotification, sendSubmissionNotification }= require('../util/emailSender')
 const crypto= require('crypto')
 
 module.exports.getProfessorDashboard = async (req, res) => {
@@ -9,7 +9,7 @@ module.exports.getProfessorDashboard = async (req, res) => {
         const professorId = req.user._id;
         const pendingAssignments = await Assignment.find({ 
             reviewerId: professorId, 
-            status: 'Submitted' 
+            status: { $in :['Submitted', 'Forwarded'] }
         })
         .populate('studentId', 'name email')
         .populate('departmentId', 'name')
@@ -28,7 +28,7 @@ module.exports.getProfessorDashboard = async (req, res) => {
         };
 
         statusCounts.forEach(item => {
-            if (item._id === 'Submitted') stats.Pending = item.count;
+            if (item._id === 'Submitted' || item._id === 'Forwarded') stats.Pending = item.count;
             if (item._id === 'Approved') stats.Approved = item.count;
             if (item._id === 'Rejected') stats.Rejected = item.count;
             stats.Total += item.count;
@@ -133,6 +133,12 @@ module.exports.getReviewPage=async(req,res)=>{
             return res.status(404).send('Assignment not found');
         }
 
+        const colleagues= await User.find({
+            departmentId: req.user.departmentId,
+            role: { $in: ['professor', 'HOD'] },
+            _id: { $ne: req.user._id }
+        }).select('name role')
+
         const courseInfo ={
             code: "25CS022", 
             name: `${assignment.departmentId.name} Core`
@@ -141,6 +147,7 @@ module.exports.getReviewPage=async(req,res)=>{
         res.render('reviewAssignment', {
             user: req.user,
             assignment: assignment,
+            colleagues: colleagues,
             courseInfo: courseInfo,
             activePage: 'dashboard'
         });
@@ -153,12 +160,11 @@ module.exports.getReviewPage=async(req,res)=>{
 
 module.exports.processAssignmentReview = async(req, res)=> {
     try {
-        const { action,remarks } = req.body;
+        const { action, remarks } = req.body;
         const assignment = await Assignment.findById(req.params.id).populate('studentId');
 
         if (!assignment) return res.status(404).json({ success: false, message: 'Assignment not found' });
 
-        // rejeect
         if (action === 'Reject') {
             assignment.status = 'Rejected';
             assignment.history.push({
@@ -180,16 +186,20 @@ module.exports.processAssignmentReview = async(req, res)=> {
             return res.status(200).json({ success: true, message: 'Assignment rejected successfully.' });
         }
 
-        // approved
         if (action === 'Approve') {
             let signatureUrl = null;
-            if (req.file){
-                const uploadResult = await uploadToCloudinary(req.file);
-                signatureUrl = uploadResult.url;
+            if (req.file) {
+                try {
+                    const uploadResult = await uploadToCloudinary(req.file, 'signature');
+                    signatureUrl = uploadResult.url;
+                } catch (uploadError) {
+                    console.error('Cloudinary upload error:', uploadError);
+                    return res.status(500).json({ success: false, message: 'Error uploading signature file.' });
+                }
             }
 
             const otp = crypto.randomInt(100000, 999999).toString();
-            const otpExpires = Date.now() + 10*60*1000; // 10min
+            const otpExpires = Date.now() + 10 * 60 * 1000;
 
             const professor = await User.findById(req.user._id);
             professor.otp = otp;
@@ -209,7 +219,7 @@ module.exports.processAssignmentReview = async(req, res)=> {
             });
         }
 
-    } catch(error){
+    } catch(error) {
         console.error("Review processing error:", error);
         res.status(500).json({ success: false, message: 'Server error processing review.' });
     }
@@ -369,5 +379,45 @@ module.exports.rejectAssignment= async(req,res)=>{
     catch(error){
         console.error("Rejection Error:", error);
         return res.status(500).json({ success: false, message: 'Server error during rejection.' });
+    }
+}
+
+module.exports.forwardAssignment= async(req,res)=>{
+    try{
+        const { forwardToId, note } = req.body;
+        const assignmentId= req.params.id;
+
+        const assignment= await Assignment.findById(assignmentId).populate('studentId', 'name email');
+        if (!assignment) return res.status(404).json({ success: false, message: 'Assignment not found' });
+
+        assignment.reviewerId= forwardToId;
+        assignment.status= 'Forwarded';
+        assignment.history.push({
+            action: 'Forwarded',
+            by: req.user.name,
+            forwardedTo: req.user.name,
+            remark: note || 'Forwarded for further review',
+            timestamp: new Date()
+        })
+
+        await assignment.save();
+        
+        const newReviewer= await User.findById(forwardToId);
+        if(newReviewer){
+            await sendSubmissionNotification({
+                professorEmail: newReviewer.email,
+                professorName: newReviewer.name,
+                studentName: assignment.studentId.name,
+                assignmentTitle: assignment.title,
+                forwardedBy: req.user.name,
+                note: note
+            })
+        }
+
+        return res.status(200).json({ success: true, message: `Assignment forwarded to Dr. ${newReviewer.name}` })
+    }
+    catch(error){
+        console.error('Error while forwarding assignment:', error);
+        return res.status(500).json({ success: false, message: 'Server error during forwarding.' })
     }
 }
