@@ -7,7 +7,7 @@
     <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg viewBox='0 0 24 24' xmlns='http://www.w3.org/2000/svg'%3E%3Crect width='24' height='24' fill='%23667eea' rx='4'/%3E%3Cpath d='M9 11H7v2h2v-2zm4 0h-2v2h2v-2zm4 0h-2v2h2v-2zm2-7h-1V2h-2v2H8V2H6v2H5c-1.11 0-1.99.9-1.99 2L3 20c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 16H5V9h14v11z' fill='white'/%3E%3C/svg%3E" />
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
     <style>
-        body { font-family: 'Inter', sans-serif; background-color: #f4f7f9; margin: 0; padding: 0; height: 100vh; display: flex; flex-direction: column; }
+        body { font-family: 'Inter', sans-serif; background-color: #f4f7f9; margin: 0; padding: 0; min-height: 100vh; display: flex; flex-direction: column; }
         
         .top-header {
             background-color: #ffffff;
@@ -46,7 +46,7 @@
             border-right: 1px solid #e5e7eb;
             box-sizing: border-box;
         }
-        .main-content { flex-grow: 1; padding: 2rem 3rem; background-color: #ffffff; overflow-y: auto; }
+        .main-content { flex: 1; padding: 2rem 3rem; background-color: #ffffff; overflow-y: auto; overflow-x: hidden; display: flex; flex-direction: column; }
 
         .nav-title { font-size: 1.125rem; font-weight: 600; color: #374151; margin-bottom: 15px; }
         .nav-link {
@@ -162,9 +162,9 @@
         .upload-link-btn { background-color: #0f393b; color: white; padding: 0.6rem 1.2rem; border-radius: 0.5rem; font-weight: 600; text-decoration: none; font-size: 0.9rem; transition: background-color 0.2s; }
         .upload-link-btn:hover { background-color: #0a2829; }
 
-        .assignments-table { width: 100%; border-collapse: collapse; margin-bottom: 2rem; }
-        .assignments-table th { text-align: left; padding: 1rem; border-bottom: 2px solid #e5e7eb; color: #64748b; font-weight: 600; font-size: 0.875rem; text-transform: uppercase; letter-spacing: 0.05em; }
-        .assignments-table td { padding: 1rem; border-bottom: 1px solid #e5e7eb; color: #334155; vertical-align: middle; }
+        .assignments-table { width: 100%; border-collapse: collapse; margin-bottom: 2rem; min-width: 800px; }
+        .assignments-table th { text-align: left; padding: 1rem; border-bottom: 2px solid #e5e7eb; color: #64748b; font-weight: 600; font-size: 0.875rem; text-transform: uppercase; letter-spacing: 0.05em; white-space: nowrap; }
+        .assignments-table td { padding: 1rem; border-bottom: 1px solid #e5e7eb; color: #334155; vertical-align: middle; white-space: normal; }
         .assignments-table tr:hover { background-color: #f8fafc; }
 
         .assignment-title { font-weight: 600; color: #0f172a; display: block; }
@@ -206,6 +206,129 @@
         .modal-actions { display: flex; justify-content: flex-end; gap: 1rem; }
         .btn-cancel { padding: 0.6rem 1.2rem; background-color: #e5e7eb; color: #374151; border: none; border-radius: 0.5rem; cursor: pointer; font-weight: 600; }
         .btn-confirm { padding: 0.6rem 1.2rem; background-color: #4f46e5; color: white; border: none; border-radius: 0.5rem; cursor: pointer; font-weight: 600; }
+
+        @media (max-width: 1024px) {
+            .main-content { padding: 1.5rem 2rem; }
+            .header-section { flex-direction: column; gap: 1rem; align-items: flex-start; }
+            .controls-bar { flex-wrap: wrap; width: 100%; }
+            .assignments-table th, .assignments-table td { padding: 0.75rem; font-size: 0.9rem; }
+        }
+
+        @media (max-width: 768px) {
+            .page-container { flex-direction: row; }
+            .sidebar {
+                width: 100%;
+                border-right: none;
+                border-bottom: 1px solid #e5e7eb;
+                padding: 0.75rem;
+                flex-direction: row;
+                justify-content: space-between;
+                align-items: center;
+            }
+            .sidebar > div:first-child {
+                display: flex;
+                align-items: center;
+                gap: 1.5rem;
+                flex: 1;
+            }
+            .nav-title {
+                margin-bottom: 0;
+            }
+            nav {
+                display: flex;
+                gap: 0.5rem;
+            }
+            .nav-link {
+                padding: 0.6rem 0.8rem;
+                margin-bottom: 0;
+                white-space: nowrap;
+                font-size: 0.75rem;
+            }
+            .logout-button {
+                margin-top: 0;
+            }
+            .main-content { padding: 1.5rem 1rem; display: flex; flex-direction: column; }
+            .table-wrapper { overflow-x: auto; }
+            .top-header { padding: 0.75rem 1rem; }
+            .top-title { font-size: 1.25rem; }
+            .header-title { font-size: 1.5rem; margin-bottom: 1rem; }
+            .header-section { flex-direction: column; }
+            .controls-bar { flex-direction: column; gap: 0.75rem; width: 100%; }
+            .filter-select, .sort-btn, .upload-link-btn { width: 100%; }
+            .assignments-table { font-size: 0.8rem; }
+            .assignments-table th, .assignments-table td { padding: 0.5rem; }
+            .assignment-title { font-size: 0.9rem; }
+            .assignment-meta { font-size: 0.7rem; }
+            .status-badge { padding: 0.25rem 0.5rem; font-size: 0.7rem; }
+            .action-link { font-size: 0.85rem; }
+            .submit-action-btn { padding: 0.3rem 0.6rem; font-size: 0.75rem; margin-left: 5px; }
+            .modal-content { width: 95%; max-width: 95%; }
+            .form-select { font-size: 0.9rem; padding: 0.6rem; }
+        }
+
+        @media (max-width: 480px) {
+            body {
+                min-height: 100vh;
+            }
+            .top-header { padding: 0.5rem 0.75rem; }
+            .top-title { font-size: 0.95rem; }
+            .header-title { font-size: 1.1rem; margin-bottom: 1rem; }
+            .header-profile {
+                width: 45px;
+                height: 42px;
+            }
+            .page-container {
+                flex-direction: column;
+            }
+            .sidebar {
+                flex-direction: column;
+                align-items: stretch;
+                width: 100%;
+                gap: 0.5rem;
+            }
+            .sidebar > div:first-child {
+                flex-direction: column;
+                gap: 0.5rem;
+                align-items: stretch;
+            }
+            nav {
+                flex-direction: column;
+                gap: 0;
+            }
+            .nav-title { font-size: 0.8rem; margin-bottom: 0.5rem; font-weight: 600; }
+            .nav-link {
+                padding: 0.5rem 0.6rem;
+                margin-bottom: 0.25rem;
+                font-size: 0.7rem;
+                font-weight: 600;
+            }
+            .logout-button {
+                width: 40px;
+                height: 40px;
+                margin-top: 0.5rem;
+            }
+            .main-content { padding: 1rem 0.75rem; }
+            
+            .header-section { flex-direction: column; gap: 0.5rem; }
+            .controls-bar { display: flex; flex-direction: row; gap: 0.3rem; align-items: center; justify-content: flex-start; flex-wrap: nowrap; width: 100%; }
+            .filter-select { flex: 1; min-width: 0; padding: 0.4rem 0.3rem; font-size: 0.75rem; }
+            .sort-btn { flex: 1; min-width: 0; padding: 0.4rem 0.3rem; font-size: 0.75rem; margin: 0; }
+            .upload-link-btn { flex: 1; min-width: 0; padding: 0.4rem 0.3rem; font-size: 0.75rem; }
+            .table-wrapper { overflow-x: auto; }
+            .assignments-table { font-size: 0.65rem; min-width: 600px; }
+            .assignments-table th, .assignments-table td { padding: 0.5rem; }
+            .assignment-title { font-size: 0.75rem; }
+            .assignment-meta { font-size: 0.6rem; }
+            .status-badge { padding: 0.15rem 0.4rem; font-size: 0.6rem; }
+            .action-link { font-size: 0.7rem; }
+            .submit-action-btn { padding: 0.15rem 0.4rem; font-size: 0.6rem; margin-left: 2px; }
+            .pagination { gap: 0.25rem; }
+            .page-link { padding: 0.35rem 0.6rem; font-size: 0.75rem; }
+            .modal-content { width: 95%; padding: 1rem; }
+            .modal-title { font-size: 1.25rem; }
+            .form-select { font-size: 0.85rem; padding: 0.5rem; }
+            .btn-cancel, .btn-confirm { padding: 0.5rem 1rem; font-size: 0.85rem; }
+        }
     </style>
 </head>
 <body>
@@ -220,10 +343,18 @@
             <div>
                 <div class="nav-title">Navigation</div>
                 <nav>
-                    <a href="/student/dashboard" class="nav-link">Dashboard</a>
-                    <a href="/student/assignments" class="nav-link active">My Assignments</a>
-                    <a href="/student/assignments/upload" class="nav-link">Submit New</a>
-                    <a href="#" class="nav-link">Profile</a>
+                    <a href="/student/dashboard" class="nav-link <%= activePage === 'dashboard' ? 'active' : '' %>">
+                        Dashboard
+                    </a>
+                    <a href="/student/assignments" class="nav-link <%= activePage === 'assignments' ? 'active' : '' %>">
+                        My Assignments
+                    </a>
+                    <a href="/student/assignments/upload" class="nav-link <%= activePage === 'submit' ? 'active' : '' %>">
+                        Submit New
+                    </a>
+                    <a href="/student/profile" class="nav-link <%= activePage === 'profile' ? 'active' : '' %>">
+                        Profile
+                    </a>
                 </nav>
             </div>
             <form action="/logout" method="POST">
@@ -261,12 +392,13 @@
             </div>
 
             <% if (assignments.length > 0) { %>
-                <table class="assignments-table" id="assignmentsTable">
-                    <thead>
-                        <tr>
-                            <th>Assignment Details</th>
-                            <th>Category</th>
-                            <th>Reviewer (Dept)</th>
+                <div class="table-wrapper">
+                    <table class="assignments-table" id="assignmentsTable">
+                        <thead>
+                            <tr>
+                                <th>Assignment Details</th>
+                                <th>Category</th>
+                                <th>Reviewer (Dept)</th>
                             <th data-sort="date">Submitted Date</th>
                             <th>Status</th>
                             <th>Actions</th>
@@ -316,6 +448,7 @@
                         <% }) %>
                     </tbody>
                 </table>
+                </div>
 
                 <% if (totalPages > 1) { %>
                     <div class="pagination">
