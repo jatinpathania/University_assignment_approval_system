@@ -6,156 +6,156 @@
     <title>Review Assignment</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
     <style>
-        body { 
-            font-family: 'Inter', sans-serif; 
-            background-color: #f4f7f9; 
-            margin: 0; 
-            padding: 2rem; 
-            color: #1e293b; 
-        }
-        
-        .header-title { 
-            font-size: 1.8rem; 
-            font-weight: 700; 
-            color: #0f172a; 
-            margin-bottom: 1.5rem; 
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f4f7f9;
+            margin: 0;
+            padding: 2rem;
+            color: #1e293b;
         }
 
-        .info-grid { 
-            display: grid; 
-            grid-template-columns: repeat(4, 1fr); 
-            gap: 1rem; 
-            margin-bottom: 2rem; 
+        .header-title {
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: #0f172a;
+            margin-bottom: 1.5rem;
         }
 
-        .info-card { 
-            background: white; 
-            padding: 1.25rem 1.5rem; 
-            border-radius: 0.75rem; 
-            border: 1px solid #e2e8f0; 
-            box-shadow: 0 1px 3px rgba(0,0,0,0.05); 
+        .info-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 1rem;
+            margin-bottom: 2rem;
         }
 
-        .info-label { 
-            font-size: 0.75rem; 
-            color: #64748b; 
-            font-weight: 700; 
-            text-transform: uppercase; 
-            letter-spacing: 0.05em; 
-            margin-bottom: 0.5rem; 
+        .info-card {
+            background: white;
+            padding: 1.25rem 1.5rem;
+            border-radius: 0.75rem;
+            border: 1px solid #e2e8f0;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
         }
 
-        .info-value { 
-            font-size: 1rem; 
-            font-weight: 600; 
-            color: #0f172a; 
-            white-space: nowrap; 
-            overflow: hidden; 
-            text-overflow: ellipsis; 
-        }
-
-        .status-badge { 
-            display: inline-block; 
-            padding: 0.3rem 0.8rem; 
-            border-radius: 1rem; 
-            font-size: 0.85rem; 
-            font-weight: 600;
-            background-color: #dcfce7; 
-            color: #15803d; 
-        }
-
-        .content-grid { 
-            display: grid; 
-            grid-template-columns: 1fr 1fr; 
-            gap: 1.5rem; 
-        }
-
-        .left-panel { 
-            background: white; 
-            border-radius: 0.75rem; 
-            padding: 1.5rem; 
-            border: 1px solid #e2e8f0; 
-            box-shadow: 0 1px 3px rgba(0,0,0,0.05);
-        }
-
-        .panel-label { 
-            font-size: 0.75rem; 
-            color: #64748b; 
-            font-weight: 700; 
-            text-transform: uppercase; 
+        .info-label {
+            font-size: 0.75rem;
+            color: #64748b;
+            font-weight: 700;
+            text-transform: uppercase;
             letter-spacing: 0.05em;
-            margin-bottom: 0.5rem; 
+            margin-bottom: 0.5rem;
         }
 
-        .panel-text { 
-            font-size: 0.95rem; 
-            color: #334155; 
-            line-height: 1.6; 
-            margin-bottom: 1.5rem; 
+        .info-value {
+            font-size: 1rem;
+            font-weight: 600;
+            color: #0f172a;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
         }
 
-        .divider { 
-            height: 1px; 
-            background-color: #e2e8f0; 
-            margin: 1.5rem 0; 
+        .status-badge {
+            display: inline-block;
+            padding: 0.3rem 0.8rem;
+            border-radius: 1rem;
+            font-size: 0.85rem;
+            font-weight: 600;
+            background-color: #dcfce7;
+            color: #15803d;
         }
 
-        .file-attachment { 
-            display: flex; 
-            align-items: center; 
-            gap: 0.75rem; 
-            font-weight: 600; 
-            color: #4f46e5; 
+        .content-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1.5rem;
         }
 
-        .file-icon { 
-            width: 24px; 
-            height: 24px; 
-            fill: #cbd5e1; 
+        .left-panel {
+            background: white;
+            border-radius: 0.75rem;
+            padding: 1.5rem;
+            border: 1px solid #e2e8f0;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
         }
 
-        .preview-container { 
-            background: white; 
-            border-radius: 0.75rem; 
-            border: 1px solid #e2e8f0; 
-            padding: 1.5rem; 
-            box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+        .panel-label {
+            font-size: 0.75rem;
+            color: #64748b;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            margin-bottom: 0.5rem;
         }
 
-        .section-header { 
-            font-size: 1rem; 
-            font-weight: 600; 
-            color: #0f172a; 
-            margin-bottom: 1rem; 
-        }
-        
-        .pdf-viewer { 
-            width: 100%; 
-            height: 450px; 
-            border: 1px solid #e2e8f0; 
-            border-radius: 0.5rem; 
-            background: #f8fafc; 
-            margin-bottom: 1.5rem; 
+        .panel-text {
+            font-size: 0.95rem;
+            color: #334155;
+            line-height: 1.6;
+            margin-bottom: 1.5rem;
         }
 
-        .review-form label { 
-            display: block; 
-            font-weight: 600; 
-            font-size: 0.75rem; 
-            color: #64748b; 
-            margin-bottom: 0.5rem; 
+        .divider {
+            height: 1px;
+            background-color: #e2e8f0;
+            margin: 1.5rem 0;
+        }
+
+        .file-attachment {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            font-weight: 600;
+            color: #4f46e5;
+        }
+
+        .file-icon {
+            width: 24px;
+            height: 24px;
+            fill: #cbd5e1;
+        }
+
+        .preview-container {
+            background: white;
+            border-radius: 0.75rem;
+            border: 1px solid #e2e8f0;
+            padding: 1.5rem;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+        }
+
+        .section-header {
+            font-size: 1rem;
+            font-weight: 600;
+            color: #0f172a;
+            margin-bottom: 1rem;
+        }
+
+        .pdf-viewer {
+            width: 100%;
+            height: 450px;
+            border: 1px solid #e2e8f0;
+            border-radius: 0.5rem;
+            background: #f8fafc;
+            margin-bottom: 1.5rem;
+        }
+
+        .review-form label {
+            display: block;
+            font-weight: 600;
+            font-size: 0.75rem;
+            color: #64748b;
+            margin-bottom: 0.5rem;
             text-transform: uppercase;
             letter-spacing: 0.05em;
         }
 
-        .review-form textarea { 
-            width: 100%; 
-            padding: 0.75rem; 
-            border: 1px solid #cbd5e1; 
-            border-radius: 0.375rem; 
-            font-family: inherit; 
-            font-size: 0.95rem; 
-            margin-bottom: 1.5rem; 
+        .review-form textarea {
+            width: 100%;
+            padding: 0.75rem;
+            border: 1px solid #cbd5e1;
+            border-radius: 0.375rem;
+            font-family: inherit;
+            font-size: 0.95rem;
+            margin-bottom: 1.5rem;
             resize: vertical;
             box-sizing: border-box;
         }
@@ -165,124 +165,133 @@
             border-color: #64748b;
             box-shadow: 0 0 0 3px rgba(100, 116, 139, 0.1);
         }
-        
-        .signature-input { 
-            display: flex; 
-            align-items: center; 
-            gap: 1rem; 
-            margin-bottom: 2rem; 
+
+        .signature-input {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin-bottom: 2rem;
         }
 
-        .file-input { 
-            font-size: 0.9rem; 
+        .file-input {
+            font-size: 0.9rem;
         }
 
-        .action-buttons { 
-            display: flex; 
-            gap: 1rem; 
+        .action-buttons {
+            display: flex;
+            gap: 1rem;
         }
 
-        .btn { 
-            flex: 1; 
-            padding: 0.75rem; 
-            border-radius: 0.375rem; 
-            font-weight: 600; 
-            cursor: pointer; 
-            text-align: center; 
-            border: none; 
-            font-size: 0.95rem; 
-            transition: all 0.2s; 
+        .btn {
+            flex: 1;
+            padding: 0.75rem;
+            border-radius: 0.375rem;
+            font-weight: 600;
+            cursor: pointer;
+            text-align: center;
+            border: none;
+            font-size: 0.95rem;
+            transition: all 0.2s;
         }
 
-        .btn-approve { 
-            background-color: #10b981; 
-            color: white; 
+        .btn-approve {
+            background-color: #10b981;
+            color: white;
         }
 
-        .btn-approve:hover { 
-            background-color: #059669; 
+        .btn-approve:hover {
+            background-color: #059669;
         }
 
-        .btn-reject { 
-            background-color: #ef4444; 
-            color: white; 
+        .btn-reject {
+            background-color: #ef4444;
+            color: white;
         }
 
-        .btn-reject:hover { 
-            background-color: #dc2626; 
+        .btn-reject:hover {
+            background-color: #dc2626;
         }
 
-        .modal { 
-            position: fixed; 
-            top: 0; 
-            left: 0; 
-            width: 100%; 
-            height: 100%; 
-            background: rgba(0,0,0,0.5); 
-            display: none; 
-            align-items: center; 
-            justify-content: center; 
-            z-index: 1000; 
+        .modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
         }
 
-        .modal-box { 
-            background: white; 
-            padding: 2rem; 
-            border-radius: 0.75rem; 
-            width: 400px; 
-            text-align: center; 
-            box-shadow: 0 20px 25px rgba(0,0,0,0.15); 
+        .modal-box {
+            background: white;
+            padding: 2rem;
+            border-radius: 0.75rem;
+            width: 400px;
+            text-align: center;
+            box-shadow: 0 20px 25px rgba(0, 0, 0, 0.15);
         }
 
-        .modal-title { 
-            font-size: 1.25rem; 
-            font-weight: 700; 
-            margin-bottom: 1rem; 
-            color: #0f172a; 
+        .modal-title {
+            font-size: 1.25rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+            color: #0f172a;
         }
 
-        .otp-input { 
-            letter-spacing: 0.5rem; 
-            font-size: 1.5rem; 
-            padding: 0.5rem; 
-            width: 200px; 
-            text-align: center; 
-            border: 2px solid #e2e8f0; 
-            border-radius: 0.375rem; 
-            margin-bottom: 1.5rem; 
+        .otp-input {
+            letter-spacing: 0.5rem;
+            font-size: 1.5rem;
+            padding: 0.5rem;
+            width: 200px;
+            text-align: center;
+            border: 2px solid #e2e8f0;
+            border-radius: 0.375rem;
+            margin-bottom: 1.5rem;
         }
 
-        .btn-verify { 
-            background-color: #4f46e5; 
-            color: white; 
-            width: 100%; 
+        .btn-verify {
+            background-color: #4f46e5;
+            color: white;
+            width: 100%;
         }
 
         .btn-verify:hover {
             background-color: #4338ca;
         }
 
-        .btn-cancel { 
-            background-color: #f1f5f9; 
-            color: #475569; 
-            margin-top: 0.5rem; 
+        .btn-cancel {
+            background-color: #f1f5f9;
+            color: #475569;
+            margin-top: 0.5rem;
         }
 
         .btn-cancel:hover {
             background-color: #e2e8f0;
         }
 
-        .back-nav { 
-            display: block; 
-            margin-bottom: 1rem; 
-            color: #64748b; 
-            text-decoration: none; 
-            font-weight: 500; 
-            font-size: 0.9rem; 
+        .back-nav {
+            display: block;
+            margin-bottom: 1rem;
+            color: #64748b;
+            text-decoration: none;
+            font-weight: 500;
+            font-size: 0.9rem;
         }
 
-        .back-nav:hover { 
-            text-decoration: underline; 
+        .back-nav:hover {
+            text-decoration: underline;
+        }
+
+        .btn-forward {
+            background-color: #f59e0b;
+            color: white;
+        }
+
+        .btn-forward:hover {
+            background-color: #d97706;
         }
 
         .footer {
@@ -316,6 +325,7 @@
                 transform: translateX(400px);
                 opacity: 0;
             }
+
             to {
                 transform: translateX(0);
                 opacity: 1;
@@ -327,6 +337,7 @@
                 transform: translateX(0);
                 opacity: 1;
             }
+
             to {
                 transform: translateX(400px);
                 opacity: 0;
@@ -365,6 +376,50 @@
             animation: slideOut 0.3s ease-out forwards;
         }
 
+        .modal-box-left {
+            text-align: left;
+        }
+
+        .modal-title-center {
+            text-align: center;
+        }
+
+        .form-select {
+            width: 100%;
+            padding: 0.75rem;
+            border: 1px solid #cbd5e1;
+            border-radius: 0.375rem;
+            font-family: inherit;
+            font-size: 0.95rem;
+            margin-bottom: 1.5rem;
+            box-sizing: border-box;
+        }
+
+        .form-select:focus {
+            outline: none;
+            border-color: #64748b;
+            box-shadow: 0 0 0 3px rgba(100, 116, 139, 0.1);
+        }
+
+        .form-label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 600;
+            color: #64748b;
+        }
+
+        .modal-paragraph {
+            color: #64748b;
+            margin-bottom: 1rem;
+            text-align: center;
+        }
+
+        .form-buttons {
+            display: flex;
+            gap: 1rem;
+            margin-top: 1.5rem;
+        }
+
         @media (max-width: 1024px) {
             .content-grid {
                 grid-template-columns: 1fr;
@@ -386,6 +441,7 @@
         }
     </style>
 </head>
+
 <body>
 
     <a href="/professor/dashboard" class="back-nav">← Back to Dashboard</a>
@@ -394,19 +450,27 @@
     <div class="info-grid">
         <div class="info-card">
             <div class="info-label">Student Name</div>
-            <div class="info-value"><%= assignment.studentId.name %></div>
+            <div class="info-value">
+                <%= assignment.studentId.name %>
+            </div>
         </div>
         <div class="info-card">
             <div class="info-label">Assignment Title</div>
-            <div class="info-value" title="<%= assignment.title %>"><%= assignment.title %></div>
+            <div class="info-value" title="<%= assignment.title %>">
+                <%= assignment.title %>
+            </div>
         </div>
         <div class="info-card">
             <div class="info-label">Status</div>
-            <div><span class="status-badge"><%= assignment.status %></span></div>
+            <div><span class="status-badge">
+                    <%= assignment.status %>
+                </span></div>
         </div>
         <div class="info-card">
             <div class="info-label">Submitted On</div>
-            <div class="info-value"><%= new Date(assignment.submissionDate).toLocaleDateString() %></div>
+            <div class="info-value">
+                <%= new Date(assignment.submissionDate).toLocaleDateString() %>
+            </div>
         </div>
     </div>
 
@@ -421,7 +485,9 @@
 
             <div class="panel-label">Course</div>
             <div class="panel-text">
-                <strong><%= assignment.courseCode || 'N/A' %></strong><br>
+                <strong>
+                    <%= assignment.courseCode || 'N/A' %>
+                </strong><br>
                 <%= assignment.category %>
             </div>
 
@@ -449,7 +515,7 @@
 
         <div class="preview-container">
             <div class="section-header">Assignment File Preview:</div>
-            
+
             <iframe class="pdf-viewer" src="<%= assignment.fileUrl %>" title="PDF Preview"></iframe>
 
             <form id="reviewForm" class="review-form">
@@ -462,8 +528,11 @@
                 </div>
 
                 <div class="action-buttons">
-                    <button type="button" class="btn btn-approve" onclick="handleAction('Approve')">✓ Approve Assignment</button>
-                    <button type="button" class="btn btn-reject" onclick="handleAction('Reject')">✕ Reject Assignment</button>
+                    <button type="button" class="btn btn-approve" onclick="handleAction('Approve')">✓ Approve
+                        Assignment</button>
+                    <button type="button" class="btn btn-reject" onclick="handleAction('Reject')">✕ Reject
+                        Assignment</button>
+                    <button type="button" class="btn btn-forward" onclick="openForwardModal()">➜ Forward</button>
                 </div>
             </form>
         </div>
@@ -476,10 +545,11 @@
     <div id="otpModal" class="modal">
         <div class="modal-box">
             <div class="modal-title">Security Verification</div>
-            <p style="color: #64748b; margin-bottom: 1.5rem;">An OTP has been sent to your email. Please enter it below to confirm approval.</p>
-            
-            <input type="text" id="otpInput" class="otp-input" placeholder="------" maxlength="6">
-            
+            <p style="color: #64748b; margin-bottom: 1.5rem;">An OTP has been sent to your email. Please enter it below
+                to confirm approval.</p>
+
+            <input type="text" id="otpInput" class="otp-input" placeholder="------" maxlength="6" onkeyup="handleOTPInput(event)">
+
             <button class="btn btn-verify" onclick="verifyOTP()">Verify & Approve</button>
             <button class="btn btn-cancel" onclick="closeModal()">Cancel</button>
         </div>
@@ -488,8 +558,9 @@
     <div id="rejectModal" class="modal">
         <div class="modal-box">
             <div class="modal-title" style="color: #dc2626;">Confirm Rejection</div>
-            <p style="color: #64748b; margin-bottom: 1.5rem;">Are you sure you want to reject this assignment? This will return it to the student for revision.</p>
-            
+            <p style="color: #64748b; margin-bottom: 1.5rem;">Are you sure you want to reject this assignment? This will
+                return it to the student for revision.</p>
+
             <div style="display: flex; gap: 1rem;">
                 <button class="btn btn-cancel" onclick="closeRejectModal()" style="flex: 1;">Cancel</button>
                 <button class="btn btn-reject" onclick="confirmReject()" style="flex: 1;">Confirm Rejection</button>
@@ -497,17 +568,44 @@
         </div>
     </div>
 
+    <div id="forwardModal" class="modal">
+        <div class="modal-box modal-box-left">
+            <div class="modal-title modal-title-center">Forward Assignment</div>
+            <p class="modal-paragraph">Select a colleague to review this assignment.</p>
+            <form id="forwardForm">
+                <label class="form-label">Select Professor:</label>
+                <select id="forwardTo" class="form-select" required>
+                    <option value="" disabled selected>-- Choose Colleague --</option>
+                    <% if(colleagues && colleagues.length> 0) { %>
+                        <% colleagues.forEach(colleague=> { %>
+                            <option value="<%= colleague._id %>"><%= colleague.name %> (<%= colleague.role.toUpperCase() %>)</option>
+                        <% }) %>
+                    <% } else { %>
+                        <option value="" disabled>No other professors found.</option>
+                    <% } %>
+                </select>
+                <label class="form-label">Forwarding Note:</label>
+                <textarea id="forwardNote" class="form-select" rows="3" placeholder="Reason for forwarding..."></textarea>
+                <div class="form-buttons">
+                    <button type="button" class="btn btn-verify" onclick="submitForward()" style="flex: 1;">Confirm Forward</button>
+                    <button type="button" class="btn btn-cancel" onclick="document.getElementById('forwardModal').style.display='none'" style="flex: 1; margin-top: 0;">Cancel</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
     <script>
         const assignmentId = "<%= assignment._id %>";
         const otpModal = document.getElementById('otpModal');
         const rejectModal = document.getElementById('rejectModal');
+        const forwardModal = document.getElementById('forwardModal');
         let tempSignatureUrl = null;
         let pendingRejectRemarks = null;
 
         function showNotification(message, type = 'info') {
             const notification = document.createElement('div');
             notification.className = `notification ${type}`;
-            
+
             const messageSpan = document.createElement('span');
             messageSpan.textContent = message;
             notification.appendChild(messageSpan);
@@ -536,9 +634,20 @@
             otpModal.style.display = 'none';
         }
 
+        function handleOTPInput(event) {
+            const otpInput = document.getElementById('otpInput');
+            if (event.key === 'Enter' && otpInput.value.length === 6) {
+                verifyOTP();
+            }
+        }
+
         function closeRejectModal() {
             rejectModal.style.display = 'none';
             pendingRejectRemarks = null;
+        }
+
+        function openForwardModal() {
+            forwardModal.style.display = 'flex';
         }
 
         async function handleAction(action) {
@@ -646,6 +755,38 @@
                 showNotification('Error verifying OTP.', 'error');
             }
         }
+
+        async function submitForward() {
+            const forwardToId = document.getElementById('forwardTo').value;
+            const note = document.getElementById('forwardNote').value;
+
+            if (!forwardToId) {
+                showNotification('Please select a professor.', 'error');
+                return;
+            }
+
+            try {
+                const response = await fetch(`/professor/assignments/${assignmentId}/forward`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ forwardToId, note })
+                });
+                const data = await response.json();
+
+                if (data.success) {
+                    showNotification(data.message, 'success');
+                    setTimeout(() => {
+                        window.location.href = '/professor/dashboard';
+                    }, 2000);
+                } else {
+                    showNotification('Error: ' + data.message, 'error');
+                }
+            } catch (err) {
+                console.error(err);
+                showNotification('Error forwarding assignment.', 'error');
+            }
+        }
     </script>
 </body>
+
 </html>
