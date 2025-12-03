@@ -43,6 +43,17 @@
             display: flex;
             align-items: center;
             gap: 12px;
+            text-decoration: none;
+            cursor: pointer;
+        }
+
+        .logo-nav:hover .logo-icon {
+            box-shadow: 0 6px 20px rgba(102, 126, 234, 0.4);
+            transform: scale(1.05);
+        }
+
+        .logo-nav:hover .logo-text {
+            opacity: 0.8;
         }
 
         .logo-icon {
@@ -383,14 +394,14 @@
 </head>
 <body>
     <nav class="navbar">
-        <div class="logo-nav">
+        <a href="/" style="display: flex; align-items: center; gap: 12px; text-decoration: none;">
             <div class="logo-icon">
                 <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                     <path d="M9 11H7v2h2v-2zm4 0h-2v2h2v-2zm4 0h-2v2h2v-2zm2-7h-1V2h-2v2H8V2H6v2H5c-1.11 0-1.99.9-1.99 2L3 20c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 16H5V9h14v11z"/>
                 </svg>
             </div>
             <span class="logo-text">TaskNet</span>
-        </div>
+        </a>
         <div class="nav-buttons">
             <a href="/" class="nav-btn home">🏠 Home</a>
             <a href="/login" class="nav-btn login">🔐 Login</a>
@@ -465,17 +476,7 @@
             </div>
         </section>
 
-        <section id="support" class="section">
-            <h2 class="section-title">🆘 Support</h2>
-            <div class="section-content">
-                <p>We're here to help! Our dedicated support team is available to assist you with any questions or issues you may encounter.</p>
-                
-                <div class="highlight-box">
-                    <h3>📞 Need Help?</h3>
-                    <p>For any support inquiries, questions, or assistance, please visit our Contact Us section below or reach out directly through our available channels.</p>
-                </div>
-            </div>
-        </section>
+
 
         <section id="contact" class="section">
             <h2 class="section-title">📞 Contact Us</h2>
@@ -631,11 +632,6 @@
                     <li><strong>🚫 Prohibited Activities:</strong> Activities that are not allowed on the platform</li>
                     <li><strong>⚖️ Legal Compliance:</strong> Compliance with applicable laws and regulations</li>
                 </ul>
-
-                <div class="highlight-box">
-                    <h3>📋 Service Level Agreement</h3>
-                    <p>We guarantee 99.9% uptime with 24/7 monitoring and rapid issue resolution. Our terms are designed to protect both users and the platform.</p>
-                </div>
             </div>
         </section>
 
@@ -655,24 +651,11 @@
                     <li><strong>🌍 International Transfers:</strong> How we handle data across different jurisdictions</li>
                 </ul>
 
-                <div class="highlight-box">
-                    <h3>🛡️ GDPR & FERPA Compliance</h3>
-                    <p>TaskNet is fully compliant with GDPR, FERPA, and other international privacy regulations to ensure your data is protected.</p>
-                </div>
+    
             </div>
         </section>
 
-        <section id="help-center" class="section">
-            <h2 class="section-title">🆘 Help Center</h2>
-            <div class="section-content">
-                <p>Self-service resources and community support to help you succeed with TaskNet.</p>
-                
-                <div class="highlight-box">
-                    <h3>📞 Need Help?</h3>
-                    <p>For help center resources, tutorials, documentation, or any assistance, please visit our Contact Us section or reach out through our available channels.</p>
-                </div>
-            </div>
-        </section>
+
     </div>
 
     <button class="back-to-top" onclick="scrollToTop()">↑</button>
