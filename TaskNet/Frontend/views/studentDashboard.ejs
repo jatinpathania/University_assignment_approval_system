@@ -169,12 +169,198 @@
         .badge-draft { background-color: #bfdbfe; color: #1e3a8a; }
         .view-all-link { display: block; margin-top: 0.75rem; color: #0f393b; font-weight: 600; text-decoration: none; font-size: 0.85rem; }
         .view-all-link:hover { text-decoration: underline; }
+        
+        @media (max-width: 1024px) {
+            .top-header {
+                padding: 0.75rem 1.5rem;
+            }
+            .top-title {
+                font-size: 1.5rem;
+            }
+            .sidebar {
+                padding: 1rem;
+            }
+            .nav-title {
+                font-size: 1rem;
+            }
+            .nav-link {
+                padding: 0.75rem;
+                font-size: 0.9rem;
+            }
+            .main-content {
+                padding: 1.25rem 1.5rem;
+            }
+            .stat-card {
+                padding: 0.85rem;
+            }
+            .stat-value {
+                font-size: 1.75rem;
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .page-container {
+                flex-direction: column;
+            }
+            .sidebar {
+                width: 100%;
+                border-right: none;
+                border-bottom: 1px solid #e5e7eb;
+                padding: 0.75rem;
+                flex-direction: row;
+                justify-content: space-between;
+                align-items: center;
+            }
+            .sidebar > div:first-child {
+                display: flex;
+                align-items: center;
+                gap: 1.5rem;
+                flex: 1;
+            }
+            .nav-title {
+                margin-bottom: 0;
+            }
+            nav {
+                display: flex;
+                gap: 0.5rem;
+            }
+            .nav-link {
+                padding: 0.6rem 0.8rem;
+                margin-bottom: 0;
+                white-space: nowrap;
+                font-size: 0.75rem;
+            }
+            .logout-button {
+                margin-top: 0;
+            }
+            .top-title {
+                font-size: 1.25rem;
+            }
+            .main-content {
+                padding: 1rem;
+            }
+            .header-profile {
+                width: 36px;
+                height: 36px;
+            }
+            .header-title {
+                font-size: 1.25rem;
+            }
+            .stats-row {
+                grid-template-columns: repeat(2, 1fr);
+                gap: 0.6rem;
+                margin-bottom: 1rem;
+            }
+            .stat-card {
+                padding: 0.75rem;
+                height: auto;
+                min-height: 100px;
+            }
+            .stat-title {
+                font-size: 0.7rem;
+            }
+            .stat-value {
+                font-size: 1.5rem;
+            }
+            .submission-item {
+                padding: 0.75rem;
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 0.5rem;
+            }
+            .assignment-name {
+                font-size: 0.85rem;
+            }
+            .status-badge {
+                align-self: flex-start;
+                font-size: 0.7rem;
+                padding: 0.25rem 0.6rem;
+            }
+            .upload-btn {
+                padding: 0.4rem 0.8rem;
+                font-size: 0.8rem;
+            }
+        }
+        
+        @media (max-width: 480px) {
+
+            .top-header { padding: 0.5rem 0.75rem; }
+            .top-title { font-size: 0.95rem; }
+            .header-title { font-size: 1.1rem; margin-bottom: 1rem; }
+            .header-profile {
+                width: 45px;
+                height: 42px;
+            }
+            .page-container {
+                flex-direction: column;
+            }
+            .sidebar {
+                flex-direction: column;
+                align-items: stretch;
+                width: 100%;
+                gap: 0.5rem;
+            }
+            .sidebar > div:first-child {
+                flex-direction: column;
+                gap: 0.5rem;
+                align-items: stretch;
+            }
+            nav {
+                flex-direction: column;
+                gap: 0.25rem;
+            }
+            .nav-title { font-size: 0.8rem; margin-bottom: 0.5rem; font-weight: 600; }
+            .nav-link {
+                padding: 0.5rem 0.6rem;
+                font-size: 0.7rem;
+            }
+            .logout-button {
+                width: 40px;
+                height: 40px;
+                margin-top: 0.5rem;
+            }
+            .main-content {
+                padding: 0.75rem;
+            }
+            
+            .stats-row {
+                grid-template-columns: 1fr;
+                gap: 0.5rem;
+            }
+            .stat-card {
+                padding: 0.65rem;
+                min-height: 90px;
+            }
+            .stat-title {
+                font-size: 0.65rem;
+            }
+            .stat-value {
+                font-size: 1.25rem;
+            }
+            .section-title {
+                font-size: 0.95rem;
+            }
+            .submission-item {
+                padding: 0.65rem;
+                gap: 0.4rem;
+            }
+            .assignment-name {
+                font-size: 0.8rem;
+            }
+            .upload-btn {
+                padding: 0.35rem 0.7rem;
+                font-size: 0.75rem;
+            }
+            .view-all-link {
+                font-size: 0.8rem;
+            }
+        }
     </style>
 </head>
 <body>
     <header class="top-header">
         <h1 class="top-title">Student Portal</h1>
-        <img src="/student.png" alt="Profile" class="header-profile">
+        <img src="/student.png" alt="Profile" class="header-profile" style="margin-left: auto;">
     </header>
 
     <div class="page-container">
@@ -196,7 +382,7 @@
                     </a>
                 </nav>
             </div>
-            <form action="/logout" method="POST" style="margin-top: 2rem;">
+            <form action="/logout" method="POST" style="margin-top: 2rem;" >
                 <button type="submit" class="logout-button">
                     <div class="sign">
                         <svg viewBox="0 0 512 512">
