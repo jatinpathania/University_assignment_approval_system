@@ -7,18 +7,20 @@ cloudinary.config({
     api_secret: process.env.CLOUDINARY_API_SECRET
 });
 
-const uploadToCloudinary = async (file) => {
+const uploadToCloudinary = async (file, fileType = 'assignment') => {
     try {
         if (!file || !file.buffer) {
             throw new Error("No file provided or invalid file format");
         }
+        const folder = fileType === 'signature' ? 'TaskNet/university_signatures' : 'TaskNet/university_assignments';
         
         return new Promise((resolve, reject) => {
             const stream = cloudinary.uploader.upload_stream(
                 {
-                    folder: "university_assignments",
+                    folder: folder,
                     resource_type: "auto",
-                    format: "pdf"
+                    use_filename: true,
+                    unique_filename: true
                 },
                 (error, result) => {
                     if (error) {
