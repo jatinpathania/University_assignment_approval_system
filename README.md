@@ -1,4 +1,4 @@
-# TaskNet 🎓: Robust University Assignment Management System
+# TaskNet 🎓: University Assignment Management System
 
 TaskNet is a comprehensive, role-based web application designed to streamline the assignment submission and approval process within educational institutions. Built with Node.js, Express, MongoDB, and EJS, it features secure authentication, role-specific dashboards, and integrated cloud-based file management with Cloudinary.
 
@@ -115,61 +115,6 @@ npm start
 ### 6. Access the Application
 Open your browser and navigate to: **http://localhost:3000**
 
-## 📂 Project Structure
-
-```
-TaskNet/
-├── Backend/
-│   ├── controllers/           # Business logic for all modules
-│   │   ├── adminController.js
-│   │   ├── professorController.js
-│   │   ├── studentController.js
-│   │   └── authController.js
-│   ├── models/                # MongoDB schemas
-│   │   ├── user.js
-│   │   ├── assignment.js
-│   │   ├── department.js
-│   │   └── departmentQueries.js
-│   ├── routes/                # Express route definitions
-│   │   ├── adminRoutes.js
-│   │   ├── professorRoutes.js
-│   │   ├── studentRoutes.js
-│   │   └── authRoutes.js
-│   ├── middleware/            # Authentication & authorization
-│   │   └── auth.js
-│   ├── config/                # Configuration files
-│   │   ├── cloudinary.js      # Cloudinary setup
-│   │   └── multer.js          # File upload configuration
-│   ├── util/                  # Utility functions
-│   │   ├── emailSender.js     # Nodemailer setup
-│   │   └── cookies.js
-│   ├── Token/
-│   │   └── jwt.js             # JWT token management
-│   ├── db/
-│   │   └── db.js              # MongoDB connection
-│   ├── public/
-│   │   └── admin.js           # Admin user initialization script
-│   ├── server.js              # Application entry point
-│   ├── package.json
-│   └── .env                   # Environment variables (not committed)
-│
-├── Frontend/
-│   ├── views/                 # EJS templates
-│   │   ├── landingPage.ejs
-│   │   ├── login.ejs
-│   │   ├── adminDashboard.ejs
-│   │   ├── professorDashboard.ejs
-│   │   ├── studentDashboard.ejs
-│   │   ├── myAssignments.ejs
-│   │   ├── uploadAssignment.ejs
-│   │   ├── reviewAssignment.ejs
-│   │   ├── assignmentDetails.ejs
-│   │   └── ...
-│   ├── public/                # Static assets
-│   └── package.json
-│
-└── README.md
-```
 
 ## 🔄 User Workflows
 
