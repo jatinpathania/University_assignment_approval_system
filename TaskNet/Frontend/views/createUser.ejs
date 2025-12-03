@@ -70,10 +70,83 @@
             grid-template-columns: 1fr 1fr;
             gap: 1.5rem;
         }
+        @media (max-width: 1024px) {
+            .top-header { padding: 1rem; }
+            .top-title { font-size: 1.5rem; }
+            .sidebar { padding: 1rem; }
+            .main-content { padding: 1.5rem; }
+            .nav-link { padding: 0.8rem; font-size: 0.9rem; }
+            .form-card { max-width: 100%; }
+            .form-grid { gap: 1.2rem; }
+        }
+        @media (max-width: 768px) {
+            .page-container { flex-direction: column; min-height: auto; }
+            .sidebar {
+                width: 100%;
+                border-right: none;
+                border-bottom: 1px solid #e5e7eb;
+                padding: 0.75rem;
+                flex-direction: row;
+                justify-content: space-between;
+                align-items: center;
+            }
+            .sidebar > div:first-child {
+                display: flex;
+                align-items: center;
+                gap: 1.5rem;
+                flex: 1;
+            }
+            nav { display: flex; gap: 0.5rem; }
+            .nav-link {
+                padding: 0.6rem 0.8rem;
+                margin-bottom: 0;
+                white-space: nowrap;
+                font-size: 0.75rem;
+            }
+            .top-title { font-size: 1.25rem; }
+            .content-title { font-size: 1.25rem; }
+            .main-content { padding: 1rem; }
+            .header-profile { width: 36px; height: 36px; }
+            .form-card { padding: 1.5rem; max-width: 100%; }
+            .form-grid { grid-template-columns: 1fr; gap: 1rem; }
+        }
         @media (max-width: 600px) {
             .form-grid {
                 grid-template-columns: 1fr;
             }
+        }
+        @media (max-width: 480px) {
+            body { height: auto; }
+            .page-container { flex-direction: column; }
+            .sidebar {
+                flex-direction: column;
+                align-items: stretch;
+                width: 100%;
+                gap: 0.5rem;
+            }
+            .sidebar > div:first-child {
+                flex-direction: column;
+                gap: 0.5rem;
+                align-items: stretch;
+            }
+            nav { flex-direction: column; gap: 0.25rem; }
+            .nav-link { padding: 0.5rem 0.75rem; font-size: 0.7rem; }
+            .top-header { padding: 0.75rem; flex-direction: column; gap: 0.75rem; }
+            .top-title { font-size: 1rem; margin: 0; }
+            .header-profile { width: 32px; height: 32px; }
+            .main-content { padding: 0.75rem; }
+            .content-title { font-size: 1rem; }
+            .form-card { padding: 1rem; max-width: 100%; font-size: 0.9rem; }
+            .form-grid { grid-template-columns: 1fr; gap: 0.75rem; }
+            .form-group { margin-bottom: 0.8rem; }
+            label { font-size: 0.85rem; margin-bottom: 0.3rem; }
+            input[type="text"], input[type="email"], input[type="password"], select {
+                padding: 0.6rem;
+                font-size: 0.85rem;
+                border-radius: 0.4rem;
+            }
+            .submit-button { padding: 0.6rem 1rem; font-size: 0.85rem; }
+            .error-text { font-size: 0.8rem; }
         }
         .form-group {
             margin-bottom: 1.5rem;
