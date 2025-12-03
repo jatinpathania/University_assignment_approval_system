@@ -53,13 +53,27 @@ exports.sendWelcomeEmail = async({ email, name, password, role })=> {
     }
 };
 
-exports.sendSubmissionNotification = async({ professorEmail, professorName, studentName, assignmentTitle })=> {
+exports.sendSubmissionNotification = async({ professorEmail, professorName, studentName, assignmentTitle, forwardedBy, note })=> {
     try{
-        const mailOptions ={
-            from: `"TaskNet System" <${process.env.EMAIL_USER}>`,
-            to: professorEmail,
-            subject: `New Submission: ${assignmentTitle}`,
-            html: `
+        const isForwarded = !!forwardedBy;
+        const subject = isForwarded ? `Forwarded Assignment: ${assignmentTitle}` : `New Submission: ${assignmentTitle}`;
+        
+        const html = isForwarded ? `
+                <div style="font-family: Arial, sans-serif; line-height: 1.6;">
+                    <h3>Assignment Forwarded to You</h3>
+                    <p>Hello Professor <strong>${professorName}</strong>,</p>
+                    <p>Prof. <strong>${forwardedBy}</strong> has forwarded an assignment to you for review.</p>
+                    <ul>
+                        <li><strong>Student:</strong> ${studentName}</li>
+                        <li><strong>Title:</strong> ${assignmentTitle}</li>
+                        <li><strong>Forwarded By:</strong> Dr. ${forwardedBy}</li>
+                        <li><strong>Date:</strong> ${new Date().toLocaleDateString()}</li>
+                        ${note ? `<li><strong>Note from Colleague:</strong> ${note}</li>` : ''}
+                    </ul>
+                    <p>Please log in to your dashboard to review this forwarded submission.</p>
+                    <a href="${process.env.CLIENT_URL}/login" style="display:inline-block; padding:10px 20px; background-color:#f59e0b; color:white; text-decoration:none; border-radius:5px;">Go to Dashboard</a>
+                </div>
+            ` : `
                 <div style="font-family: Arial, sans-serif; line-height: 1.6;">
                     <h3>New Assignment Submission</h3>
                     <p>Hello Professor <strong>${professorName}</strong>,</p>
@@ -69,9 +83,15 @@ exports.sendSubmissionNotification = async({ professorEmail, professorName, stud
                         <li><strong>Date:</strong> ${new Date().toLocaleDateString()}</li>
                     </ul>
                     <p>Please log in to your dashboard to review and approve/reject this submission.</p>
-                    <a href="${process.env.CLIENT_URL}/login/login" style="display:inline-block; padding:10px 20px; background-color:#4338ca; color:white; text-decoration:none; border-radius:5px;">Go to Dashboard</a>
+                    <a href="${process.env.CLIENT_URL}/login" style="display:inline-block; padding:10px 20px; background-color:#4338ca; color:white; text-decoration:none; border-radius:5px;">Go to Dashboard</a>
                 </div>
-            `,
+            `;
+        
+        const mailOptions ={
+            from: `"TaskNet System" <${process.env.EMAIL_USER}>`,
+            to: professorEmail,
+            subject: subject,
+            html: html
         };
 
         const info = await transporter.sendMail(mailOptions);
