@@ -505,6 +505,18 @@
             color: #2d3748;
         }
 
+        @media (max-width: 1200px) {
+            .login-container {
+                max-width: 95%;
+            }
+            .login-left {
+                padding: 35px 30px;
+            }
+            .login-right {
+                padding: 35px 30px;
+            }
+        }
+
         @media (max-width: 1000px) {
             .login-container {
                 grid-template-columns: 1fr;
@@ -513,6 +525,7 @@
             .login-left {
                 padding: 40px;
                 min-height: 300px;
+                display: none;
             }
 
             .login-left h2 {
@@ -526,7 +539,17 @@
             h1 {
                 font-size: 1.5em;
             }
-
+            .subtitle {
+                font-size: 0.9em;
+            }
+            .logo {
+                width: 70px;
+                height: 70px;
+            }
+            .logo svg {
+                width: 40px;
+                height: 40px;
+            }
             .demo-section {
                 margin-top: 20px;
                 padding: 15px;
@@ -536,27 +559,283 @@
                 font-size: 0.8em;
             }
         }
-
-        @media (max-width: 600px) {
-            .login-left {
-                padding: 30px 20px;
+        
+        @media (max-width: 768px) {
+            body {
+                padding: 15px;
             }
-
+            .login-container {
+                border-radius: 15px;
+                max-width: 100%;
+            }
             .login-right {
                 padding: 30px 20px;
             }
-
-            .login-left h2 {
-                font-size: 1.5em;
+            h1 {
+                font-size: 1.25em;
             }
-
-            .login-left p {
+            .subtitle {
+                font-size: 0.85em;
+                margin-bottom: 25px;
+            }
+            .logo {
+                width: 60px;
+                height: 60px;
+                margin: 0 auto 15px;
+            }
+            .logo svg {
+                width: 35px;
+                height: 35px;
+            }
+            input[type="email"],
+            input[type="password"] {
+                padding: 12px 12px 12px 40px;
+                font-size: 0.9em;
+            }
+            input[type="submit"] {
+                padding: 12px;
                 font-size: 0.95em;
             }
-
-            .copy-btn {
-                padding: 3px 8px;
+            .footer-text {
+                font-size: 0.8em;
+                margin-top: 20px;
+            }
+            .dev-section {
+                margin-top: 20px;
+                padding-top: 20px;
+            }
+            .demo-section {
+                padding: 12px;
+                margin-top: 20px;
+                border-radius: 10px;
+            }
+            .demo-title {
+                font-size: 0.9em;
+                margin-bottom: 12px;
+            }
+            .credential-card {
+                padding: 10px 12px;
+                border-radius: 8px;
+            }
+            .credential-role {
                 font-size: 0.7em;
+            }
+            .credential-item {
+                font-size: 0.75em;
+                margin: 3px 0;
+            }
+            .credential-label {
+                font-size: 0.7em;
+            }
+            .credential-value {
+                padding: 3px 6px;
+                font-size: 0.7em;
+            }
+            .copy-btn {
+                padding: 3px 6px;
+                font-size: 0.65em;
+                border-radius: 3px;
+            }
+            .demo-info {
+                font-size: 0.7em;
+                margin-top: 10px;
+                padding-top: 10px;
+            }
+            .github-btn {
+                padding: 8px 12px;
+                font-size: 0.8em;
+                gap: 6px;
+            }
+            .github-btn svg {
+                width: 14px;
+                height: 14px;
+            }
+            .input-icon {
+                left: 12px;
+            }
+            .input-group {
+                gap: 6px;
+            }
+            form {
+                gap: 15px;
+            }
+        }
+
+        @media (max-width: 600px) {
+            .login-left {
+                padding: 20px 15px;
+                min-height: 250px;
+            }
+
+            .login-right {
+                padding: 20px 15px;
+            }
+
+            .login-left h2 {
+                font-size: 1.3em;
+                margin-bottom: 10px;
+            }
+            .login-left p {
+                font-size: 0.9em;
+                margin-bottom: 20px;
+            }
+            h1 {
+                font-size: 1.1em;
+            }
+            .subtitle {
+                font-size: 0.8em;
+                margin-bottom: 20px;
+            }
+            .logo {
+                width: 50px;
+                height: 50px;
+                margin: 0 auto 10px;
+            }
+            .logo svg {
+                width: 28px;
+                height: 28px;
+            }
+            input[type="email"],
+            input[type="password"] {
+                padding: 10px 10px 10px 35px;
+                font-size: 0.85em;
+                border-radius: 8px;
+            }
+            input[type="submit"] {
+                padding: 10px;
+                font-size: 0.9em;
+                margin-top: 8px;
+                border-radius: 8px;
+            }
+            .copy-btn {
+                padding: 2px 5px;
+                font-size: 0.6em;
+            }
+            .credential-card {
+                padding: 8px 10px;
+            }
+            .credential-item {
+                font-size: 0.7em;
+            }
+            .demo-section {
+                padding: 10px;
+                margin-top: 15px;
+            }
+            .dev-section {
+                margin-top: 15px;
+                padding-top: 15px;
+            }
+            .github-btn {
+                padding: 6px 10px;
+                font-size: 0.75em;
+            }
+            .footer-text {
+                font-size: 0.7em;
+                margin-top: 15px;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            body::before,
+            body::after {
+                display: none;
+            }
+            .login-container {
+                border-radius: 10px;
+                padding: 0;
+            }
+            .login-left {
+                display: none;
+            }
+            .login-right {
+                padding: 15px 12px;
+            }
+            .top-header {
+                padding: 0.75rem;
+            }
+            h1 {
+                font-size: 1em;
+                margin-bottom: 8px;
+            }
+            .subtitle {
+                font-size: 0.75em;
+                margin-bottom: 15px;
+            }
+            .logo {
+                width: 45px;
+                height: 45px;
+                margin: 0 auto 8px;
+            }
+            .logo svg {
+                width: 24px;
+                height: 24px;
+            }
+            .input-group {
+                gap: 4px;
+            }
+            input[type="email"],
+            input[type="password"] {
+                padding: 8px 8px 8px 32px;
+                font-size: 0.8em;
+            }
+            input[type="submit"] {
+                padding: 8px;
+                font-size: 0.85em;
+            }
+            .demo-section {
+                padding: 8px;
+                margin-top: 12px;
+                border-radius: 8px;
+            }
+            .demo-title {
+                font-size: 0.8em;
+                margin-bottom: 8px;
+            }
+            .demo-credentials {
+                gap: 8px;
+            }
+            .credential-card {
+                padding: 6px 8px;
+            }
+            .credential-role {
+                font-size: 0.65em;
+                margin-bottom: 3px;
+            }
+            .credential-item {
+                font-size: 0.65em;
+                margin: 2px 0;
+            }
+            .copy-btn {
+                padding: 2px 4px;
+                font-size: 0.55em;
+                border-radius: 2px;
+            }
+            .demo-info {
+                font-size: 0.65em;
+                padding-top: 8px;
+                margin-top: 8px;
+            }
+            .dev-section {
+                margin-top: 12px;
+                padding-top: 12px;
+                border-top: 1px solid #e2e8f0;
+            }
+            .dev-message {
+                font-size: 0.75em;
+                margin-bottom: 8px;
+            }
+            .github-btn {
+                padding: 5px 8px;
+                font-size: 0.7em;
+                gap: 4px;
+            }
+            .github-btn svg {
+                width: 12px;
+                height: 12px;
+            }
+            .footer-text {
+                font-size: 0.65em;
+                margin-top: 10px;
             }
         }
     </style>
@@ -587,6 +866,24 @@
                                     <span class="credential-value" style="background: rgba(0, 0, 0, 0.2); color: white; display: block; padding: 6px;">student123</span>
                                 </div>
                                 <button class="copy-btn" onclick="copyToClipboard('student123', this)" style="background: rgba(255, 255, 255, 0.3); margin-left: 10px; height: fit-content;">📋</button>
+                            </div>
+                        </div>
+
+                        <div class="credential-card" style="background: rgba(255, 255, 255, 0.15); border-left-color: #ed8936; color: white;">
+                            <div class="credential-role" style="color: #fed7aa;">Professor Account</div>
+                            <div class="credential-item" style="color: rgba(255, 255, 255, 0.9); display: flex; justify-content: space-between; align-items: center;">
+                                <div>
+                                    <span class="credential-label" style="color: white; display: block; font-size: 0.8em; margin-bottom: 3px;">Email</span>
+                                    <span class="credential-value" style="background: rgba(0, 0, 0, 0.2); color: white; display: block; padding: 6px;">professor@demo.com</span>
+                                </div>
+                                <button class="copy-btn" onclick="copyToClipboard('professor@demo.com', this)" style="background: rgba(255, 255, 255, 0.3); margin-left: 10px; height: fit-content;">📋</button>
+                            </div>
+                            <div class="credential-item" style="color: rgba(255, 255, 255, 0.9); display: flex; justify-content: space-between; align-items: center; margin-top: 8px;">
+                                <div>
+                                    <span class="credential-label" style="color: white; display: block; font-size: 0.8em; margin-bottom: 3px;">Password</span>
+                                    <span class="credential-value" style="background: rgba(0, 0, 0, 0.2); color: white; display: block; padding: 6px;">professor123</span>
+                                </div>
+                                <button class="copy-btn" onclick="copyToClipboard('professor123', this)" style="background: rgba(255, 255, 255, 0.3); margin-left: 10px; height: fit-content;">📋</button>
                             </div>
                         </div>
 
