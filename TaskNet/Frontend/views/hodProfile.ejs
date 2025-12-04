@@ -1,0 +1,1140 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Profile - TaskNet</title>
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg viewBox='0 0 24 24' xmlns='http://www.w3.org/2000/svg'%3E%3Crect width='24' height='24' fill='#667eea' rx='4'/%3E%3Cpath d='M9 11H7v2h2v-2zm4 0h-2v2h2v-2zm4 0h-2v2h2v-2zm2-7h-1V2h-2v2H8V2H6v2H5c-1.11 0-1.99.9-1.99 2L3 20c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 16H5V9h14v11z' fill='white'/%3E%3C/svg%3E" />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        body { font-family: 'Inter', sans-serif; background-color: #f4f7f9; margin: 0; padding: 0; min-height: 100vh; display: flex; flex-direction: column; }
+        .top-header {
+            background-color: #ffffff;
+            padding: 1rem 2rem;
+            border-bottom: 1px solid #e5e7eb;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-shrink: 0;
+        }
+        .footer {
+            border-top: 1px solid #e5e7eb;
+            background-color: white;
+            padding: 0.75rem 0;
+            text-align: center;
+            font-size: 0.875rem;
+            color: #6b7280;
+            flex-shrink: 0;
+        }
+
+        .header-profile {
+            width: 48px;
+            height: 48px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 2px solid #e5e7eb;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+            cursor: pointer;
+        }
+
+        .top-title {
+            font-size: 1.875rem;
+            font-weight: 700;
+            color: #1f2937;
+        }
+        .page-container { display: flex; flex: 1; overflow: hidden; }
+        .sidebar {
+            width: 256px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            padding: 1.5rem;
+            background-color: #ffffff;
+            border-right: 1px solid #e5e7eb;
+            box-sizing: border-box;
+        }
+        .main-content { flex: 1; padding: 1.5rem 2rem; background-color: #ffffff; overflow-y: auto; display: flex; flex-direction: column; }
+        .nav-title { font-size: 1.125rem; font-weight: 600; color: #374151; margin-bottom: 15px; }
+        .nav-link {
+            display: block;
+            padding: 1rem;
+            margin-bottom: 0.5rem;
+            border-radius: 0.5rem;
+            color: #4b5563;
+            font-weight: 600;
+            transition: all 0.15s ease-in-out;
+            text-decoration: none;
+        }
+        .nav-link:hover {
+            background-color: #f3f4f6;
+            color: #1f2937;
+        }
+        .nav-link.active {
+            background-color: #e5e7eb;
+            color: #1f2937;
+        }
+        .logout-button {
+            display: flex;
+            align-items: center;
+            justify-content: flex-start;
+            width: 45px;
+            height: 45px;
+            border: none;
+            border-radius: 50%;
+            cursor: pointer;
+            position: relative;
+            overflow: hidden;
+            transition-duration: 0.3s;
+            box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.199);
+            background-color: white;
+            margin-top: 2rem;
+        }
+
+        .logout-button .sign {
+            width: 100%;
+            transition-duration: 0.3s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .logout-button .sign svg {
+            width: 17px;
+        }
+
+        .logout-button .sign svg path {
+            fill: black;
+        }
+
+        .logout-button .text {
+            position: absolute;
+            right: 0%;
+            width: 0%;
+            opacity: 0;
+            color: white;
+            font-size: 1.2em;
+            font-weight: 600;
+            transition-duration: 0.3s;
+            letter-spacing: 0.05em;
+        }
+
+        .logout-button:hover {
+            background-color: black;
+            width: 155px;
+            border-radius: 40px;
+            transition-duration: 0.3s;
+        }
+
+        .logout-button:hover .sign {
+            width: 25%;
+            transition-duration: 0.3s;
+            padding-left: 15px;
+        }
+
+        .logout-button:hover .sign svg path {
+            fill: white;
+        }
+
+        .logout-button:hover .text {
+            opacity: 1;
+            width: 75%;
+            transition-duration: 0.3s;
+            padding-right: 15px;
+            text-align: center;
+        }
+
+        .logout-button:active {
+            transform: translate(2px, 2px);
+        }
+
+        .header-title { font-size: 1.5rem; font-weight: 700; color: #0f172a; margin-bottom: 0.75rem; }
+        .profile-container { max-width: 800px; }
+        .profile-header { display: flex; align-items: center; gap: 2rem; margin-bottom: 2rem; padding: 1.5rem; background-color: #f8fafc; border-radius: 0.75rem; border: 1px solid #e2e8f0; }
+        .profile-avatar { width: 120px; height: 120px; border-radius: 50%; object-fit: cover; border: 3px solid #064e3b; box-shadow: 0 4px 12px rgba(0,0,0,0.1); }
+        .profile-info { flex: 1; }
+        .profile-name { font-size: 1.75rem; font-weight: 700; color: #0f172a; margin-bottom: 0.25rem; }
+        .profile-role { font-size: 1rem; color: #064e3b; font-weight: 600; margin-bottom: 0.5rem; }
+        .profile-email { color: #64748b; font-size: 0.95rem; }
+
+        .form-section { margin-bottom: 2rem; }
+        .section-title { font-size: 1.1rem; font-weight: 600; color: #1e293b; margin-bottom: 1rem; padding-bottom: 0.5rem; border-bottom: 2px solid #e2e8f0; }
+        
+        .form-row { display: grid; grid-template-columns: repeat(2, 1fr); gap: 1.5rem; margin-bottom: 1.5rem; }
+        .form-row.full { grid-template-columns: 1fr; }
+
+        .form-group { display: flex; flex-direction: column; }
+        .form-label { font-weight: 600; color: #374151; margin-bottom: 0.5rem; font-size: 0.9rem; }
+        .form-value { color: #475569; font-size: 0.95rem; padding: 0.75rem; background-color: #f8fafc; border-radius: 0.5rem; border: 1px solid #e2e8f0; }
+        
+        .form-input {
+            padding: 0.75rem;
+            border: 1px solid #d1d5db;
+            border-radius: 0.5rem;
+            font-family: inherit;
+            font-size: 0.95rem;
+            transition: border-color 0.2s;
+        }
+        .form-input:focus {
+            outline: none;
+            border-color: #064e3b;
+            box-shadow: 0 0 0 3px rgba(6, 78, 59, 0.1);
+        }
+
+        .button-group { display: flex; gap: 1rem; margin-top: 2rem; }
+        .btn { padding: 0.75rem 1.5rem; border-radius: 0.5rem; font-weight: 600; border: none; cursor: pointer; font-size: 0.95rem; transition: all 0.2s; }
+        .btn-primary { background-color: #064e3b; color: white; }
+        .btn-primary:hover { background-color: #065f46; }
+        .btn-secondary { background-color: #e5e7eb; color: #374151; }
+        .btn-secondary:hover { background-color: #d1d5db; }
+
+        .info-card { background-color: #f8fafc; border: 1px solid #e2e8f0; border-radius: 0.75rem; padding: 1rem; margin-bottom: 1rem; }
+        .info-label { font-weight: 600; color: #374151; margin-bottom: 0.25rem; font-size: 0.85rem; text-transform: uppercase; letter-spacing: 0.5px; }
+        .info-value { color: #475569; font-size: 0.95rem; }
+
+        .success-message { background-color: #dcfce7; color: #14532d; padding: 1rem; border-radius: 0.5rem; margin-bottom: 1.5rem; border: 1px solid #86efac; display: none; }
+        .success-message.show { display: block; }
+
+        .modal-overlay { 
+            display: none; 
+            position: fixed; 
+            top: 0; 
+            left: 0; 
+            right: 0; 
+            bottom: 0; 
+            background-color: rgba(0, 0, 0, 0.5); 
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+        }
+        .modal-overlay.show { display: flex; }
+
+        .otp-modal {
+            background: white;
+            border-radius: 1rem;
+            padding: 1.5rem;
+            max-width: 380px;
+            width: calc(100% - 2rem);
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
+            display: flex;
+            flex-direction: column;
+            animation: slideIn 0.2s ease-out;
+        }
+
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: scale(0.95);
+            }
+            to {
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
+
+        @media (max-width: 600px) {
+            .otp-modal {
+                max-width: 340px;
+                padding: 1.25rem;
+                width: calc(100% - 1.5rem);
+            }
+        }
+
+        @media (max-width: 480px) {
+            .otp-modal {
+                max-width: 100%;
+                width: calc(100% - 1rem);
+                padding: 1rem;
+                margin: 0 0.5rem;
+            }
+        }
+
+        .modal-header {
+            margin-bottom: 1.5rem;
+            text-align: center;
+        }
+
+        .modal-title {
+            font-size: 1.3rem;
+            font-weight: 700;
+            color: #0f393b;
+            margin-bottom: 0.5rem;
+        }
+
+        .modal-description {
+            font-size: 0.9rem;
+            color: #64748b;
+        }
+
+        .otp-input-group {
+            margin-bottom: 1.5rem;
+            text-align: center;
+        }
+
+        .otp-input-group label {
+            display: block;
+            font-size: 0.85rem;
+            font-weight: 600;
+            color: #374151;
+            margin-bottom: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .otp-input {
+            box-sizing: border-box; 
+            width: 100%;
+            padding: 0.75rem 1rem;
+            font-size: 2rem;
+            text-align: center;
+            letter-spacing: 0.5rem; 
+            border: 2px solid #e2e8f0;
+            border-radius: 0.5rem;
+            font-family: 'Courier New', monospace;
+            font-weight: bold;
+            transition: border-color 0.3s;
+            max-width: 320px; 
+            margin: 0 auto; 
+            display: block;
+        }
+
+        .otp-input:focus {
+            outline: none;
+            border-color: #0f7992;
+            background-color: #f0fafb;
+        }
+
+        .otp-timer {
+            font-size: 0.85rem;
+            color: #64748b;
+            margin-bottom: 1rem;
+            text-align: center;
+        }
+
+        .otp-timer.warning {
+            color: #c2410c;
+            font-weight: 600;
+        }
+
+        .error-message {
+            background-color: #fee2e2;
+            color: #7f1d1d;
+            padding: 0.75rem;
+            border-radius: 0.5rem;
+            margin-bottom: 1rem;
+            font-size: 0.9rem;
+            border: 1px solid #fca5a5;
+            display: none;
+        }
+
+        .error-message.show {
+            display: block;
+            animation: shake 0.4s;
+        }
+
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            10%, 30%, 50%, 70%, 90% { transform: translateX(-5px); }
+            20%, 40%, 60%, 80% { transform: translateX(5px); }
+        }
+
+        .modal-button-group {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 1rem;
+        }
+
+        .modal-button-group button {
+            flex: 1;
+            padding: 0.75rem;
+            border: none;
+            border-radius: 0.5rem;
+            font-size: 0.95rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .btn-verify {
+            background-color: #0f7992;
+            color: white;
+        }
+
+        .btn-verify:hover {
+            background-color: #0a5a6a;
+        }
+
+        .btn-verify:disabled {
+            background-color: #cbd5e1;
+            cursor: not-allowed;
+            opacity: 0.6;
+        }
+
+        .btn-cancel {
+            background-color: #e5e7eb;
+            color: #374151;
+        }
+
+        .btn-cancel:hover {
+            background-color: #d1d5db;
+        }
+
+        .resend-otp-section {
+            text-align: center;
+            border-top: 1px solid #e2e8f0;
+            padding-top: 1rem;
+        }
+
+        .resend-otp-text {
+            font-size: 0.85rem;
+            color: #64748b;
+            margin-bottom: 0.5rem;
+        }
+
+        .btn-resend {
+            background-color: transparent;
+            color: #0f7992;
+            border: 1px solid #0f7992;
+            padding: 0.6rem 1.5rem;
+            border-radius: 0.5rem;
+            font-size: 0.85rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .btn-resend:hover:not(:disabled) {
+            background-color: #f0fafb;
+        }
+
+        .btn-resend:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        .edit-mode { display: none; }
+        .edit-mode.active { display: block; }
+        .view-mode.hidden { display: none; }
+
+        @media (max-width: 1024px) {
+            .main-content { padding: 1.25rem 1.5rem; }
+            .form-row { grid-template-columns: 1fr; }
+            .profile-header { padding: 1.25rem; }
+        }
+
+        @media (max-width: 768px) {
+            .page-container {
+                flex-direction: column;
+                min-height: auto;
+                width: 100%;
+                box-sizing: border-box;
+            }
+            .top-header {
+                padding: 0.75rem 1rem;
+                gap: 0.5rem;
+                align-items: center;
+                position: sticky;
+                top: 0;
+                z-index: 100;
+            }
+
+            .top-title {
+                font-size: 1.1rem;
+                margin: 0;
+                flex: 1;
+                white-space: nowrap;
+                overflow: hidden;
+                text-overflow: ellipsis;
+            }
+
+            .header-profile {
+                width: 36px;
+                height: 36px;
+                flex-shrink: 0;
+            }
+
+            .sidebar {
+                width: 100% !important;
+                border-right: none !important;
+                border-bottom: none !important;
+                padding: 0 !important;
+                margin: 0 !important;
+                position: fixed !important;
+                top: 70px !important;
+                left: 0 !important;
+                right: 0 !important;
+                z-index: 90 !important;
+                max-height: 0 !important;
+                overflow: hidden !important;
+                flex-direction: column !important;
+                transition: max-height 0.25s ease-out !important;
+                transition:  box-shadow 0.25s ease-out !important;
+                background-color: #ffffff !important;
+                justify-content: flex-start !important;
+                box-sizing: border-box !important;
+                display: flex !important;
+            }
+
+            .sidebar.open {
+                max-height: 400px !important;
+                padding: 1rem !important;
+                border-bottom: 1px solid #e5e7eb !important;
+                box-shadow: 0 4px 6px rgba(0,0,0,0.1) !important;
+                overflow: auto !important;
+            }
+
+            .sidebar > div:first-child {
+                display: flex;
+                flex-direction: column;
+                gap: 1rem;
+            }
+
+            .nav-title {
+                margin-bottom: 0.5rem;
+                font-size: 0.9rem;
+            }
+
+            nav {
+                display: flex;
+                flex-direction: column;
+                gap: 0.5rem;
+            }
+
+            .nav-link {
+                padding: 0.6rem 1rem;
+                margin-bottom: 0 !important;
+                font-size: 0.85rem;
+            }
+
+            .logout-button {
+                margin-top: 1rem;
+                width: 40px;
+                height: 40px;
+            }
+
+            .main-content { 
+                padding: 1.25rem 1rem;
+                margin-top: 0;
+                width: 100%;
+                box-sizing: border-box;
+                flex: 1;
+            }
+            .form-row { grid-template-columns: 1fr; }
+            .profile-header { flex-direction: column; text-align: center; padding: 1rem; }
+            .profile-avatar { width: 100px; height: 100px; }
+            .profile-info { flex: 1; }
+            .button-group { flex-direction: column; }
+            .btn { width: 100%; }
+        }
+
+        @media (max-width: 480px) {
+            body { 
+                min-height: 100vh; 
+            }
+            .top-header { 
+                padding: 0.5rem 0.75rem;
+                height: 50px;
+            }
+            .top-title { 
+                font-size: 1rem; 
+            }
+            .sidebar {
+                top: 60px !important;
+            }
+
+            .sidebar.open {
+                max-height: 500px !important;
+                padding: 0.75rem !important;
+                overflow: auto !important;
+            }
+
+            .sidebar > div:first-child {
+                gap: 0.75rem;
+            }
+
+            nav {
+                gap: 0.25rem;
+            }
+
+            .nav-title { 
+                font-size: 0.85rem; 
+                margin-bottom: 0.5rem; 
+                font-weight: 600; 
+            }
+            .nav-link {
+                padding: 0.5rem 0.75rem;
+                margin-bottom: 0;
+                font-size: 0.75rem;
+                font-weight: 600;
+            }
+            .logout-button { 
+                width: 40px; 
+                height: 40px; 
+                margin-top: 0.5rem; 
+            }
+            .main-content { 
+                padding: 0.75rem; 
+            }
+            .header-title { 
+                font-size: 1rem; 
+                margin-bottom: 0.5rem; 
+            }
+            .profile-header { 
+                padding: 0.75rem; 
+            }
+            .profile-avatar { 
+                width: 80px; 
+                height: 80px; 
+            }
+            .profile-name { 
+                font-size: 1.25rem; 
+            }
+            .profile-role { 
+                font-size: 0.9rem; 
+            }
+            .profile-email { 
+                font-size: 0.85rem; 
+            }
+            .form-section { 
+                margin-bottom: 1.5rem; 
+            }
+            .section-title { 
+                font-size: 1rem; 
+            }
+            .form-label { 
+                font-size: 0.85rem; 
+            }
+            .form-input { 
+                font-size: 0.9rem; 
+                padding: 0.6rem; 
+            }
+            .btn { 
+                padding: 0.6rem 1rem; 
+                font-size: 0.85rem; 
+            }
+            .button-group { 
+                gap: 0.5rem; 
+            }
+            .info-card { 
+                padding: 0.75rem; 
+                margin-bottom: 0.75rem; 
+            }
+            .info-label { 
+                font-size: 0.75rem; 
+                margin-bottom: 0.25rem; 
+            }
+            .info-value { 
+                font-size: 0.9rem; 
+            }
+        }
+
+        .menu-toggle {
+            display: none;
+            background: none;
+            border: none;
+            cursor: pointer;
+            font-size: 1.5rem;
+            color: #1f2937;
+            padding: 0;
+            width: 40px;
+            height: 40px;
+            align-items: center;
+            justify-content: center;
+        }
+
+        @media (max-width: 768px) {
+            .menu-toggle {
+                display: flex;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header class="top-header">
+        <button class="menu-toggle" id="menuToggle">☰</button>
+        <h1 class="top-title">HOD Portal</h1>
+        <img src="/hod.png" alt="Profile" class="header-profile">
+    </header>
+
+    <div class="page-container">
+        <div class="sidebar">
+            <div>
+                <div class="nav-title">Navigation</div>
+                <nav>
+                    <a href="/hod/dashboard" class="nav-link <%= activePage === 'dashboard' ? 'active' : '' %>">
+                        Dashboard
+                    </a>
+                    <a href="/hod/professors" class="nav-link <%= activePage === 'professors' ? 'active' : '' %>">
+                        Professors
+                    </a>
+                    <a href="/hod/assignments" class="nav-link <%= activePage === 'assignments' ? 'active' : '' %>">
+                        Assignments
+                    </a>
+                    <a href="/hod/analytics" class="nav-link <%= activePage === 'analytics' ? 'active' : '' %>">
+                        Analytics
+                    </a>
+                    <a href="/hod/profile" class="nav-link <%= activePage === 'profile' ? 'active' : '' %>">
+                        Profile
+                    </a>
+                </nav>
+            </div>
+            <form action="/logout" method="POST" style="margin-top: 2rem;">
+                <button type="submit" class="logout-button">
+                    <div class="sign">
+                        <svg viewBox="0 0 512 512">
+                            <path d="M377.9 105.9L500.7 228.7c7.2 7.2 11.3 17.1 11.3 27.3s-4.1 20.1-11.3 27.3L377.9 406.1c-6.4 6.4-15 9.9-24 9.9c-18.7 0-33.9-15.2-33.9-33.9l0-62.1-128 0c-17.7 0-32-14.3-32-32l0-64c0-17.7 14.3-32 32-32l128 0 0-62.1c0-18.7 15.2-33.9 33.9-33.9c9 0 17.6 3.6 24 9.9zM160 96L96 96c-17.7 0-32 14.3-32 32l0 256c0 17.7 14.3 32 32 32l64 0c17.7 0 32 14.3 32 32s-14.3 32-32 32l-64 0c-53 0-96-43-96-96L0 128C0 75 43 32 96 32l64 0c17.7 0 32 14.3 32 32s-14.3 32-32 32z"></path>
+                        </svg>
+                    </div>
+                    <div class="text">Logout</div>
+                </button>
+            </form>
+        </div>
+
+        <div class="main-content">
+            <h1 class="header-title">HOD Profile</h1>
+            <p style="color: #64748b; font-size: 0.95rem; margin: 0.5rem 0 1.5rem 0;">Manage your professional information and account settings.</p>
+
+            <div id="successMessage" class="success-message">Profile updated successfully!</div>
+
+            <div class="profile-container">
+                <div class="profile-header">
+                    <img src="/hod.png" alt="HOD Avatar" class="profile-avatar">
+                    <div class="profile-info">
+                        <div class="profile-name"><%= user.name %></div>
+                        <div class="profile-role">Head of Department</div>
+                        <div class="profile-email"><%= user.email %></div>
+                    </div>
+                </div>
+
+                <div class="view-mode" id="viewMode">
+                    <div class="form-section">
+                        <div class="section-title">Personal Information</div>
+                        <div class="form-row full">
+                            <div class="form-group">
+                                <div class="info-label">Full Name</div>
+                                <div class="form-value"><%= user.name %></div>
+                            </div>
+                        </div>
+                        <div class="form-row full">
+                            <div class="form-group">
+                                <div class="info-label">Email Address</div>
+                                <div class="form-value"><%= user.email %></div>
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <div class="info-label">Phone Number</div>
+                                <div class="form-value"><%= user.phone || 'Not provided' %></div>
+                            </div>
+                            <div class="form-group">
+                                <div class="info-label">Office Number</div>
+                                <div class="form-value"><%= user.office || 'Not assigned' %></div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-section">
+                        <div class="section-title">Professional Information</div>
+                        <div class="form-row full">
+                            <div class="form-group">
+                                <div class="info-label">Date of Joining</div>
+                                <div class="form-value"><%= new Date(user.createdAt).toLocaleDateString() %></div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-section">
+                        <div class="section-title">Department Statistics</div>
+                        <div class="form-row">
+                            <div class="info-card">
+                                <div class="info-label">Total Assignments</div>
+                                <div class="info-value" style="font-size: 1.5rem; font-weight: 700; color: #7c3aed;"><%= stats.total || 0 %></div>
+                            </div>
+                            <div class="info-card">
+                                <div class="info-label">Approved</div>
+                                <div class="info-value" style="font-size: 1.5rem; font-weight: 700; color: #14532d;"><%= stats.approved || 0 %></div>
+                            </div>
+                            <div class="info-card">
+                                <div class="info-label">Pending Review</div>
+                                <div class="info-value" style="font-size: 1.5rem; font-weight: 700; color: #c2410c;"><%= stats.pending || 0 %></div>
+                            </div>
+                            <div class="info-card">
+                                <div class="info-label">Rejected</div>
+                                <div class="info-value" style="font-size: 1.5rem; font-weight: 700; color: #7f1d1d;"><%= stats.rejected || 0 %></div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="button-group">
+                        <button class="btn btn-primary" onclick="toggleEditMode()">Edit Profile</button>
+                    </div>
+                </div>
+
+                <form action="/hod/profile/update" method="POST" class="edit-mode" id="editMode">
+                    <div class="form-section">
+                        <div class="section-title">Personal Information</div>
+                        <div class="form-row full">
+                            <div class="form-group">
+                                <label for="name" class="form-label">Full Name</label>
+                                <input type="text" id="name" name="name" class="form-input" value="<%= user.name %>" required>
+                            </div>
+                        </div>
+                        <div class="form-row full">
+                            <div class="form-group">
+                                <label for="email" class="form-label">Email Address</label>
+                                <input type="email" id="email" name="email" class="form-input" value="<%= user.email %>" required>
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="phone" class="form-label">Phone Number</label>
+                                <input type="tel" id="phone" name="phone" class="form-input" value="<%= user.phone || '' %>" placeholder="e.g., +91 98765 43210">
+                            </div>
+                            <div class="form-group">
+                                <label for="office" class="form-label">Office Number</label>
+                                <input type="text" id="office" name="office" class="form-input" value="<%= user.office || '' %>" placeholder="e.g., A-101">
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-section">
+                        <div class="section-title">Contact Information</div>
+                        <div class="form-row full">
+                            <div class="form-group">
+                                <label for="address" class="form-label">Address</label>
+                                <input type="text" id="address" name="address" class="form-input" value="<%= user.address || '' %>" placeholder="Street address">
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="city" class="form-label">City</label>
+                                <input type="text" id="city" name="city" class="form-input" value="<%= user.city || '' %>">
+                            </div>
+                            <div class="form-group">
+                                <label for="state" class="form-label">State</label>
+                                <input type="text" id="state" name="state" class="form-input" value="<%= user.state || '' %>">
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="postalCode" class="form-label">Postal Code</label>
+                                <input type="text" id="postalCode" name="postalCode" class="form-input" value="<%= user.postalCode || '' %>">
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="button-group">
+                        <button type="submit" class="btn btn-primary">Save Changes</button>
+                        <button type="button" class="btn btn-secondary" onclick="toggleEditMode()">Cancel</button>
+                    </div>
+                </form>
+
+                <!-- OTP Verification Modal -->
+                <div class="modal-overlay" id="otpModal">
+                    <div class="otp-modal">
+                        <div class="modal-header">
+                            <div class="modal-title">Verify OTP</div>
+                            <div class="modal-description">Enter the OTP sent to your email</div>
+                        </div>
+
+                        <div id="otpError" class="error-message"></div>
+
+                        <div class="otp-input-group">
+                            <label for="otpInput">One-Time Password</label>
+                            <input type="text" id="otpInput" class="otp-input" placeholder="000000" maxlength="6" inputmode="numeric">
+                        </div>
+
+                        <div id="otpTimer" class="otp-timer"></div>
+
+                        <div class="modal-button-group">
+                            <button type="button" class="btn-verify" id="verifyOtpBtn" onclick="verifyOTP()">Verify OTP</button>
+                            <button type="button" class="btn-cancel" id="cancelOtpBtn" onclick="cancelOtpVerification()">Cancel</button>
+                        </div>
+
+                        <div class="resend-otp-section">
+                            <div class="resend-otp-text">Didn't receive the OTP?</div>
+                            <button type="button" class="btn-resend" id="resendOtpBtn" onclick="resendOTP()" disabled>Resend OTP</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <footer class="footer">
+        &copy; 2025 TaskNet - HOD Portal. All rights reserved.
+    </footer>
+
+    <script>
+        let otpTimerInterval;
+        let otpExpiryTime;
+        let pendingProfileData;
+        let originalProfileData = {};
+
+        function toggleEditMode() {
+            if (!document.getElementById('editMode').classList.contains('active')) {
+                const formData = new FormData(document.getElementById('editMode'));
+                originalProfileData = {};
+                formData.forEach((value, key) => {
+                    originalProfileData[key] = value;
+                });
+            }
+            document.getElementById('viewMode').classList.toggle('hidden');
+            document.getElementById('editMode').classList.toggle('active');
+        }
+
+        function hasChanges() {
+            const currentData = {};
+            const formData = new FormData(document.getElementById('editMode'));
+            formData.forEach((value, key) => {
+                currentData[key] = value;
+            });
+            
+            for (let key in originalProfileData) {
+                if (originalProfileData[key] !== currentData[key]) {
+                    return true;
+                }
+            }
+            return false;
+        }
+
+        document.getElementById('editMode').addEventListener('submit', async function(e) {
+            e.preventDefault();
+
+            if (!hasChanges()) {
+                showSuccessMessage('No changes made to profile');
+                toggleEditMode();
+                return;
+            }
+
+            const formData = new FormData(this);
+            pendingProfileData = {};
+            formData.forEach((value, key) => {
+                pendingProfileData[key] = value;
+            });
+            
+            try {
+                const response = await fetch('/hod/profile/update', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(pendingProfileData)
+                });
+
+                const data = await response.json();
+
+                if (data.success && data.requireOtp) {
+                    otpExpiryTime = Date.now() + (10 * 60 * 1000);
+                    showOtpModal();
+                    startOtpTimer();
+                } else if (data.success) {
+                    showSuccessMessage('Profile updated successfully!');
+                    toggleEditMode();
+                    setTimeout(() => {
+                        window.location.href = '/hod/profile?success=true';
+                    }, 1500);
+                } else {
+                    alert('Error: ' + (data.message || 'Failed to update profile'));
+                }
+            } catch (error) {
+                console.error('Error:', error);
+                alert('An error occurred. Please try again.');
+            }
+        });
+
+        function showOtpModal() {
+            document.getElementById('otpModal').classList.add('show');
+            document.getElementById('otpInput').focus();
+            document.getElementById('otpError').classList.remove('show');
+            document.getElementById('verifyOtpBtn').disabled = false;
+            document.getElementById('resendOtpBtn').disabled = true;
+        }
+
+        function hideOtpModal() {
+            document.getElementById('otpModal').classList.remove('show');
+            document.getElementById('otpInput').value = '';
+            if (otpTimerInterval) clearInterval(otpTimerInterval);
+        }
+
+        function startOtpTimer() {
+            if (otpTimerInterval) clearInterval(otpTimerInterval);
+            
+            const timerElement = document.getElementById('otpTimer');
+            
+            otpTimerInterval = setInterval(() => {
+                const remainingTime = otpExpiryTime - Date.now();
+                
+                if (remainingTime <= 0) {
+                    clearInterval(otpTimerInterval);
+                    timerElement.textContent = 'OTP Expired';
+                    timerElement.className = 'otp-timer warning';
+                    document.getElementById('verifyOtpBtn').disabled = true;
+                    document.getElementById('resendOtpBtn').disabled = false;
+                    return;
+                }
+                
+                const minutes = Math.floor(remainingTime / 60000);
+                const seconds = Math.floor((remainingTime % 60000) / 1000);
+                const timeText = `${minutes}:${seconds.toString().padStart(2, '0')} remaining`;
+                
+                timerElement.textContent = timeText;
+                timerElement.className = remainingTime < 2 * 60 * 1000 ? 'otp-timer warning' : 'otp-timer';
+            }, 1000);
+
+            const remainingTime = otpExpiryTime - Date.now();
+            const minutes = Math.floor(remainingTime / 60000);
+            const seconds = Math.floor((remainingTime % 60000) / 1000);
+            timerElement.textContent = `${minutes}:${seconds.toString().padStart(2, '0')} remaining`;
+        }
+
+        async function verifyOTP() {
+            const otp = document.getElementById('otpInput').value.trim();
+            const errorElement = document.getElementById('otpError');
+            
+            if (!otp || otp.length !== 6) {
+                errorElement.textContent = 'Please enter a valid 6-digit OTP';
+                errorElement.classList.add('show');
+                return;
+            }
+
+            document.getElementById('verifyOtpBtn').disabled = true;
+            
+            try {
+                const payload = {
+                    otp: otp,
+                    ...pendingProfileData
+                };
+
+                const response = await fetch('/hod/profile/verify-update', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(payload)
+                });
+
+                const data = await response.json();
+
+                if (data.success) {
+                    clearInterval(otpTimerInterval);
+                    hideOtpModal();
+                    showSuccessMessage('Profile updated successfully!');
+                    toggleEditMode();
+                    setTimeout(() => {
+                        window.location.href = '/hod/profile?success=true';
+                    }, 1500);
+                } else {
+                    errorElement.textContent = data.message || 'Invalid OTP. Please try again.';
+                    errorElement.classList.add('show');
+                    document.getElementById('verifyOtpBtn').disabled = false;
+                }
+            } catch (error) {
+                console.error('Error:', error);
+                errorElement.textContent = 'An error occurred. Please try again.';
+                errorElement.classList.add('show');
+                document.getElementById('verifyOtpBtn').disabled = false;
+            }
+        }
+
+        async function resendOTP() {
+            const resendBtn = document.getElementById('resendOtpBtn');
+            const errorElement = document.getElementById('otpError');
+            
+            resendBtn.disabled = true;
+            errorElement.classList.remove('show');
+
+            try {
+                const response = await fetch('/hod/profile/resend-otp', {
+                    method: 'POST'
+                });
+
+                const data = await response.json();
+
+                if (data.success) {
+                    otpExpiryTime = Date.now() + (10 * 60 * 1000);
+                    document.getElementById('otpInput').value = '';
+                    document.getElementById('verifyOtpBtn').disabled = false;
+                    startOtpTimer();
+                    
+                    errorElement.textContent = '✓ OTP resent to your email';
+                    errorElement.style.backgroundColor = '#dcfce7';
+                    errorElement.style.color = '#14532d';
+                    errorElement.style.borderColor = '#86efac';
+                    errorElement.classList.add('show');
+
+                    let countdown = 30;
+                    const countdownInterval = setInterval(() => {
+                        countdown--;
+                        if (countdown <= 0) {
+                            clearInterval(countdownInterval);
+                            resendBtn.disabled = false;
+                        }
+                    }, 1000);
+                } else {
+                    errorElement.textContent = data.message || 'Failed to resend OTP';
+                    errorElement.classList.add('show');
+                    resendBtn.disabled = false;
+                }
+            } catch (error) {
+                console.error('Error:', error);
+                errorElement.textContent = 'An error occurred. Please try again.';
+                errorElement.classList.add('show');
+                resendBtn.disabled = false;
+            }
+        }
+
+        function cancelOtpVerification() {
+            hideOtpModal();
+            document.getElementById('editMode').reset();
+        }
+
+        function showSuccessMessage(message) {
+            const successMsg = document.getElementById('successMessage');
+            successMsg.textContent = message;
+            successMsg.classList.add('show');
+            setTimeout(() => {
+                successMsg.classList.remove('show');
+            }, 3000);
+        }
+        
+        const menuToggle = document.getElementById('menuToggle');
+        const sidebar = document.querySelector('.sidebar');
+        const navLinks = document.querySelectorAll('.nav-link');
+        const mainContent = document.querySelector('.main-content');
+
+        menuToggle?.addEventListener('click', (e) => {
+            e.stopPropagation();
+            sidebar.classList.toggle('open');
+        });
+
+        navLinks.forEach(link => {
+            link.addEventListener('click', () => {
+                sidebar.classList.remove('open');
+            });
+        });
+
+        mainContent?.addEventListener('click', () => {
+            sidebar.classList.remove('open');
+        });
+
+        document.addEventListener('click', (e) => {
+            if (!sidebar?.contains(e.target) && !menuToggle?.contains(e.target)) {
+                sidebar?.classList.remove('open');
+            }
+        });
+
+        const urlParams = new URLSearchParams(window.location.search);
+        if (urlParams.has('success')) {
+            const successMsg = document.getElementById('successMessage');
+            successMsg.classList.add('show');
+            setTimeout(() => {
+                successMsg.classList.remove('show');
+            }, 3000);
+        }
+
+        document.getElementById('otpInput').addEventListener('input', function(e) {
+            this.value = this.value.replace(/[^0-9]/g, '');
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>All Assignments - TaskNet</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        body { font-family: 'Inter', sans-serif; background-color: #f4f7f9; margin: 0; padding: 0; }
+        .container { max-width: 1400px; margin: 0 auto; padding: 2rem; }
+        
+        .header { margin-bottom: 2rem; }
+        .back-link { text-decoration: none; color: #0f766e; font-weight: 600; margin-bottom: 1rem; display: block; }
+        .title { font-size: 2rem; font-weight: 700; color: #0f172a; margin-bottom: 0.5rem; }
+        .subtitle { color: #64748b; font-size: 1rem; }
+        
+        .filters {
+            background: white;
+            border: 1px solid #e2e8f0;
+            border-radius: 0.75rem;
+            padding: 1.5rem;
+            margin-bottom: 1.5rem;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+        }
+        
+        .filter-group { display: flex; flex-direction: column; }
+        .filter-label { font-size: 0.85rem; font-weight: 600; color: #64748b; margin-bottom: 0.5rem; }
+        .filter-input, .filter-select {
+            padding: 0.75rem;
+            border: 1px solid #e2e8f0;
+            border-radius: 0.375rem;
+            font-size: 0.9rem;
+        }
+        
+        .filter-actions { 
+            display: flex; 
+            gap: 0.5rem;
+            align-items: flex-end;
+        }
+        
+        .btn-apply, .btn-clear {
+            padding: 0.75rem 1.5rem;
+            border: none;
+            border-radius: 0.375rem;
+            font-weight: 600;
+            cursor: pointer;
+        }
+        
+        .btn-apply { background-color: #0f766e; color: white; }
+        .btn-apply:hover { background-color: #115e59; }
+        
+        .btn-clear { background-color: #f1f5f9; color: #334155; border: 1px solid #e2e8f0; }
+        .btn-clear:hover { background-color: #e2e8f0; }
+        
+        .assignment-table {
+            background: white;
+            border: 1px solid #e2e8f0;
+            border-radius: 0.75rem;
+            overflow: hidden;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+        }
+        
+        .table-wrapper { overflow-x: auto; }
+        
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        
+        thead {
+            background-color: #f8fafc;
+            border-bottom: 2px solid #e2e8f0;
+        }
+        
+        th {
+            padding: 1rem;
+            text-align: left;
+            font-weight: 600;
+            color: #64748b;
+            font-size: 0.85rem;
+        }
+        
+        td {
+            padding: 1rem;
+            border-bottom: 1px solid #e2e8f0;
+        }
+        
+        tbody tr:hover { background-color: #f8fafc; }
+        
+        .status-badge {
+            display: inline-block;
+            padding: 0.3rem 0.75rem;
+            border-radius: 9999px;
+            font-size: 0.75rem;
+            font-weight: 600;
+        }
+        
+        .status-submitted { background-color: #dbeafe; color: #0369a1; }
+        .status-approved { background-color: #fef3c7; color: #92400e; }
+        .status-rejected { background-color: #fee2e2; color: #991b1b; }
+        .status-forwarded { background-color: #ddd6fe; color: #4c1d95; }
+        .status-draft { background-color: #f3f4f6; color: #4b5563; }
+        
+        .btn {
+            padding: 0.5rem 1rem;
+            border: none;
+            border-radius: 0.375rem;
+            font-weight: 600;
+            font-size: 0.85rem;
+            cursor: pointer;
+            text-decoration: none;
+            display: inline-block;
+        }
+        
+        .btn-primary { background-color: #0f766e; color: white; }
+        .btn-primary:hover { background-color: #115e59; }
+        
+        .pagination {
+            display: flex;
+            gap: 0.5rem;
+            justify-content: center;
+            margin-top: 2rem;
+        }
+        
+        .pag-btn {
+            padding: 0.5rem 1rem;
+            border: 1px solid #e2e8f0;
+            background: white;
+            cursor: pointer;
+            border-radius: 0.375rem;
+        }
+        
+        .pag-btn.active { background-color: #0f766e; color: white; border-color: #0f766e; }
+        
+        .no-data { text-align: center; padding: 2rem; color: #64748b; }
+        
+        @media (max-width: 1024px) {
+            .filters { grid-template-columns: repeat(2, 1fr); }
+        }
+        
+        @media (max-width: 768px) {
+            .filters { grid-template-columns: 1fr; }
+            table { font-size: 0.85rem; }
+            th, td { padding: 0.75rem; }
+            .btn { padding: 0.4rem 0.8rem; font-size: 0.75rem; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <a href="/hod/dashboard" class="back-link">← Back to Dashboard</a>
+            <h1 class="title">All Department Assignments</h1>
+            <p class="subtitle">View and manage all assignments in your department</p>
+        </div>
+
+        <div class="filters">
+            <div class="filter-group">
+                <label class="filter-label">Search</label>
+                <form action="/hod/assignments" method="GET" style="display: contents;">
+                    <input type="text" name="search" class="filter-input" placeholder="Title, course code, student..." value="<%= searchQuery %>">
+                </form>
+            </div>
+            
+            <div class="filter-group">
+                <label class="filter-label">Status</label>
+                <form action="/hod/assignments" method="GET" style="display: contents;">
+                    <select name="status" class="filter-select" onchange="this.form.submit();">
+                        <option value="All" <%= statusFilter === 'All' ? 'selected' : '' %>>All Status</option>
+                        <option value="Submitted" <%= statusFilter === 'Submitted' ? 'selected' : '' %>>Submitted</option>
+                        <option value="Approved" <%= statusFilter === 'Approved' ? 'selected' : '' %>>Approved</option>
+                        <option value="Rejected" <%= statusFilter === 'Rejected' ? 'selected' : '' %>>Rejected</option>
+                        <option value="Forwarded" <%= statusFilter === 'Forwarded' ? 'selected' : '' %>>Forwarded</option>
+                        <option value="Draft" <%= statusFilter === 'Draft' ? 'selected' : '' %>>Draft</option>
+                    </select>
+                </form>
+            </div>
+            
+            <div class="filter-group">
+                <label class="filter-label">Category</label>
+                <form action="/hod/assignments" method="GET" style="display: contents;">
+                    <select name="category" class="filter-select" onchange="this.form.submit();">
+                        <option value="All" <%= categoryFilter === 'All' ? 'selected' : '' %>>All Categories</option>
+                        <option value="Assignment" <%= categoryFilter === 'Assignment' ? 'selected' : '' %>>Assignment</option>
+                        <option value="Thesis" <%= categoryFilter === 'Thesis' ? 'selected' : '' %>>Thesis</option>
+                        <option value="Report" <%= categoryFilter === 'Report' ? 'selected' : '' %>>Report</option>
+                    </select>
+                </form>
+            </div>
+            
+            <div class="filter-actions">
+                <% if (searchQuery || statusFilter !== 'All' || categoryFilter !== 'All') { %>
+                    <a href="/hod/assignments" class="btn-clear">Clear Filters</a>
+                <% } %>
+            </div>
+        </div>
+
+        <div class="assignment-table">
+            <div class="table-wrapper">
+                <% if (assignments && assignments.length > 0) { %>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Student</th>
+                                <th>Title</th>
+                                <th>Category</th>
+                                <th>Course Code</th>
+                                <th>Reviewer</th>
+                                <th>Status</th>
+                                <th>Submitted</th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <% assignments.forEach(assignment => { %>
+                                <tr>
+                                    <td><%= assignment.studentId.name %></td>
+                                    <td><%= assignment.title %></td>
+                                    <td><%= assignment.category %></td>
+                                    <td><%= assignment.courseCode || 'N/A' %></td>
+                                    <td><%= assignment.reviewerId ? assignment.reviewerId.name : 'Not assigned' %></td>
+                                    <td>
+                                        <span class="status-badge status-<%= assignment.status.toLowerCase() %>">
+                                            <%= assignment.status %>
+                                        </span>
+                                    </td>
+                                    <td><%= new Date(assignment.submissionDate).toLocaleDateString() %></td>
+                                    <td>
+                                        <a href="/hod/assignments/<%= assignment._id %>" class="btn btn-primary">View</a>
+                                    </td>
+                                </tr>
+                            <% }) %>
+                        </tbody>
+                    </table>
+                <% } else { %>
+                    <div class="no-data">
+                        No assignments found matching your filters
+                    </div>
+                <% } %>
+            </div>
+        </div>
+
+        <% if (totalPages > 1) { %>
+            <div class="pagination">
+                <% for (let i = 1; i <= totalPages; i++) { %>
+                    <% if (i === currentPage) { %>
+                        <button class="pag-btn active"><%= i %></button>
+                    <% } else { %>
+                        <a href="/hod/assignments?page=<%= i %><%= searchQuery ? '&search=' + searchQuery : '' %><%= statusFilter !== 'All' ? '&status=' + statusFilter : '' %><%= categoryFilter !== 'All' ? '&category=' + categoryFilter : '' %>" class="pag-btn"><%= i %></a>
+                    <% } %>
+                <% } %>
+            </div>
+        <% } %>
+    </div>
+</body>
+</html>
