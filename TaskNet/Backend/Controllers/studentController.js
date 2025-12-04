@@ -1,9 +1,10 @@
 const User= require('../Model/user')
 const Assignment= require('../Model/assignment')
 const { uploadToCloudinary } = require('../config/cloudinary')
-const { sendSubmissionNotification }= require('../util/emailSender')
+const { sendSubmissionNotification, sendProfileUpdateOTP }= require('../util/emailSender')
 const https = require('https')
 const http = require('http')
+const crypto = require('crypto')
 
 module.exports.getStudentDashboard = async (req, res) => {
     try{
@@ -487,35 +488,113 @@ module.exports.updateStudentProfile = async (req, res) => {
         const { name, email, rollNumber, phone, address, city, state, postalCode } = req.body;
         const studentId = req.user._id;
 
-        const updatedUser = await User.findByIdAndUpdate(
-            studentId,
-            {
-                name,
-                email,
-                rollNumber,
-                phone,
-                address,
-                city,
-                state,
-                postalCode
-            },
-            { new: true, runValidators: true }
-        );
+        const otp = crypto.randomInt(100000, 999999).toString();
+        const otpExpires = Date.now() + 10 * 60 * 1000; // 10 minutes
 
-        if (!updatedUser) {
-            return res.status(404).render('error', {
-                message: 'User not found'
-            });
-        }
+        const student = await User.findById(studentId);
+        student.otp = otp;
+        student.otpExpires = otpExpires;
+        student.pendingProfileUpdate = {
+            name,
+            email,
+            rollNumber,
+            phone,
+            address,
+            city,
+            state,
+            postalCode
+        };
+        await student.save();
 
-        res.redirect('/student/profile?success=true');
+        // Send email in background (don't await)
+        sendProfileUpdateOTP(student.email, otp).catch(err => {
+            console.error('Error sending OTP email:', err);
+        });
+
+        return res.json({
+            success: true,
+            requireOtp: true,
+            message: 'OTP sent to your email. Please verify to complete the profile update.'
+        });
+
     } catch (error) {
         console.error('Error updating student profile:', error);
-        res.status(500).render('studentProfile', {
-            user: req.user,
-            stats: {},
-            error: 'Failed to update profile. Please try again.',
-            activePage: 'profile'
+        res.status(500).json({ success: false, error: 'Failed to process profile update. Please try again.' });
+    }
+};
+
+module.exports.verifyAndUpdateStudentProfile = async (req, res) => {
+    try{
+        const { otp } = req.body;
+        const studentId = req.user._id;
+
+        const student = await User.findById(studentId).select('+otp +otpExpires +pendingProfileUpdate');
+
+        if(!student.otp || student.otp !== otp) {
+            return res.status(400).json({ success: false, message: 'Invalid OTP' });
+        }
+
+        if(student.otpExpires < Date.now()) {
+            return res.status(400).json({ success: false, message: 'OTP Expired' });
+        }
+
+        if (!student.pendingProfileUpdate) {
+            return res.status(400).json({ success: false, message: 'No pending profile update found' });
+        }
+
+        const pendingUpdate = student.pendingProfileUpdate;
+
+        student.name = pendingUpdate.name;
+        student.email = pendingUpdate.email;
+        student.rollNumber = pendingUpdate.rollNumber;
+        student.phone = pendingUpdate.phone;
+        student.address = pendingUpdate.address;
+        student.city = pendingUpdate.city;
+        student.state = pendingUpdate.state;
+        student.postalCode = pendingUpdate.postalCode;
+
+        student.otp = undefined;
+        student.otpExpires = undefined;
+        student.pendingProfileUpdate = undefined;
+        
+        await student.save();
+
+        return res.json({
+            success: true,
+            message: 'Profile updated successfully!'
         });
+
+    } catch (error) {
+        console.error('Error verifying student profile update:', error);
+        return res.status(500).json({ success: false, message: 'Server error during verification.' });
+    }
+};
+
+module.exports.resendProfileOTP = async (req, res) => {
+    try {
+        const studentId = req.user._id;
+        const student = await User.findById(studentId).select('+pendingProfileUpdate');
+
+        if (!student.pendingProfileUpdate) {
+            return res.status(400).json({ success: false, message: 'No pending profile update. Please edit your profile first.' });
+        }
+
+        const otpCode = crypto.randomInt(100000, 999999).toString();
+        const otpExpires = Date.now() + (10 * 60 * 1000); // 10 minutes
+
+        student.otp = otpCode;
+        student.otpExpires = otpExpires;
+
+        await student.save();
+        await sendProfileUpdateOTP(student.email, otpCode);
+
+        return res.json({
+            success: true,
+            message: 'OTP resent to your email'
+        });
+
+    } catch (error) {
+        console.error('Error resending OTP:', error);
+        return res.status(500).json({ success: false, message: 'Failed to resend OTP' });
     }
 };
