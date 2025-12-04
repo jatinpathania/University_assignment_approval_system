@@ -154,3 +154,92 @@ exports.sendStudentNotification= async({ studentEmail, studentName, assignmentTi
         return false;
     }
 }
+
+exports.sendAdminUpdateNotification = async({ email, name, changes, adminName }) => {
+    try {
+        let changesDescription = '';
+        const changedFields = [];
+
+        if (changes.name) {
+            changedFields.push(`<li><strong>Name:</strong> ${changes.name}</li>`);
+        }
+        if (changes.email) {
+            changedFields.push(`<li><strong>Email:</strong> ${changes.email}</li>`);
+        }
+        if (changes.phone) {
+            changedFields.push(`<li><strong>Phone:</strong> ${changes.phone}</li>`);
+        }
+        if (changes.departmentName) {
+            changedFields.push(`<li><strong>Department:</strong> ${changes.departmentName}</li>`);
+        }
+        if (changes.passwordChanged) {
+            changedFields.push(`<li><strong>Password:</strong> Your password has been changed</li>`);
+        }
+
+        changesDescription = changedFields.join('');
+
+        const mailOptions = {
+            from: `"TaskNet Admin" <${process.env.EMAIL_USER}>`,
+            to: email,
+            subject: `Account Information Updated`,
+            html: `
+                <div style="font-family: Arial, sans-serif; line-height: 1.6;">
+                    <h2 style="color: #4338ca;">Account Information Updated</h2>
+                    <p>Hello <strong>${name}</strong>,</p>
+                    <p>An administrator has updated your account information. The following changes were made:</p>
+                    <ul style="background-color: #f3f4f6; padding: 20px; border-left: 4px solid #f59e0b; margin: 15px 0;">
+                        ${changesDescription}
+                    </ul>
+                    <p><strong>Updated by:</strong> System Administrator (${adminName})</p>
+                    <p><strong>Date:</strong> ${new Date().toLocaleString()}</p>
+                    <div style="margin-top: 20px; padding: 15px; background-color: #fef3c7; border-radius: 5px;">
+                        <p><strong>⚠️ Important:</strong> If you did not authorize these changes or have any concerns about your account security, please contact the administrator immediately.</p>
+                    </div>
+                    <p style="margin-top: 20px;">
+                        <a href="${process.env.CLIENT_URL}/login" style="display:inline-block; padding:10px 20px; background-color:#4338ca; color:white; text-decoration:none; border-radius:5px;">Login to Your Account</a>
+                    </p>
+                    <p style="color: #666; font-size: 12px; margin-top: 20px;">This is an automated message. Please do not reply to this email.</p>
+                </div>
+            `
+        };
+
+        const info = await transporter.sendMail(mailOptions);
+        console.log("Admin update notification sent: %s", info.messageId);
+        return true;
+
+    } catch (error) {
+        console.error("Error sending admin update notification:", error);
+        return false;
+    }
+};
+
+exports.sendProfileUpdateOTP = async(email, otpCode) => {
+    try {
+        const mailOptions = {
+            from: `"TaskNet Security" <${process.env.EMAIL_USER}>`,
+            to: email,
+            subject: `Verify Your Profile Update - OTP: ${otpCode}`,
+            html: `
+                <div style="font-family: Arial, sans-serif; padding: 20px; border: 1px solid #e0e0e0; border-radius: 5px;">
+                    <h2 style="color: #064e3b;">Profile Update Verification</h2>
+                    <p>You are attempting to update your profile information. Please use the following One-Time Password (OTP) to verify and complete the update:</p>
+                    <div style="background-color: #f3f4f6; padding: 15px; text-align: center; font-size: 28px; font-weight: bold; letter-spacing: 6px; margin: 20px 0; border-radius: 5px;">
+                        ${otpCode}
+                    </div>
+                    <p style="color: #666; font-size: 14px;">This code will expire in <strong>10 minutes</strong>.</p>
+                    <div style="margin-top: 20px; padding: 15px; background-color: #fef3c7; border-radius: 5px;">
+                        <p><strong>⚠️ Security Note:</strong> If you did not request this verification, please ignore this email and your profile will remain unchanged.</p>
+                    </div>
+                    <p style="color: #666; font-size: 12px; margin-top: 20px;">This is an automated security message. Please do not share this OTP with anyone.</p>
+                </div>
+            `
+        };
+
+        await transporter.sendMail(mailOptions);
+        console.log("Profile update OTP sent to: %s", email);
+        return true;
+    } catch (error) {
+        console.error("Error sending profile update OTP:", error);
+        return false;
+    }
+};
