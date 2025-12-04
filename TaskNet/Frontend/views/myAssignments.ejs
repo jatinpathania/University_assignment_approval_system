@@ -197,6 +197,26 @@
         @keyframes slideIn { from { transform: translateX(400px); opacity: 0; } to { transform: translateX(0); opacity: 1; } }
         @keyframes slideOut { from { transform: translateX(0); opacity: 1; } to { transform: translateX(400px); opacity: 0; } }
 
+        .menu-toggle {
+            display: none;
+            background: none;
+            border: none;
+            cursor: pointer;
+            font-size: 1.5rem;
+            color: #1f2937;
+            padding: 0;
+            width: 40px;
+            height: 40px;
+            align-items: center;
+            justify-content: center;
+        }
+
+        @media (max-width: 768px) {
+            .menu-toggle {
+                display: flex;
+            }
+        }
+
 
         .modal { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-color: rgba(0, 0, 0, 0.5); display: none; justify-content: center; align-items: center; z-index: 1000; }
         .modal-content { background-color: white; padding: 2rem; border-radius: 0.75rem; box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2); max-width: 500px; width: 90%; }
@@ -215,118 +235,196 @@
         }
 
         @media (max-width: 768px) {
-            .page-container { flex-direction: row; }
-            .sidebar {
-                width: 100%;
-                border-right: none;
-                border-bottom: 1px solid #e5e7eb;
-                padding: 0.75rem;
-                flex-direction: row;
-                justify-content: space-between;
-                align-items: center;
+            .page-container {
+                flex-direction: column;
+                min-height: auto;
             }
+            .top-header {
+                padding: 0.75rem 1rem;
+                gap: 0.5rem;
+                align-items: center;
+                position: sticky;
+                top: 0;
+                z-index: 100;
+            }
+            
+            .top-title {
+                font-size: 1.1rem;
+                margin: 0;
+                flex: 1;
+                white-space: nowrap;
+                overflow: hidden;
+                text-overflow: ellipsis;
+            }
+            
+            .header-profile {
+                width: 36px;
+                height: 36px;
+                flex-shrink: 0;
+            }
+            
+            .sidebar {
+                width: 100% !important;
+                border-right: none !important;
+                border-bottom: none !important;
+                padding: 0 !important;
+                margin: 0 !important;
+                position: fixed !important;
+                top: 70px !important;
+                left: 0 !important;
+                right: 0 !important;
+                z-index: 90 !important;
+                max-height: 0 !important;
+                overflow: hidden !important;
+                flex-direction: column !important;
+                transition: max-height 0.25s ease-out !important;
+                transition:  box-shadow 0.25s ease-out !important;
+                background-color: #ffffff !important;
+                justify-content: flex-start !important;
+                box-sizing: border-box !important;
+                display: flex !important;
+            }
+
+            .sidebar.open {
+                max-height: 400px !important;
+                padding: 1rem !important;
+                border-bottom: 1px solid #e5e7eb !important;
+                box-shadow: 0 4px 6px rgba(0,0,0,0.1) !important;
+                overflow: auto !important;
+            }
+            
             .sidebar > div:first-child {
                 display: flex;
-                align-items: center;
-                gap: 1.5rem;
-                flex: 1;
+                flex-direction: column;
+                gap: 1rem;
             }
+            
             .nav-title {
-                margin-bottom: 0;
+                margin-bottom: 0.5rem;
+                font-size: 0.9rem;
             }
+            
             nav {
                 display: flex;
+                flex-direction: column;
                 gap: 0.5rem;
             }
+            
             .nav-link {
-                padding: 0.6rem 0.8rem;
-                margin-bottom: 0;
-                white-space: nowrap;
-                font-size: 0.75rem;
+                padding: 0.6rem 1rem;
+                margin-bottom: 0 !important;
+                font-size: 0.85rem;
             }
+            
             .logout-button {
+                margin-top: 1rem;
+                width: 40px;
+                height: 40px;
+            }
+            
+            .main-content {
+                padding: 1rem;
                 margin-top: 0;
             }
-            .main-content { padding: 1.5rem 1rem; display: flex; flex-direction: column; }
+            
+            .header-title {
+                font-size: 1.1rem;
+            }
+            
             .table-wrapper { overflow-x: auto; }
-            .top-header { padding: 0.75rem 1rem; }
-            .top-title { font-size: 1.25rem; }
-            .header-title { font-size: 1.5rem; margin-bottom: 1rem; }
-            .header-section { flex-direction: column; }
-            .controls-bar { flex-direction: column; gap: 0.75rem; width: 100%; }
-            .filter-select, .sort-btn, .upload-link-btn { width: 100%; }
+            
             .assignments-table { font-size: 0.8rem; }
+            
             .assignments-table th, .assignments-table td { padding: 0.5rem; }
+            
             .assignment-title { font-size: 0.9rem; }
+            
             .assignment-meta { font-size: 0.7rem; }
+            
             .status-badge { padding: 0.25rem 0.5rem; font-size: 0.7rem; }
+            
             .action-link { font-size: 0.85rem; }
+            
             .submit-action-btn { padding: 0.3rem 0.6rem; font-size: 0.75rem; margin-left: 5px; }
+            
             .modal-content { width: 95%; max-width: 95%; }
+            
             .form-select { font-size: 0.9rem; padding: 0.6rem; }
         }
 
         @media (max-width: 480px) {
-            body {
-                min-height: 100vh;
-            }
             .top-header { padding: 0.5rem 0.75rem; }
-            .top-title { font-size: 0.95rem; }
-            .header-title { font-size: 1.1rem; margin-bottom: 1rem; }
+            
+            .top-title { font-size: 1rem; }
+            
             .header-profile {
-                width: 45px;
-                height: 42px;
+                width: 42px;
+                height: 38px;
             }
-            .page-container {
-                flex-direction: column;
-            }
+            
             .sidebar {
-                flex-direction: column;
-                align-items: stretch;
-                width: 100%;
-                gap: 0.5rem;
+                top: 60px !important;
             }
+            
+            .sidebar.open {
+                max-height: 500px !important;
+                padding: 0.75rem !important;
+                overflow: auto !important;
+            }
+            
             .sidebar > div:first-child {
-                flex-direction: column;
-                gap: 0.5rem;
-                align-items: stretch;
+                gap: 0.75rem;
             }
+            
             nav {
-                flex-direction: column;
-                gap: 0;
+                gap: 0.25rem;
             }
-            .nav-title { font-size: 0.8rem; margin-bottom: 0.5rem; font-weight: 600; }
+            
             .nav-link {
-                padding: 0.5rem 0.6rem;
-                margin-bottom: 0.25rem;
-                font-size: 0.7rem;
-                font-weight: 600;
+                padding: 0.5rem 0.75rem;
+                font-size: 0.75rem;
             }
-            .logout-button {
-                width: 40px;
-                height: 40px;
-                margin-top: 0.5rem;
-            }
-            .main-content { padding: 1rem 0.75rem; }
+            
+            .nav-title { font-size: 0.85rem; }
+            
+            .header-title { font-size: 1.1rem; margin-bottom: 5px; }
             
             .header-section { flex-direction: column; gap: 0.5rem; }
+            
             .controls-bar { display: flex; flex-direction: row; gap: 0.3rem; align-items: center; justify-content: flex-start; flex-wrap: nowrap; width: 100%; }
+            
             .filter-select { flex: 1; min-width: 0; padding: 0.4rem 0.3rem; font-size: 0.75rem; }
+            
             .sort-btn { flex: 1; min-width: 0; padding: 0.4rem 0.3rem; font-size: 0.75rem; margin: 0; }
+            
             .upload-link-btn { flex: 1; min-width: 0; padding: 0.4rem 0.3rem; font-size: 0.75rem; }
+            
             .table-wrapper { overflow-x: auto; }
+            
             .assignments-table { font-size: 0.65rem; min-width: 600px; }
+            
             .assignments-table th, .assignments-table td { padding: 0.5rem; }
+            
             .assignment-title { font-size: 0.75rem; }
+            
             .assignment-meta { font-size: 0.6rem; }
+            
             .status-badge { padding: 0.15rem 0.4rem; font-size: 0.6rem; }
+            
             .action-link { font-size: 0.7rem; }
+            
             .submit-action-btn { padding: 0.15rem 0.4rem; font-size: 0.6rem; margin-left: 2px; }
+            
             .pagination { gap: 0.25rem; }
+            
             .page-link { padding: 0.35rem 0.6rem; font-size: 0.75rem; }
+            
             .modal-content { width: 95%; padding: 1rem; }
+            
             .modal-title { font-size: 1.25rem; }
+            
             .form-select { font-size: 0.85rem; padding: 0.5rem; }
+            
             .btn-cancel, .btn-confirm { padding: 0.5rem 1rem; font-size: 0.85rem; }
         }
     </style>
@@ -334,6 +432,7 @@
 <body>
 
     <header class="top-header">
+        <button class="menu-toggle" id="menuToggle">☰</button>
         <h1 class="top-title">Student Portal</h1>
         <img src="/student.png" alt="Profile" class="header-profile">
     </header>
@@ -520,6 +619,24 @@
         }
 
         document.addEventListener('DOMContentLoaded', () => {
+            // Mobile sidebar toggle
+            const menuToggle = document.getElementById('menuToggle');
+            const sidebar = document.querySelector('.sidebar');
+
+            menuToggle.addEventListener('click', () => {
+                sidebar.classList.toggle('open');
+            });
+
+            document.querySelectorAll('.nav-link').forEach(link => {
+                link.addEventListener('click', () => {
+                    sidebar.classList.remove('open');
+                });
+            });
+
+            document.querySelector('.main-content').addEventListener('click', () => {
+                sidebar.classList.remove('open');
+            });
+            
             const sortBtn = document.getElementById('sortDateBtn');
             const table = document.getElementById('assignmentsTable');
             let isAscending = false;

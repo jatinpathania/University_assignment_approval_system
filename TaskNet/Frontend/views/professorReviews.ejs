@@ -330,34 +330,102 @@
         }
 
         @media (max-width: 768px) {
-            .page-container { flex-direction: column; }
-            .sidebar {
+            .page-container {
+                flex-direction: column;
+                min-height: auto;
                 width: 100%;
-                border-right: none;
-                border-bottom: 1px solid #e5e7eb;
-                padding: 0.75rem;
-                flex-direction: row;
-                justify-content: space-between;
-                align-items: center;
+                box-sizing: border-box;
             }
+            .top-header {
+                padding: 0.75rem 1rem;
+                gap: 0.5rem;
+                align-items: center;
+                position: sticky;
+                top: 0;
+                z-index: 100;
+            }
+
+            .top-title {
+                font-size: 1.1rem;
+                margin: 0;
+                flex: 1;
+                white-space: nowrap;
+                overflow: hidden;
+                text-overflow: ellipsis;
+            }
+
+            .header-profile {
+                width: 36px;
+                height: 36px;
+                flex-shrink: 0;
+            }
+
+            .sidebar {
+                width: 100% !important;
+                border-right: none !important;
+                border-bottom: none !important;
+                padding: 0 !important;
+                margin: 0 !important;
+                position: fixed !important;
+                top: 70px !important;
+                left: 0 !important;
+                right: 0 !important;
+                z-index: 90 !important;
+                max-height: 0 !important;
+                overflow: hidden !important;
+                flex-direction: column !important;
+                transition: max-height 0.25s ease-out !important;
+                transition:  box-shadow 0.25s ease-out !important;
+                background-color: #ffffff !important;
+                justify-content: flex-start !important;
+                box-sizing: border-box !important;
+                display: flex !important;
+            }
+
+            .sidebar.open {
+                max-height: 400px !important;
+                padding: 1rem !important;
+                border-bottom: 1px solid #e5e7eb !important;
+                box-shadow: 0 4px 6px rgba(0,0,0,0.1) !important;
+                overflow: auto !important;
+            }
+
             .sidebar > div:first-child {
                 display: flex;
-                align-items: center;
-                gap: 1.5rem;
+                flex-direction: column;
+                gap: 1rem;
+            }
+
+            .nav-title {
+                margin-bottom: 0.5rem;
+                font-size: 0.9rem;
+            }
+
+            nav {
+                display: flex;
+                flex-direction: column;
+                gap: 0.5rem;
+            }
+
+            .nav-link {
+                padding: 0.6rem 1rem;
+                margin-bottom: 0 !important;
+                font-size: 0.85rem;
+            }
+
+            .logout-button {
+                margin-top: 1rem;
+                width: 40px;
+                height: 40px;
+            }
+
+            .main-content { 
+                padding: 1rem;
+                margin-top: 0;
+                width: 100%;
+                box-sizing: border-box;
                 flex: 1;
             }
-            .nav-title { margin-bottom: 0; }
-            nav { display: flex; gap: 0.5rem; }
-            .nav-link {
-                padding: 0.6rem 0.8rem;
-                margin-bottom: 0;
-                white-space: nowrap;
-                font-size: 0.75rem;
-            }
-            .logout-button { margin-top: 0; }
-            .main-content { padding: 1rem; }
-            .top-header { padding: 0.75rem 1rem; }
-            .top-title { font-size: 1.25rem; }
             .header-title { font-size: 1.25rem; }
             .filter-section { padding: 1rem; margin-bottom: 1rem; }
             .filter-row { grid-template-columns: 1fr; gap: 0.5rem; margin-bottom: 0.75rem; }
@@ -373,56 +441,152 @@
         }
 
         @media (max-width: 480px) {
-            body { min-height: 100vh; }
-            .top-header { padding: 0.5rem 0.75rem; }
-            .top-title { font-size: 0.95rem; }
+            body { 
+                min-height: 100vh; 
+            }
+            .top-header { 
+                padding: 0.5rem 0.75rem;
+                height: 50px;
+            }
+            .top-title { 
+                font-size: 1rem; 
+            }
             .sidebar {
-                flex-direction: column;
-                align-items: stretch;
-                width: 100%;
-                gap: 0.5rem;
-                padding: 0.75rem;
+                top: 60px !important;
             }
+
+            .sidebar.open {
+                max-height: 500px !important;
+                padding: 0.75rem !important;
+                overflow: auto !important;
+            }
+
             .sidebar > div:first-child {
-                flex-direction: column;
-                gap: 0.5rem;
-                align-items: stretch;
+                gap: 0.75rem;
             }
+
             nav {
-                flex-direction: column;
                 gap: 0.25rem;
             }
-            .nav-title { font-size: 0.8rem; margin-bottom: 0.5rem; font-weight: 600; }
+
+            .nav-title { 
+                font-size: 0.85rem; 
+                margin-bottom: 0.5rem; 
+                font-weight: 600; 
+            }
             .nav-link {
-                padding: 0.5rem 0.6rem;
-                margin-bottom: 0.25rem;
-                font-size: 0.7rem;
+                padding: 0.5rem 0.75rem;
+                margin-bottom: 0;
+                font-size: 0.75rem;
                 font-weight: 600;
             }
-            .logout-button { width: 40px; height: 40px; margin-top: 0.5rem; }
-            .main-content { padding: 0.75rem; }
-            .header-title { font-size: 1rem; margin-bottom: 0.75rem; }
-            .filter-section { padding: 0.75rem; margin-bottom: 0.75rem; }
-            .filter-row { grid-template-columns: 1fr; gap: 0.4rem; margin-bottom: 0.5rem; }
-            .filter-label { font-size: 0.75rem; margin-bottom: 0.3rem; }
-            input[type="text"], select { font-size: 0.8rem; padding: 0.5rem; border-radius: 0.3rem; }
-            .filter-actions { flex-direction: column; width: 100%; }
-            .btn-search, .btn-clear { width: 100%; padding: 0.5rem; font-size: 0.75rem; }
-            .table-wrapper { border-radius: 0.5rem; }
-            table { font-size: 0.8rem; }
-            th { padding: 0.6rem; font-size: 0.75rem; }
-            td { padding: 0.6rem; font-size: 0.75rem; }
-            .student-name { font-size: 0.8rem; }
-            .date-cell { font-size: 0.7rem; }
-            .status-badge { padding: 0.25rem 0.5rem; font-size: 0.7rem; }
-            .no-data { padding: 1.5rem 0.5rem; font-size: 0.8rem; }
-            .pagination { gap: 0.2rem; padding: 0.5rem; }
-            .pagination a, .pagination span { padding: 0.3rem 0.5rem; font-size: 0.7rem; }
+            .logout-button { 
+                width: 40px; 
+                height: 40px; 
+                margin-top: 0.5rem; 
+            }
+            .main-content { 
+                padding: 0.75rem; 
+            }
+            .header-title { 
+                font-size: 1rem; 
+                margin-bottom: 0.75rem; 
+            }
+            .filter-section { 
+                padding: 0.75rem; 
+                margin-bottom: 1.5rem;
+                box-sizing: border-box;
+            }
+            .filter-row { 
+                grid-template-columns: 1fr; 
+                gap: 0.4rem; 
+                margin-bottom: 0.5rem; 
+            }
+            .filter-label { 
+                font-size: 0.75rem; 
+                margin-bottom: 0.3rem; 
+            }
+            input[type="text"], select { 
+                font-size: 0.8rem; 
+                padding: 0.5rem; 
+                border-radius: 0.3rem;
+                box-sizing: border-box;
+            }
+            .filter-actions { 
+                flex-direction: column; 
+                width: 100%;
+                gap: 0.4rem;
+                align-items: stretch;
+            }
+            .btn-search, .btn-clear { 
+                width: 100%; 
+                padding: 0.5rem; 
+                font-size: 0.75rem;
+                box-sizing: border-box;
+            }
+            .table-wrapper { 
+                border-radius: 0.5rem; 
+            }
+            table { 
+                font-size: 0.8rem; 
+            }
+            th { 
+                padding: 0.6rem; 
+                font-size: 0.75rem; 
+            }
+            td { 
+                padding: 0.6rem; 
+                font-size: 0.75rem; 
+            }
+            .student-name { 
+                font-size: 0.8rem; 
+            }
+            .date-cell { 
+                font-size: 0.7rem; 
+            }
+            .status-badge { 
+                padding: 0.25rem 0.5rem; 
+                font-size: 0.7rem; 
+            }
+            .no-data { 
+                padding: 1.5rem 0.5rem; 
+                font-size: 0.8rem; 
+            }
+            .pagination { 
+                gap: 0.2rem; 
+                padding: 0.5rem; 
+                flex-wrap: wrap;
+            }
+            .pagination a, .pagination span { 
+                padding: 0.3rem 0.5rem; 
+                font-size: 0.7rem; 
+            }
+        }
+
+        .menu-toggle {
+            display: none;
+            background: none;
+            border: none;
+            cursor: pointer;
+            font-size: 1.5rem;
+            color: #1f2937;
+            padding: 0;
+            width: 40px;
+            height: 40px;
+            align-items: center;
+            justify-content: center;
+        }
+
+        @media (max-width: 768px) {
+            .menu-toggle {
+                display: flex;
+            }
         }
     </style>
 </head>
 <body>
     <header class="top-header">
+        <button class="menu-toggle" id="menuToggle">☰</button>
         <h1 class="top-title">Professor Portal</h1>
         <img src="/professor.png" alt="Profile" class="header-profile">
     </header>
@@ -567,5 +731,27 @@
     <footer class="footer">
         &copy; 2025 TaskNet - Professor Portal. All rights reserved.
     </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            // Mobile sidebar toggle
+            const menuToggle = document.getElementById('menuToggle');
+            const sidebar = document.querySelector('.sidebar');
+
+            menuToggle.addEventListener('click', () => {
+                sidebar.classList.toggle('open');
+            });
+
+            document.querySelectorAll('.nav-link').forEach(link => {
+                link.addEventListener('click', () => {
+                    sidebar.classList.remove('open');
+                });
+            });
+
+            document.querySelector('.main-content').addEventListener('click', () => {
+                sidebar.classList.remove('open');
+            });
+        });
+    </script>
 </body>
 </html>
