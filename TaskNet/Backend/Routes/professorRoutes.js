@@ -9,6 +9,8 @@ const {
     verifyAndApprove,
     getProfessorProfile,
     updateProfessorProfile,
+    verifyAndUpdateProfessorProfile,
+    resendProfileOTP,
     rejectAssignment,
     forwardAssignment
     } = require('../Controllers/professorController');
@@ -27,5 +29,7 @@ router.post('/assignments/:id/forward', forwardAssignment)
 
 router.get('/profile', getProfessorProfile);
 router.post('/profile/update', updateProfessorProfile);
+router.post('/profile/verify-update', verifyAndUpdateProfessorProfile);
+router.post('/profile/resend-otp', resendProfileOTP);
 
 module.exports = router;
