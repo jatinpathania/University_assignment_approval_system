@@ -1,85 +1,80 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8" />
-    <title>HOD Dashboard</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HOD Dashboard - TaskNet</title>
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg viewBox='0 0 24 24' xmlns='http://www.w3.org/2000/svg'%3E%3Crect width='24' height='24' fill='%23667eea' rx='4'/%3E%3Cpath d='M9 11H7v2h2v-2zm4 0h-2v2h2v-2zm4 0h-2v2h2v-2zm2-7h-1V2h-2v2H8V2H6v2H5c-1.11 0-1.99.9-1.99 2L3 20c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 16H5V9h14v11z' fill='white'/%3E%3C/svg%3E" />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
     <style>
-        body {
-            font-family: Arial, sans-serif;
-            background-color: #f4f4f9;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            min-height: 100vh;
-            margin: 0;
-        }
-
-        .dashboard-container {
+        body { font-family: 'Inter', sans-serif; background-color: #f4f7f9; margin: 0; padding: 0; min-height: 100vh; display: flex; flex-direction: column; }
+        .top-header {
             background-color: #ffffff;
-            /* Increased size */
-            padding: 50px 70px;
-            border-radius: 12px;
-            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
-            width: 90%;
-            max-width: 800px;
-            border: 5px solid #4caf50; /* Green border */
+            padding: 1rem 2rem;
+            border-bottom: 1px solid #e5e7eb;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-shrink: 0;
+            gap: 1rem;
+        }
+        .footer {
+            border-top: 1px solid #e5e7eb;
+            background-color: white;
+            padding: 0.75rem 0;
             text-align: center;
+            font-size: 0.875rem;
+            color: #6b7280;
+            flex-shrink: 0;
         }
 
-        .role-icon {
-            display: block;
-            margin: 0 auto 20px auto;
-            width: 80px;
-            height: 80px;
-            background-color: #4caf50;
+        .header-profile {
+            width: 48px;
+            height: 48px;
             border-radius: 50%;
+            object-fit: cover;
+            border: 2px solid #e5e7eb;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+            cursor: pointer;
         }
 
-        h1 {
-            color: #333;
-            text-align: center;
-            margin-bottom: 15px;
-            font-size: 2.5em;
+        .top-title {
+            font-size: 1.875rem;
+            font-weight: 700;
+            color: #1f2937;
         }
-
-        p {
-            text-align: center;
-            color: #666;
-            margin-top: 0;
-            margin-bottom: 40px;
-            font-size: 1.2em;
+        .page-container { display: flex; flex: 1; overflow: hidden; }
+        .sidebar {
+            width: 256px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            padding: 1.5rem;
+            background-color: #ffffff;
+            border-right: 1px solid #e5e7eb;
+            box-sizing: border-box;
         }
-
-        strong {
-            color: #4caf50;
+        .main-content { flex: 1; padding: 1.5rem 2rem; background-color: #ffffff; overflow-y: auto; display: flex; flex-direction: column; }
+        .nav-title { font-size: 1.125rem; font-weight: 600; color: #374151; margin-bottom: 15px; }
+        .nav-link {
+            display: block;
+            padding: 1rem;
+            margin-bottom: 0.5rem;
+            border-radius: 0.5rem;
+            color: #4b5563;
+            font-weight: 600;
+            transition: all 0.15s ease-in-out;
+            text-decoration: none;
         }
-
-        ul {
-            list-style-type: none;
-            padding: 0;
-            margin-top: 30px;
+        .nav-link:hover {
+            background-color: #f3f4f6;
+            color: #1f2937;
         }
-
-        li {
-            background-color: #e8f5e9; /* Light green background */
-            margin-bottom: 15px;
-            padding: 20px;
-            border-radius: 10px;
-            text-align: center;
-            transition: background-color 0.3s;
+        .nav-link.active {
+            background-color: #e5e7eb;
+            color: #1f2937;
         }
-
-        li:hover {
-            background-color: #c8e6c9;
-        }
-
-        h2 {
-            color: #4caf50;
-            font-size: 1.8em;
-            margin: 0;
-        }
-
-        .logoutBtn {
+        .logout-button {
             display: flex;
             align-items: center;
             justify-content: flex-start;
@@ -93,10 +88,10 @@
             transition-duration: 0.3s;
             box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.199);
             background-color: white;
-            margin-top: 40px;
+            margin-top: 2rem;
         }
 
-        .logoutBtn .sign {
+        .logout-button .sign {
             width: 100%;
             transition-duration: 0.3s;
             display: flex;
@@ -104,15 +99,15 @@
             justify-content: center;
         }
 
-        .logoutBtn .sign svg {
+        .logout-button .sign svg {
             width: 17px;
         }
 
-        .logoutBtn .sign svg path {
+        .logout-button .sign svg path {
             fill: black;
         }
 
-        .logoutBtn .text {
+        .logout-button .text {
             position: absolute;
             right: 0%;
             width: 0%;
@@ -124,24 +119,24 @@
             letter-spacing: 0.05em;
         }
 
-        .logoutBtn:hover {
+        .logout-button:hover {
             background-color: black;
             width: 155px;
             border-radius: 40px;
             transition-duration: 0.3s;
         }
 
-        .logoutBtn:hover .sign {
+        .logout-button:hover .sign {
             width: 25%;
             transition-duration: 0.3s;
             padding-left: 15px;
         }
 
-        .logoutBtn:hover .sign svg path {
+        .logout-button:hover .sign svg path {
             fill: white;
         }
 
-        .logoutBtn:hover .text {
+        .logout-button:hover .text {
             opacity: 1;
             width: 75%;
             transition-duration: 0.3s;
@@ -149,34 +144,573 @@
             text-align: center;
         }
 
-        .logoutBtn:active {
+        .logout-button:active {
             transform: translate(2px, 2px);
+        }
+
+        .header-title { font-size: 1.5rem; font-weight: 700; color: #0f172a; margin-bottom: 0.75rem; }
+        .header-subtitle { color: #64748b; font-size: 0.95rem; margin: 0; }
+        
+        .stats-row { display: grid; grid-template-columns: repeat(4, 1fr); gap: 0.75rem; margin-bottom: 1.25rem; }
+        .stat-card { 
+            padding: 1rem; 
+            border-radius: 0.75rem; 
+            display: flex; 
+            flex-direction: column; 
+            justify-content: space-between; 
+            height: 120px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+        }
+        .stat-title { font-size: 0.75rem; color: #64748b; font-weight: 500; margin-bottom: 0.4rem; text-transform: uppercase; }
+        .stat-value { font-size: 2.25rem; font-weight: 600; color: #0f172a; }
+        
+        .bg-submitted { background-color: #eff6ff; border-left: 4px solid #0ea5e9; }
+        .bg-approved { background-color: #fefce8; border-left: 4px solid #eab308; }
+        .bg-rejected { background-color: #fef2f2; border-left: 4px solid #ef4444; }
+        .bg-total { background-color: #f0fdf4; border-left: 4px solid #22c55e; }
+        
+        .metrics-row {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 0.75rem;
+            margin-bottom: 1.5rem;
+        }
+        
+        .metric-card {
+            padding: 1rem;
+            border-radius: 0.75rem;
+            background-color: #f8fafc;
+            border: 1px solid #e2e8f0;
+        }
+        
+        .metric-label { font-size: 0.85rem; color: #64748b; font-weight: 500; }
+        .metric-value { font-size: 2rem; font-weight: 700; color: #0f172a; margin-top: 0.25rem; }
+        
+        .section-header { 
+            display: flex; 
+            justify-content: space-between; 
+            align-items: center; 
+            margin-bottom: 1rem;
+            margin-top: 1.5rem;
+        }
+        .section-title { font-size: 1.1rem; font-weight: 600; color: #1e293b; }
+        
+        .assignment-list { display: flex; flex-direction: column; gap: 0.75rem; }
+        .assignment-card { 
+            display: flex; 
+            justify-content: space-between; 
+            align-items: center; 
+            padding: 1rem; 
+            border: 1px solid #e2e8f0; 
+            border-radius: 0.5rem; 
+            background-color: white;
+        }
+        .assignment-card:hover { box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08); }
+        
+        .info-group { flex: 1; }
+        .info-main { font-weight: 600; color: #334155; font-size: 0.9rem; }
+        .info-sub { font-size: 0.85rem; color: #64748b; margin-top: 0.25rem; }
+        
+        .status-badge {
+            display: inline-block;
+            padding: 0.3rem 0.75rem;
+            border-radius: 9999px;
+            font-size: 0.75rem;
+            font-weight: 600;
+        }
+        
+        .status-submitted { background-color: #dbeafe; color: #0369a1; }
+        .status-approved { background-color: #fef3c7; color: #92400e; }
+        .status-rejected { background-color: #fee2e2; color: #991b1b; }
+        .status-forwarded { background-color: #ddd6fe; color: #4c1d95; }
+        
+        .actions { display: flex; gap: 0.5rem; }
+        .btn-primary {
+            background-color: #0f766e;
+            color: white; 
+            padding: 0.5rem 1rem; 
+            border-radius: 0.375rem;
+            font-weight: 600; 
+            text-decoration: none; 
+            font-size: 0.85rem;
+            border: none; 
+            cursor: pointer; 
+            transition: background-color 0.2s;
+        }
+        .btn-primary:hover { background-color: #115e59; }
+        
+        .btn-secondary {
+            background-color: #f8fafc; 
+            color: #334155; 
+            padding: 0.5rem 1rem;
+            border-radius: 0.375rem; 
+            font-weight: 600; 
+            text-decoration: none; 
+            font-size: 0.85rem;
+            border: 1px solid #e2e8f0; 
+            cursor: pointer; 
+            transition: background-color 0.2s;
+        }
+        .btn-secondary:hover { background-color: #f1f5f9; }
+        
+        .btn-refresh {
+            display: flex; 
+            align-items: center; 
+            gap: 0.5rem;
+            background-color: white; 
+            border: 1px solid #e2e8f0; 
+            color: #334155;
+            padding: 0.5rem 1rem; 
+            border-radius: 0.375rem; 
+            font-weight: 600;
+            cursor: pointer; 
+            transition: all 0.2s; 
+            font-size: 0.85rem;
+        }
+        .btn-refresh:hover { background-color: #f8fafc; border-color: #cbd5e1; }
+        
+        .view-all-link { 
+            display: block; 
+            margin-top: 0.75rem; 
+            color: #0f766e; 
+            font-weight: 600; 
+            text-decoration: none; 
+            font-size: 0.85rem; 
+        }
+        .view-all-link:hover { text-decoration: underline; }
+        
+        .no-data { 
+            text-align: center; 
+            padding: 2rem; 
+            color: #64748b; 
+            font-style: italic; 
+        }
+        
+        .info-cards {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 0.75rem;
+            margin-bottom: 1.5rem;
+        }
+        
+        .info-card {
+            padding: 1rem;
+            background-color: #f0f9ff;
+            border-radius: 0.5rem;
+            border-left: 4px solid #0284c7;
+        }
+        
+        .info-card-title { font-size: 0.85rem; color: #64748b; font-weight: 500; }
+        .info-card-value { font-size: 1.5rem; font-weight: 700; color: #0f172a; margin-top: 0.25rem; }
+        
+        @media (max-width: 1280px) {
+            .stats-row { grid-template-columns: repeat(2, 1fr); }
+            .metrics-row { grid-template-columns: repeat(3, 1fr); }
+        }
+        
+        @media (max-width: 1024px) {
+            .top-header { padding: 0.75rem 1.5rem; }
+            .top-title { font-size: 1.5rem; }
+            .sidebar { padding: 1rem; }
+            .main-content { padding: 1.25rem 1.5rem; }
+            .stat-card { padding: 0.85rem; }
+            .stat-value { font-size: 1.75rem; }
+        }
+        
+        @media (max-width: 768px) {
+            .page-container {
+                flex-direction: column;
+                min-height: auto;
+                width: 100%;
+                box-sizing: border-box;
+            }
+            .top-header {
+                padding: 0.75rem 1rem;
+                gap: 0.5rem;
+                align-items: center;
+                position: sticky;
+                top: 0;
+                z-index: 100;
+            }
+
+            .top-title {
+                font-size: 1.1rem;
+                margin: 0;
+                flex: 1;
+                white-space: nowrap;
+                overflow: hidden;
+                text-overflow: ellipsis;
+            }
+
+            .header-profile {
+                width: 36px;
+                height: 36px;
+                flex-shrink: 0;
+            }
+
+            .sidebar {
+                width: 100% !important;
+                border-right: none !important;
+                border-bottom: none !important;
+                padding: 0 !important;
+                margin: 0 !important;
+                position: fixed !important;
+                top: 70px !important;
+                left: 0 !important;
+                right: 0 !important;
+                z-index: 90 !important;
+                max-height: 0 !important;
+                overflow: hidden !important;
+                flex-direction: column !important;
+                transition: max-height 0.25s ease-out !important;
+                transition: box-shadow 0.25s ease-out !important;
+                background-color: #ffffff !important;
+                justify-content: flex-start !important;
+                box-sizing: border-box !important;
+                display: flex !important;
+            }
+
+            .sidebar.open {
+                max-height: 400px !important;
+                padding: 1rem !important;
+                border-bottom: 1px solid #e5e7eb !important;
+                box-shadow: 0 4px 6px rgba(0,0,0,0.1) !important;
+                overflow: auto !important;
+            }
+
+            .sidebar > div:first-child {
+                display: flex;
+                flex-direction: column;
+                gap: 1rem;
+            }
+
+            .nav-title {
+                margin-bottom: 0.5rem;
+                font-size: 0.9rem;
+            }
+
+            nav {
+                display: flex;
+                flex-direction: column;
+                gap: 0.5rem;
+            }
+
+            .nav-link {
+                padding: 0.6rem 1rem;
+                margin-bottom: 0 !important;
+                font-size: 0.85rem;
+            }
+
+            .logout-button {
+                margin-top: 1rem;
+                width: 40px;
+                height: 40px;
+            }
+
+            .main-content {
+                padding: 1rem;
+                margin-top: 0;
+                width: 100%;
+                box-sizing: border-box;
+                flex: 1;
+            }
+
+            .header-title {
+                font-size: 1.1rem;
+            }
+
+            .stats-row { grid-template-columns: repeat(2, 1fr); }
+            .metrics-row { grid-template-columns: 1fr; }
+            .info-cards { grid-template-columns: 1fr; }
+
+            .stat-card {
+                padding: 0.85rem;
+                height: auto;
+                min-height: 100px;
+            }
+
+            .stat-value { font-size: 1.75rem; }
+
+            .section-header {
+                margin-top: 1rem;
+            }
+
+            .assignment-card {
+                padding: 0.75rem;
+            }
+
+            .info-main { font-size: 0.85rem; }
+            .info-sub { font-size: 0.8rem; }
+
+            .btn-primary, .btn-secondary, .btn-refresh {
+                font-size: 0.8rem;
+                padding: 0.4rem 0.8rem;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            .top-header {
+                padding: 0.5rem 0.75rem;
+                height: 50px;
+            }
+
+            .top-title {
+                font-size: 1rem;
+            }
+
+            .header-profile {
+                width: 42px;
+                height: 38px;
+            }
+
+            .sidebar {
+                top: 60px !important;
+            }
+
+            .sidebar.open {
+                max-height: 500px !important;
+                padding: 0.75rem !important;
+                overflow: auto !important;
+            }
+
+            .sidebar > div:first-child {
+                gap: 0.75rem;
+            }
+
+            nav {
+                gap: 0.25rem;
+            }
+
+            .nav-link {
+                padding: 0.5rem 0.75rem;
+                font-size: 0.75rem;
+            }
+
+            .nav-title {
+                font-size: 0.85rem;
+            }
+
+            .main-content {
+                padding: 0.75rem;
+                width: 100%;
+                box-sizing: border-box;
+                flex: 1;
+            }
+
+            .header-title {
+                font-size: 1rem;
+            }
+
+            .stats-row { grid-template-columns: 1fr; }
+
+            .stat-card { 
+                height: auto; 
+                min-height: 100px;
+            }
+
+            .stat-value { font-size: 1.5rem; }
+
+            .metric-value { font-size: 1.5rem; }
+
+            .assignment-card {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 0.5rem;
+            }
+
+            .actions {
+                width: 100%;
+            }
+
+            .btn-primary {
+                width: 100%;
+                text-align: center;
+            }
+
+            .header-subtitle { font-size: 0.85rem; }
+        }
+
+        .menu-toggle {
+            display: none;
+            background: none;
+            border: none;
+            cursor: pointer;
+            font-size: 1.5rem;
+            color: #1f2937;
+            padding: 0;
+            width: 40px;
+            height: 40px;
+            align-items: center;
+            justify-content: center;
+        }
+
+        @media (max-width: 768px) {
+            .menu-toggle {
+                display: flex;
+            }
         }
     </style>
 </head>
 <body>
-    <div class="dashboard-container">
-        <img src="/hod.png" alt="HOD Icon" class="role-icon" />
-        <h1>Welcome, <%= user.name %> </h1>
-        <p>You are logged in as <strong><%= user.role %></strong></p>
+    <header class="top-header">
+        <button class="menu-toggle" id="menuToggle">☰</button>
+        <h1 class="top-title">HOD Portal</h1>
+        <img src="/hod.png" alt="Profile" class="header-profile">
+    </header>
 
-        <div>
-            <ul>
-                <li><h2>Final approval</h2></li>
-                <li><h2>Escalating handling</h2></li>
-            </ul>
+    <div class="page-container">
+        <div class="sidebar">
+            <div>
+                <div class="nav-title">Navigation</div>
+                <nav>
+                    <a href="/hod/dashboard" class="nav-link <%= activePage === 'dashboard' ? 'active' : '' %>">
+                        Dashboard
+                    </a>
+                    <a href="/hod/professors" class="nav-link <%= activePage === 'professors' ? 'active' : '' %>">
+                        Professors
+                    </a>
+                    <a href="/hod/assignments" class="nav-link <%= activePage === 'assignments' ? 'active' : '' %>">
+                        All Assignments
+                    </a>
+                    <a href="/hod/analytics" class="nav-link <%= activePage === 'analytics' ? 'active' : '' %>">
+                        Analytics
+                    </a>
+                    <a href="/hod/profile" class="nav-link <%= activePage === 'profile' ? 'active' : '' %>">
+                        Profile
+                    </a>
+                </nav>
+            </div>
+            <form action="/logout" method="POST" style="margin-top: 2rem;">
+                <button type="submit" class="logout-button">
+                    <div class="sign">
+                        <svg viewBox="0 0 512 512">
+                            <path d="M377.9 105.9L500.7 228.7c7.2 7.2 11.3 17.1 11.3 27.3s-4.1 20.1-11.3 27.3L377.9 406.1c-6.4 6.4-15 9.9-24 9.9c-18.7 0-33.9-15.2-33.9-33.9l0-62.1-128 0c-17.7 0-32-14.3-32-32l0-64c0-17.7 14.3-32 32-32l128 0 0-62.1c0-18.7 15.2-33.9 33.9-33.9c9 0 17.6 3.6 24 9.9zM160 96L96 96c-17.7 0-32 14.3-32 32l0 256c0 17.7 14.3 32 32 32l64 0c17.7 0 32 14.3 32 32s-14.3 32-32 32l-64 0c-53 0-96-43-96-96L0 128C0 75 43 32 96 32l64 0c17.7 0 32 14.3 32 32s-14.3 32-32 32z"></path>
+                        </svg>
+                    </div>
+                    <div class="text">Logout</div>
+                </button>
+            </form>
         </div>
 
-        <form action="/logout" method="POST">
-            <button type="submit" class="logoutBtn">
-                <div class="sign">
-                    <svg viewBox="0 0 512 512">
-                        <path d="M377.9 105.9L500.7 228.7c7.2 7.2 11.3 17.1 11.3 27.3s-4.1 20.1-11.3 27.3L377.9 406.1c-6.4 6.4-15 9.9-24 9.9c-18.7 0-33.9-15.2-33.9-33.9l0-62.1-128 0c-17.7 0-32-14.3-32-32l0-64c0-17.7 14.3-32 32-32l128 0 0-62.1c0-18.7 15.2-33.9 33.9-33.9c9 0 17.6 3.6 24 9.9zM160 96L96 96c-17.7 0-32 14.3-32 32l0 256c0 17.7 14.3 32 32 32l64 0c17.7 0 32 14.3 32 32s-14.3 32-32 32l-64 0c-53 0-96-43-96-96L0 128C0 75 43 32 96 32l64 0c17.7 0 32 14.3 32 32s-14.3 32-32 32z"></path>
-                    </svg>
+        <div class="main-content">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem;">
+                <div>
+                    <h1 class="header-title">Department Overview</h1>
+                    <p class="header-subtitle">Welcome, <%= user.name %>! Here's your <%= department.name %> department overview.</p>
                 </div>
-                <div class="text">Logout</div>
-            </button>
-        </form>
+                <button class="btn-refresh" onclick="window.location.reload()">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
+                        <path fill-rule="evenodd" d="M8 3a5 5 0 1 0 4.546 2.914.5.5 0 0 1 .908-.417A6 6 0 1 1 8 2v1z"/>
+                        <path d="M8 4.466V.534a.25.25 0 0 1 .41-.192l2.36 1.966c.12.1.12.284 0 .384L8.41 4.658A.25.25 0 0 1 8 4.466z"/>
+                    </svg>
+                    Refresh
+                </button>
+            </div>
+
+            <div class="stats-row">
+                <div class="stat-card bg-submitted">
+                    <div class="stat-title">Submitted</div>
+                    <div class="stat-value"><%= stats.Submitted %></div>
+                </div>
+                <div class="stat-card bg-approved">
+                    <div class="stat-title">Approved</div>
+                    <div class="stat-value"><%= stats.Approved %></div>
+                </div>
+                <div class="stat-card bg-rejected">
+                    <div class="stat-title">Rejected</div>
+                    <div class="stat-value"><%= stats.Rejected %></div>
+                </div>
+                <div class="stat-card bg-total">
+                    <div class="stat-title">Total Assignments</div>
+                    <div class="stat-value"><%= stats.Total %></div>
+                </div>
+            </div>
+
+            <div class="metrics-row">
+                <div class="metric-card">
+                    <div class="metric-label">Approval Rate</div>
+                    <div class="metric-value"><%= performanceMetrics.approvalRate %>%</div>
+                </div>
+                <div class="metric-card">
+                    <div class="metric-label">Rejection Rate</div>
+                    <div class="metric-value"><%= performanceMetrics.rejectionRate %>%</div>
+                </div>
+                <div class="metric-card">
+                    <div class="metric-label">Pending Rate</div>
+                    <div class="metric-value"><%= performanceMetrics.pendingRate %>%</div>
+                </div>
+            </div>
+
+            <div class="info-cards">
+                <div class="info-card">
+                    <div class="info-card-title">Active Professors</div>
+                    <div class="info-card-value"><%= professorCount %></div>
+                </div>
+                <div class="info-card">
+                    <div class="info-card-title">Active Students</div>
+                    <div class="info-card-value"><%= studentCount %></div>
+                </div>
+            </div>
+
+            <div class="section-header">
+                <div class="section-title">Recent Activity</div>
+            </div>
+
+            <div class="assignment-list">
+                <% if (recentAssignments && recentAssignments.length > 0) { %>
+                    <% recentAssignments.forEach(assignment => { %>
+                        <div class="assignment-card">
+                            <div class="info-group">
+                                <div class="info-main">
+                                    <%= assignment.studentId.name %> - <%= assignment.title %>
+                                </div>
+                                <div class="info-sub">
+                                    Reviewer: <%= assignment.reviewerId ? assignment.reviewerId.name : 'Not assigned' %> • 
+                                    <span class="status-badge status-<%= assignment.status.toLowerCase() %>">
+                                        <%= assignment.status %>
+                                    </span>
+                                </div>
+                            </div>
+                            <div class="actions">
+                                <a href="/hod/assignments/<%= assignment._id %>" class="btn-primary">View</a>
+                            </div>
+                        </div>
+                    <% }) %>
+                <% } else { %>
+                    <div class="no-data">
+                        No recent activity found.
+                    </div>
+                <% } %>
+            </div>
+
+            <a href="/hod/assignments" class="view-all-link">View All Assignments →</a>
+        </div>
     </div>
+
+    <footer class="footer">
+        &copy; 2025 TaskNet - HOD Portal. All rights reserved.
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            // Mobile sidebar toggle
+            const menuToggle = document.getElementById('menuToggle');
+            const sidebar = document.querySelector('.sidebar');
+
+            menuToggle.addEventListener('click', () => {
+                sidebar.classList.toggle('open');
+            });
+
+            document.querySelectorAll('.nav-link').forEach(link => {
+                link.addEventListener('click', () => {
+                    sidebar.classList.remove('open');
+                });
+            });
+
+            document.querySelector('.main-content').addEventListener('click', () => {
+                sidebar.classList.remove('open');
+            });
+        });
+    </script>
 </body>
 </html>

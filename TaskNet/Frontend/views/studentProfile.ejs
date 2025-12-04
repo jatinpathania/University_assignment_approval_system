@@ -208,6 +208,223 @@
         .success-message { background-color: #dcfce7; color: #14532d; padding: 1rem; border-radius: 0.5rem; margin-bottom: 1.5rem; border: 1px solid #86efac; display: none; }
         .success-message.show { display: block; }
 
+        .modal-overlay { 
+            display: none; 
+            position: fixed; 
+            top: 0; 
+            left: 0; 
+            right: 0; 
+            bottom: 0; 
+            background-color: rgba(0, 0, 0, 0.5); 
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+        }
+        .modal-overlay.show { display: flex; }
+
+        .otp-modal {
+            background: white;
+            border-radius: 1rem;
+            padding: 1.5rem;
+            max-width: 380px;
+            width: calc(100% - 2rem);
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
+            display: flex;
+            flex-direction: column;
+            animation: slideIn 0.2s ease-out;
+        }
+
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: scale(0.95);
+            }
+            to {
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
+
+        @media (max-width: 600px) {
+            .otp-modal {
+                max-width: 340px;
+                padding: 1.25rem;
+                width: calc(100% - 1.5rem);
+            }
+        }
+
+        @media (max-width: 480px) {
+            .otp-modal {
+                max-width: 100%;
+                width: calc(100% - 1rem);
+                padding: 1rem;
+                margin: 0 0.5rem;
+            }
+        }
+
+        .modal-header {
+            margin-bottom: 1.5rem;
+            text-align: center;
+        }
+
+        .modal-title {
+            font-size: 1.3rem;
+            font-weight: 700;
+            color: #0f393b;
+            margin-bottom: 0.5rem;
+        }
+
+        .modal-description {
+            font-size: 0.9rem;
+            color: #64748b;
+        }
+
+        .otp-input-group {
+            margin-bottom: 1.5rem;
+            text-align: center;
+        }
+
+        .otp-input-group label {
+            display: block;
+            font-size: 0.85rem;
+            font-weight: 600;
+            color: #374151;
+            margin-bottom: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .otp-input {
+            box-sizing: border-box; 
+            width: 100%;
+            padding: 0.75rem 1rem;
+            font-size: 2rem;
+            text-align: center;
+            letter-spacing: 0.5rem; 
+            border: 2px solid #e2e8f0;
+            border-radius: 0.5rem;
+            font-family: 'Courier New', monospace;
+            font-weight: bold;
+            transition: border-color 0.3s;
+            max-width: 320px; 
+            margin: 0 auto; 
+            display: block;
+        }
+
+        .otp-input:focus {
+            outline: none;
+            border-color: #0f7992;
+            background-color: #f0fafb;
+        }
+
+        .otp-timer {
+            font-size: 0.85rem;
+            color: #64748b;
+            margin-bottom: 1rem;
+            text-align: center;
+        }
+
+        .otp-timer.warning {
+            color: #c2410c;
+            font-weight: 600;
+        }
+
+        .error-message {
+            background-color: #fee2e2;
+            color: #7f1d1d;
+            padding: 0.75rem;
+            border-radius: 0.5rem;
+            margin-bottom: 1rem;
+            font-size: 0.9rem;
+            border: 1px solid #fca5a5;
+            display: none;
+        }
+
+        .error-message.show {
+            display: block;
+            animation: shake 0.4s;
+        }
+
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            10%, 30%, 50%, 70%, 90% { transform: translateX(-5px); }
+            20%, 40%, 60%, 80% { transform: translateX(5px); }
+        }
+
+        .modal-button-group {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 1rem;
+        }
+
+        .modal-button-group button {
+            flex: 1;
+            padding: 0.75rem;
+            border: none;
+            border-radius: 0.5rem;
+            font-size: 0.95rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .btn-verify {
+            background-color: #0f7992;
+            color: white;
+        }
+
+        .btn-verify:hover {
+            background-color: #0a5a6a;
+        }
+
+        .btn-verify:disabled {
+            background-color: #cbd5e1;
+            cursor: not-allowed;
+            opacity: 0.6;
+        }
+
+        .btn-cancel {
+            background-color: #e5e7eb;
+            color: #374151;
+        }
+
+        .btn-cancel:hover {
+            background-color: #d1d5db;
+        }
+
+        .resend-otp-section {
+            text-align: center;
+            border-top: 1px solid #e2e8f0;
+            padding-top: 1rem;
+        }
+
+        .resend-otp-text {
+            font-size: 0.85rem;
+            color: #64748b;
+            margin-bottom: 0.5rem;
+        }
+
+        .btn-resend {
+            background-color: transparent;
+            color: #0f7992;
+            border: 1px solid #0f7992;
+            padding: 0.6rem 1.5rem;
+            border-radius: 0.5rem;
+            font-size: 0.85rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .btn-resend:hover:not(:disabled) {
+            background-color: #f0fafb;
+        }
+
+        .btn-resend:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
         .edit-mode { display: none; }
         .edit-mode.active { display: block; }
         .view-mode.hidden { display: none; }
@@ -556,7 +773,7 @@
                         </div>
                     </div>
 
-                    <!-- Address Information Section -->
+
                     <div class="form-section">
                         <div class="section-title">Contact Information</div>
                         <div class="form-row full">
@@ -588,6 +805,35 @@
                         <button type="button" class="btn btn-secondary" onclick="toggleEditMode()">Cancel</button>
                     </div>
                 </form>
+
+
+                <div class="modal-overlay" id="otpModal">
+                    <div class="otp-modal">
+                        <div class="modal-header">
+                            <div class="modal-title">Verify OTP</div>
+                            <div class="modal-description">Enter the OTP sent to your email</div>
+                        </div>
+
+                        <div id="otpError" class="error-message"></div>
+
+                        <div class="otp-input-group">
+                            <label for="otpInput">One-Time Password</label>
+                            <input type="text" id="otpInput" class="otp-input" placeholder="000000" maxlength="6" inputmode="numeric">
+                        </div>
+
+                        <div id="otpTimer" class="otp-timer"></div>
+
+                        <div class="modal-button-group">
+                            <button type="button" class="btn-verify" id="verifyOtpBtn" onclick="verifyOTP()">Verify OTP</button>
+                            <button type="button" class="btn-cancel" id="cancelOtpBtn" onclick="cancelOtpVerification()">Cancel</button>
+                        </div>
+
+                        <div class="resend-otp-section">
+                            <div class="resend-otp-text">Didn't receive the OTP?</div>
+                            <button type="button" class="btn-resend" id="resendOtpBtn" onclick="resendOTP()" disabled>Resend OTP</button>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
@@ -597,12 +843,238 @@
     </footer>
 
     <script>
+        let otpTimerInterval;
+        let otpExpiryTime;
+        let pendingProfileData;
+        let originalProfileData = {};
+
         function toggleEditMode() {
+            if (!document.getElementById('editMode').classList.contains('active')) {
+                const formData = new FormData(document.getElementById('editMode'));
+                originalProfileData = {};
+                formData.forEach((value, key) => {
+                    originalProfileData[key] = value;
+                });
+            }
             document.getElementById('viewMode').classList.toggle('hidden');
             document.getElementById('editMode').classList.toggle('active');
         }
 
-        // Show success message if profile was updated
+        function hasChanges() {
+            const currentData = {};
+            const formData = new FormData(document.getElementById('editMode'));
+            formData.forEach((value, key) => {
+                currentData[key] = value;
+            });
+            
+            for (let key in originalProfileData) {
+                if (originalProfileData[key] !== currentData[key]) {
+                    return true;
+                }
+            }
+            return false;
+        }
+
+        document.getElementById('editMode').addEventListener('submit', async function(e) {
+            e.preventDefault();
+
+            if (!hasChanges()) {
+                showSuccessMessage('No changes made to profile');
+                toggleEditMode();
+                return;
+            }
+
+            const formData = new FormData(this);
+            pendingProfileData = {};
+            formData.forEach((value, key) => {
+                pendingProfileData[key] = value;
+            });
+            
+            try {
+                const response = await fetch('/student/profile/update', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(pendingProfileData)
+                });
+
+                const data = await response.json();
+
+                if (data.success && data.requireOtp) {
+                    otpExpiryTime = Date.now() + (10 * 60 * 1000);
+                    showOtpModal();
+                    startOtpTimer();
+                } else if (data.success) {
+                    showSuccessMessage('Profile updated successfully!');
+                    toggleEditMode();
+                    setTimeout(() => {
+                        window.location.href = '/student/profile?success=true';
+                    }, 1500);
+                } else {
+                    alert('Error: ' + (data.message || 'Failed to update profile'));
+                }
+            } catch (error) {
+                console.error('Error:', error);
+                alert('An error occurred. Please try again.');
+            }
+        });
+
+        function showOtpModal() {
+            document.getElementById('otpModal').classList.add('show');
+            document.getElementById('otpInput').focus();
+            document.getElementById('otpError').classList.remove('show');
+            document.getElementById('verifyOtpBtn').disabled = false;
+            document.getElementById('resendOtpBtn').disabled = true;
+        }
+
+        function hideOtpModal() {
+            document.getElementById('otpModal').classList.remove('show');
+            document.getElementById('otpInput').value = '';
+            if (otpTimerInterval) clearInterval(otpTimerInterval);
+        }
+
+        function startOtpTimer() {
+            if (otpTimerInterval) clearInterval(otpTimerInterval);
+            
+            const timerElement = document.getElementById('otpTimer');
+            
+            otpTimerInterval = setInterval(() => {
+                const remainingTime = otpExpiryTime - Date.now();
+                
+                if (remainingTime <= 0) {
+                    clearInterval(otpTimerInterval);
+                    timerElement.textContent = 'OTP Expired';
+                    timerElement.className = 'otp-timer warning';
+                    document.getElementById('verifyOtpBtn').disabled = true;
+                    document.getElementById('resendOtpBtn').disabled = false;
+                    return;
+                }
+                
+                const minutes = Math.floor(remainingTime / 60000);
+                const seconds = Math.floor((remainingTime % 60000) / 1000);
+                const timeText = `${minutes}:${seconds.toString().padStart(2, '0')} remaining`;
+                
+                timerElement.textContent = timeText;
+                timerElement.className = remainingTime < 2 * 60 * 1000 ? 'otp-timer warning' : 'otp-timer';
+            }, 1000);
+
+            const remainingTime = otpExpiryTime - Date.now();
+            const minutes = Math.floor(remainingTime / 60000);
+            const seconds = Math.floor((remainingTime % 60000) / 1000);
+            timerElement.textContent = `${minutes}:${seconds.toString().padStart(2, '0')} remaining`;
+        }
+
+        async function verifyOTP() {
+            const otp = document.getElementById('otpInput').value.trim();
+            const errorElement = document.getElementById('otpError');
+            
+            if (!otp || otp.length !== 6) {
+                errorElement.textContent = 'Please enter a valid 6-digit OTP';
+                errorElement.classList.add('show');
+                return;
+            }
+
+            document.getElementById('verifyOtpBtn').disabled = true;
+            
+            try {
+                const payload = {
+                    otp: otp,
+                    ...pendingProfileData
+                };
+
+                const response = await fetch('/student/profile/verify-update', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(payload)
+                });
+
+                const data = await response.json();
+
+                if (data.success) {
+                    clearInterval(otpTimerInterval);
+                    hideOtpModal();
+                    showSuccessMessage('Profile updated successfully!');
+                    toggleEditMode();
+                    setTimeout(() => {
+                        window.location.href = '/student/profile?success=true';
+                    }, 1500);
+                } else {
+                    errorElement.textContent = data.message || 'Invalid OTP. Please try again.';
+                    errorElement.classList.add('show');
+                    document.getElementById('verifyOtpBtn').disabled = false;
+                }
+            } catch (error) {
+                console.error('Error:', error);
+                errorElement.textContent = 'An error occurred. Please try again.';
+                errorElement.classList.add('show');
+                document.getElementById('verifyOtpBtn').disabled = false;
+            }
+        }
+
+        async function resendOTP() {
+            const resendBtn = document.getElementById('resendOtpBtn');
+            const errorElement = document.getElementById('otpError');
+            
+            resendBtn.disabled = true;
+            errorElement.classList.remove('show');
+
+            try {
+                const response = await fetch('/student/profile/resend-otp', {
+                    method: 'POST'
+                });
+
+                const data = await response.json();
+
+                if (data.success) {
+                    otpExpiryTime = Date.now() + (10 * 60 * 1000);
+                    document.getElementById('otpInput').value = '';
+                    document.getElementById('verifyOtpBtn').disabled = false;
+                    startOtpTimer();
+                    
+                    errorElement.textContent = '✓ OTP resent to your email';
+                    errorElement.style.backgroundColor = '#dcfce7';
+                    errorElement.style.color = '#14532d';
+                    errorElement.style.borderColor = '#86efac';
+                    errorElement.classList.add('show');
+
+                    let countdown = 30;
+                    const countdownInterval = setInterval(() => {
+                        countdown--;
+                        if (countdown <= 0) {
+                            clearInterval(countdownInterval);
+                            resendBtn.disabled = false;
+                        }
+                    }, 1000);
+                } else {
+                    errorElement.textContent = data.message || 'Failed to resend OTP';
+                    errorElement.classList.add('show');
+                    resendBtn.disabled = false;
+                }
+            } catch (error) {
+                console.error('Error:', error);
+                errorElement.textContent = 'An error occurred. Please try again.';
+                errorElement.classList.add('show');
+                resendBtn.disabled = false;
+            }
+        }
+
+        function cancelOtpVerification() {
+            hideOtpModal();
+            document.getElementById('editMode').reset();
+        }
+
+        function showSuccessMessage(message) {
+            const successMsg = document.getElementById('successMessage');
+            successMsg.textContent = message;
+            successMsg.classList.add('show');
+            setTimeout(() => {
+                successMsg.classList.remove('show');
+            }, 3000);
+        }
+
         const urlParams = new URLSearchParams(window.location.search);
         if (urlParams.has('success')) {
             const successMsg = document.getElementById('successMessage');
@@ -612,7 +1084,6 @@
             }, 3000);
         }
         
-        // Mobile sidebar toggle
         const menuToggle = document.getElementById('menuToggle');
         const sidebar = document.querySelector('.sidebar');
 
@@ -628,6 +1099,10 @@
 
         document.querySelector('.main-content').addEventListener('click', () => {
             sidebar.classList.remove('open');
+        });
+
+        document.getElementById('otpInput').addEventListener('input', function(e) {
+            this.value = this.value.replace(/[^0-9]/g, '');
         });
     </script>
 </body>

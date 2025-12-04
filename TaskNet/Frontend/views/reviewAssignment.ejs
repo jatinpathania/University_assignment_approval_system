@@ -665,6 +665,32 @@
                 return;
             }
 
+            if (action === 'Approve') {
+                // Show OTP modal immediately
+                otpModal.style.display = 'flex';
+                
+                // Send request in background
+                const formData = new FormData();
+                formData.append('action', action);
+                formData.append('remarks', remarks);
+                if (signatureFile) {
+                    formData.append('signatureFile', signatureFile);
+                }
+
+                fetch(`/professor/assignments/${assignmentId}/process`, {
+                    method: 'POST',
+                    body: formData
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success && data.tempData) {
+                        tempSignatureUrl = data.tempData.signatureUrl;
+                    }
+                })
+                .catch(err => console.error('Background request error:', err));
+                return;
+            }
+
             const formData = new FormData();
             formData.append('action', action);
             formData.append('remarks', remarks);
