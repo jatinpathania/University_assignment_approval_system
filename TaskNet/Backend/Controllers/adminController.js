@@ -5,7 +5,7 @@ const getPaginatedList= require('../Model/userQueries')
 const Department = require('../Model/department')
 const getPaginatedDepartmentsWithCounts= require('../Model/departmentQueries')
 const Assignment= require('../Model/assignment');
-const { sendWelcomeEmail }= require('../util/emailSender')
+const { sendWelcomeEmail, sendAdminUpdateNotification }= require('../util/emailSender')
 
 module.exports.getAdminDashboard = async (req, res) => {
     try {
@@ -352,6 +352,14 @@ module.exports.createUser = async (req, res) => {
         errors.email = 'Invalid email format.'; hasError = true;
     }
 
+    if (password) {
+        const passwordRegex = /^(?=.*[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]).{8,}$/;
+        if (!passwordRegex.test(password)) {
+            errors.password = 'Password must be at least 8 characters long and contain at least one special character (!@#$%^&*()_+-=[]{};\':"|,.<>/?).'; 
+            hasError = true;
+        }
+    }
+
     try {
         departments = await Department.find().select('name _id').sort({ name: 1 });
 
@@ -506,33 +514,73 @@ module.exports.updateUser = async (req, res) => {
     const userId = req.params.id;
     const { name, email, phone, departmentId, newPassword } = req.body;
     let updateData = {};
+    let changes = {};
 
     try {
-        const existingUserWithEmail = await User.findOne({ email: email });
-        if (existingUserWithEmail && existingUserWithEmail._id.toString() !== userId) {
-            return res.status(400).json({ success: false, error: 'Email address is already in use by another user.' });
+        const currentUser = await User.findById(userId).populate('departmentId');
+        if(!currentUser) {
+            return res.status(404).json({ success: false, error: 'User not found.' });
+        }
+
+        if(email && email !== currentUser.email) {
+            const existingUserWithEmail = await User.findOne({ email: email });
+            if(existingUserWithEmail) {
+                return res.status(400).json({ success: false, error: 'Email address is already in use by another user.' });
+            }
+            changes.email = email;
         }
 
         if (newPassword) {
             if (newPassword.length < 6) {
                 return res.status(400).json({ success: false, error: 'Password must be at least 6 characters long.' });
             }
-            const salt= await bcrypt.genSalt(10);
-            updateData.password = await bcrypt.hash(newPassword, salt)
+            const salt = await bcrypt.genSalt(10);
+            updateData.password = await bcrypt.hash(newPassword, salt);
+            changes.passwordChanged = true;
+        }
+
+        if (name && name.trim() !== currentUser.name) {
+            changes.name = name;
+        }
+        if (phone && phone.trim() !== currentUser.phone) {
+            changes.phone = phone;
+        }
+        if (departmentId && departmentId.toString() !== currentUser.departmentId?._id.toString()) {
+            const dept = await Department.findById(departmentId);
+            changes.departmentName = dept ? dept.name : departmentId;
         }
 
         updateData = {
             ...updateData,
-            name: name,
-            email: email,
-            phone: phone,
-            departmentId: departmentId
+            name: name || currentUser.name,
+            email: email || currentUser.email,
+            phone: phone || currentUser.phone,
+            departmentId: departmentId || currentUser.departmentId
         };
 
         const updatedUser = await User.findByIdAndUpdate(userId, updateData, { new: true, runValidators: true }).populate('departmentId');
 
         if (!updatedUser) {
             return res.status(404).json({ success: false, error: 'User not found during update.' });
+        }
+
+        console.log(`[Admin Update] Changes detected:`, changes);
+        
+        if (Object.keys(changes).length > 0) {
+            console.log(`[Admin Update] Sending notification email to ${updatedUser.email}`);
+            const emailSent = await sendAdminUpdateNotification({
+                email: updatedUser.email,
+                name: updatedUser.name,
+                changes: changes,
+                adminName: req.user.name
+            });
+
+            console.log(`[Admin Update] Email send result:`, emailSent);
+            if (!emailSent) {
+                console.warn(`Email notification could not be sent to ${updatedUser.email}, but user was updated successfully.`);
+            }
+        } else {
+            console.log(`[Admin Update] No changes detected, skipping email notification`);
         }
 
         return res.json({
