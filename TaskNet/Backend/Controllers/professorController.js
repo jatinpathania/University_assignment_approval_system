@@ -1,7 +1,7 @@
 const Assignment = require('../Model/assignment');
 const User = require('../Model/user');
 const { uploadToCloudinary } = require('../config/cloudinary')
-const { sendOTP, sendStudentNotification, sendSubmissionNotification }= require('../util/emailSender')
+const { sendOTP, sendStudentNotification, sendSubmissionNotification, sendProfileUpdateOTP }= require('../util/emailSender')
 const crypto= require('crypto')
 
 module.exports.getProfessorDashboard = async (req, res) => {
@@ -206,7 +206,10 @@ module.exports.processAssignmentReview = async(req, res)=> {
             professor.otpExpires = otpExpires;
             await professor.save();
 
-            await sendOTP(professor.email, otp);
+            // Send email in background (don't await)
+            sendOTP(professor.email, otp).catch(err => {
+                console.error('Error sending OTP email:', err);
+            });
 
             return res.status(200).json({ 
                 success: true, 
@@ -303,38 +306,119 @@ module.exports.updateProfessorProfile = async(req, res) => {
         const { name, email, phone, specialization, office, department, address, city, state, postalCode } = req.body;
         const professorId = req.user._id;
 
-        const updatedUser = await User.findByIdAndUpdate(
-            professorId,
-            {
-                name,
-                email,
-                phone,
-                specialization,
-                office,
-                department,
-                address,
-                city,
-                state,
-                postalCode
-            },
-            { new: true, runValidators: true }
-        );
+        const otp = crypto.randomInt(100000, 999999).toString();
+        const otpExpires = Date.now() + 10 * 60 * 1000; // 10 minutes
 
-        if (!updatedUser){
-            return res.status(404).render('error',{
-                message: 'User not found'
-            });
-        }
+        const professor = await User.findById(professorId);
+        professor.otp = otp;
+        professor.otpExpires = otpExpires;
+        professor.pendingProfileUpdate = {
+            name,
+            email,
+            phone,
+            specialization,
+            office,
+            department,
+            address,
+            city,
+            state,
+            postalCode
+        };
+        await professor.save();
 
-        res.redirect('/professor/profile?success=true');
+        // Send email in background (don't await)
+        sendProfileUpdateOTP(professor.email, otp).catch(err => {
+            console.error('Error sending OTP email:', err);
+        });
+
+        return res.json({
+            success: true,
+            requireOtp: true,
+            message: 'OTP sent to your email. Please verify to complete the profile update.'
+        });
+
     } catch (error){
         console.error('Error updating professor profile:', error);
-        res.status(500).render('professorProfile', {
-            user: req.user,
-            stats: {},
-            error: 'Failed to update profile. Please try again.',
-            activePage: 'profile'
+        res.status(500).json({ success: false, error: 'Failed to process profile update. Please try again.' });
+    }
+};
+
+module.exports.verifyAndUpdateProfessorProfile = async(req, res) => {
+    try{
+        const { otp } = req.body;
+        const professorId = req.user._id;
+
+        const professor = await User.findById(professorId).select('+otp +otpExpires +pendingProfileUpdate');
+
+        if (!professor.otp || professor.otp !== otp) {
+            return res.status(400).json({ success: false, message: 'Invalid OTP' });
+        }
+
+        if (professor.otpExpires < Date.now()) {
+            return res.status(400).json({ success: false, message: 'OTP Expired' });
+        }
+
+        if (!professor.pendingProfileUpdate) {
+            return res.status(400).json({ success: false, message: 'No pending profile update found' });
+        }
+
+        const pendingUpdate = professor.pendingProfileUpdate;
+
+        professor.name = pendingUpdate.name;
+        professor.email = pendingUpdate.email;
+        professor.phone = pendingUpdate.phone;
+        professor.specialization = pendingUpdate.specialization;
+        professor.office = pendingUpdate.office;
+        professor.department = pendingUpdate.department;
+        professor.address = pendingUpdate.address;
+        professor.city = pendingUpdate.city;
+        professor.state = pendingUpdate.state;
+        professor.postalCode = pendingUpdate.postalCode;
+
+        professor.otp = undefined;
+        professor.otpExpires = undefined;
+        professor.pendingProfileUpdate = undefined;
+        
+        await professor.save();
+
+        return res.json({
+            success: true,
+            message: 'Profile updated successfully!'
         });
+
+    } catch (error){
+        console.error('Error verifying professor profile update:', error);
+        return res.status(500).json({ success: false, message: 'Server error during verification.' });
+    }
+};
+
+module.exports.resendProfileOTP = async (req, res) => {
+    try {
+        const professorId = req.user._id;
+        const professor = await User.findById(professorId).select('+pendingProfileUpdate');
+
+        if (!professor.pendingProfileUpdate) {
+            return res.status(400).json({ success: false, message: 'No pending profile update. Please edit your profile first.' });
+        }
+
+        // Generate new OTP
+        const otpCode = crypto.randomInt(100000, 999999).toString();
+        const otpExpires = Date.now() + (10 * 60 * 1000); // 10 minutes
+
+        professor.otp = otpCode;
+        professor.otpExpires = otpExpires;
+
+        await professor.save();
+        await sendProfileUpdateOTP(professor.email, otpCode);
+
+        return res.json({
+            success: true,
+            message: 'OTP resent to your email'
+        });
+
+    } catch (error) {
+        console.error('Error resending OTP:', error);
+        return res.status(500).json({ success: false, message: 'Failed to resend OTP' });
     }
 };
 
