@@ -36,6 +36,11 @@ const userSchema= new mongoose.Schema({
     otpExpires: {
         type: Date,
         select: false
+    },
+    pendingProfileUpdate: {
+        type: mongoose.Schema.Types.Mixed,
+        select: false,
+        default: undefined
     }
 },{ timestamps: true })
 
